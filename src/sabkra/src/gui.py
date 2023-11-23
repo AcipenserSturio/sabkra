@@ -35,7 +35,7 @@ def select_file():
 
     filename = fd.askopenfilename(
         title='Open',
-        initialdir=r"C:\Users\Максим\Documents\My Games\Sid Meier's Civilization 5\Maps",
+        initialdir=r"~/.local/share/Aspyr/Sid Meier's Civilization 5/",
         filetypes=filetypes)
 
     p = Thread(target=world_display.display_world, args=(filename,tile_label))

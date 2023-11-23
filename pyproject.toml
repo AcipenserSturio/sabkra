@@ -17,4 +17,4 @@ requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
 [tool.pdm.scripts]
-build = "python -m sabkra"
+start = "python -m sabkra"

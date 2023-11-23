@@ -1,7 +1,7 @@
 import pygame, os
 from . import civ5map_parser
 
-path_by_default = "./src/sabkra/Maps/lungorajapan_ai.Civ5Map"
+path_by_default = "./src/sabkra/maps/lungorajapan_ai.Civ5Map"
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, 25)
 
@@ -100,10 +100,10 @@ class Worldbuilder:
         self.set_current_tile(self.map[0][0])
     def load_sprites(self):
         for terrain in self.worldinfo.terrain:
-            self.add_sprite(terrain, './src/sabkra/Assets/Terrain/{}.png'.format(terrain.replace("TERRAIN_", "").lower()))
+            self.add_sprite(terrain, './src/sabkra/assets/terrain/{}.png'.format(terrain.replace("TERRAIN_", "").lower()))
         for feature in self.worldinfo.feature:
-            self.add_sprite(feature, './src/sabkra/Assets/Feature/{}.png'.format(feature.replace("FEATURE_", "").lower()))
-        self.add_sprite('selected', './src/sabkra/Assets/selected.png')
+            self.add_sprite(feature, './src/sabkra/assets/feature/{}.png'.format(feature.replace("FEATURE_", "").lower()))
+        self.add_sprite('selected', './src/sabkra/assets/selected.png')
     def position_camera_by_default(self):
         middle_tile = self.map[self.worldinfo.height//2][self.worldinfo.width//2]
         tile_x, tile_y = middle_tile.worldpos_centre
