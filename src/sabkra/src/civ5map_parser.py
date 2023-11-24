@@ -34,21 +34,21 @@ class World:
 
     def __repr__(self):
         string = ""
-        string += "Version\t\t\t{}\n".format(self.version)
-        string += "Width\t\t\t{}\n".format(self.width)
-        string += "Height\t\t\t{}\n".format(self.height)
-        string += "Players\t\t\t{}\n".format(self.players)
-        string += "Random goodies\t\t{}\n".format(self.randomgoodies)
+        string += "Version\n{}\n".format(self.version)
+        string += "Width\n{}\n".format(self.width)
+        string += "Height\n{}\n".format(self.height)
+        string += "Players\n{}\n".format(self.players)
+        string += "Random goodies\n{}\n".format(self.randomgoodies)
         string += "Random resourses\t{}\n".format(self.randomresourses)
-        string += "World wrap\t\t{}\n".format(self.wrap)
-        # string += "Terrain\t\t\t{}\n".format(self.terrain)
-        # string += "Feature\t\t\t{}\n".format(self.feature)
-        # string += "Wonder\t\t\t{}\n".format(self.wonder)
-        # string += "Resourse\t\t{}\n".format(self.resourse)
-        string += "Mod data\t\t{}\n".format(self.moddata)
-        string += "Name\t\t\t{}\n".format(self.name)
-        string += "Description\t\t{}\n".format(self.description)
-        string += "Elevation\t\t{}\n".format(self.elevation)
+        string += "World wrap\n{}\n".format(self.wrap)
+        # string += "Terrain\n{}\n".format(self.terrain)
+        # string += "Feature\n{}\n".format(self.feature)
+        # string += "Wonder\n{}\n".format(self.wonder)
+        # string += "Resourse\n{}\n".format(self.resourse)
+        string += "Mod data\n{}\n".format(self.moddata)
+        string += "Name\n{}\n".format(self.name)
+        string += "Description\n{}\n".format(self.description)
+        string += "Elevation\n{}\n".format(self.elevation)
         return string
 
 
@@ -80,15 +80,15 @@ class Tile:
 
     def __repr__(self):
         string = ""
-        string += "Row\t\t\t{}\n".format(self.row)
-        string += "Col\t\t\t{}\n".format(self.col)
-        string += "Terrain\t\t\t{}\n".format(self.get_terrain())
-        string += "Resourse\t\t{}\n".format(self.get_resourse())
-        string += "Feature\t\t\t{}\n".format(self.get_feature())
-        string += "River (SW, SE, E)\t{} {} {}\n".format(
+        string += "Row\n{}\n".format(self.row)
+        string += "Col\n{}\n".format(self.col)
+        string += "Terrain\n{}\n".format(self.get_terrain())
+        string += "Resourse\n{}\n".format(self.get_resourse())
+        string += "Feature\n{}\n".format(self.get_feature())
+        string += "River (SW, SE, E)\n{} {} {}\n".format(
             self.river_southwest, self.river_southeast, self.river_east)
-        string += "Elevation\t\t{}\n".format(self.get_elevation())
-        string += "Wonder\t\t\t{}\n".format(self.get_wonder())
+        string += "Elevation\n{}\n".format(self.get_elevation())
+        string += "Wonder\n{}\n".format(self.get_wonder())
         return string
 
     def get_terrain(self):
