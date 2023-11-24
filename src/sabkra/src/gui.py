@@ -75,11 +75,21 @@ tile_label.pack(fill=None, expand=False)
 pygame_frame.pack(side="left", fill="both")
 sidebar_frame.pack(side="right", fill="both")
 
+
+def on_event(event):
+    print(event)
+
+
+pygame_frame.bind('<Enter>', on_event)
+pygame_frame.bind('<Leave>', on_event)
+pygame_frame.bind('<Motion>', on_event)
+pygame_frame.bind('<B1-Motion>', on_event)
+pygame_frame.bind('<B2-Motion>', on_event)
+pygame_frame.bind('<B3-Motion>', on_event)
+
+
 os.environ['SDL_WINDOWID'] = str(pygame_frame.winfo_id())
-system = platform.system()
-if system == "Windows":
-    os.environ['SDL_VIDEODRIVER'] = 'windib'
-elif system == "Linux":
-    os.environ['SDL_VIDEODRIVER'] = 'x11'
+os.environ['SDL_VIDEODRIVER'] = ('windib' if platform.system() == "Windows"
+                                 else 'x11')
 
 root.mainloop()
