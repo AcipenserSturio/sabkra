@@ -1,6 +1,7 @@
 import os
 import pygame
 from . import civ5map_parser
+from .display.camera import Camera
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, 25)
 
@@ -13,10 +14,6 @@ background_colour = (0, 0, 0)
 image_tiling_width = 34
 image_tiling_height = 30
 image_tiling_height_full = 40
-
-scale_factor = 1.2
-scale_upper_bound = 8
-scale_lower_bound = 0.24
 
 
 def get_tile_world_pos(tile):
@@ -49,43 +46,6 @@ def mouse_pos():
     return pygame.mouse.get_pos()
 
 
-class Camera:
-    def __init__(self, worldbuilder):
-        self.worldbuilder = worldbuilder
-        self.x = 0
-        self.y = 0
-        self.scale = 1
-
-    def drag(self, vector):
-        self.x -= int(vector[0] / self.scale)
-        self.y -= int(vector[1] / self.scale)
-        # print(self.x, self.y)
-
-    def clean_rescale(self, direction):
-        if direction > 0:
-            if self.scale > scale_upper_bound:
-                return
-            self.rescale(scale_factor)
-        else:
-            if self.scale < scale_lower_bound:
-                return
-            self.rescale(1/scale_factor)
-
-    def rescale(self, factor):
-        self.scale *= factor
-        mouse_x, mouse_y = mouse_pos()
-        self.y += int((1/self.scale) * (1 - factor) * mouse_y)
-        self.x += int((1/self.scale) * (1 - factor) * mouse_x)
-        self.worldbuilder.rescale_all_sprites()
-        # print(self.scale)
-
-    def get_canvas_pos_from_world_pos(self, worldpos):
-        return ((worldpos[0] + self.x) * self.scale,
-                (worldpos[1] + self.y) * self.scale)
-
-    def get_world_pos_from_canvas_pos(self, canvaspos):
-        return (canvaspos[0] / self.scale - self.x,
-                canvaspos[1] / self.scale - self.y)
 
 
 class Worldbuilder:
@@ -143,6 +103,9 @@ class Worldbuilder:
     def mouse_by_default(self):
         self._previous_mouse_position = mouse_pos()
         self._current_mouse_position = mouse_pos()
+
+    def mouse_pos(self):
+        return mouse_pos()
 
     def give_tiles_worldpos(self):
         for row in self.map:
