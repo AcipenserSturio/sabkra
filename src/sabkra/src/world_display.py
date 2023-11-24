@@ -61,7 +61,7 @@ class Camera:
     def drag(self, vector):
         self.x -= int(vector[0] / self.scale)
         self.y -= int(vector[1] / self.scale)
-        print(self.x, self.y)
+        # print(self.x, self.y)
 
     def clean_rescale(self, direction):
         if direction > 0:
@@ -79,7 +79,7 @@ class Camera:
         self.y += int((1/self.scale) * (1 - factor) * mouse_y)
         self.x += int((1/self.scale) * (1 - factor) * mouse_x)
         self.worldbuilder.rescale_all_sprites()
-        print(self.scale)
+        # print(self.scale)
 
     def get_canvas_pos_from_world_pos(self, worldpos):
         return ((worldpos[0] + self.x) * self.scale,
@@ -181,7 +181,6 @@ class Worldbuilder:
 
     def set_current_tile(self, tile):
         self.current_tile = tile
-        pygame.display.set_caption(f"World Display - ({tile.col}, {tile.row})")
         # tell the ui to update here
         if self.ui:
             self.ui.configure(text=self.get_info_from_tile(tile))
@@ -192,11 +191,11 @@ class Worldbuilder:
 
     # Image manipulation
     def add_sprite(self, name, path):
-        print(name, path)
+        # print(name, path)
         image = pygame.image.load(path).convert_alpha()
         self._sprites[name] = image
         self.rescale_sprite(name, image)
-        print('added', name)
+        # print('added', name)
 
     def get_sprite(self, name):
         if name in self._sprites_scaled.keys():
@@ -273,6 +272,7 @@ def display_world(file_path, ui):
     while run:
         clock.tick(fps)
         for event in pygame.event.get():
+            # print(event)
             if event.type == pygame.QUIT:
                 # Close the window
                 run = False
