@@ -4,8 +4,8 @@ scale_lower_bound = 0.24
 
 
 class Camera:
-    def __init__(self, worldbuilder):
-        self.worldbuilder = worldbuilder
+    def __init__(self, scene):
+        self.scene = scene
         self.x = 0
         self.y = 0
         self.scale = 1
@@ -27,10 +27,10 @@ class Camera:
 
     def rescale(self, factor):
         self.scale *= factor
-        mouse_x, mouse_y = self.worldbuilder.mouse_pos()
+        mouse_x, mouse_y = self.scene.mouse_pos()
         self.y += int((1/self.scale) * (1 - factor) * mouse_y)
         self.x += int((1/self.scale) * (1 - factor) * mouse_x)
-        self.worldbuilder.rescale_all_sprites()
+        self.scene.rescale_all_sprites()
         # print(self.scale)
 
     def get_canvas_pos_from_world_pos(self, worldpos):
@@ -40,4 +40,3 @@ class Camera:
     def get_world_pos_from_canvas_pos(self, canvaspos):
         return (canvaspos[0] / self.scale - self.x,
                 canvaspos[1] / self.scale - self.y)
-

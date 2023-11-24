@@ -48,7 +48,7 @@ def mouse_pos():
 
 
 
-class Worldbuilder:
+class Scene:
     def __init__(self, file_path, ui):
         self.camera = Camera(self)
         self.ui = ui
@@ -225,7 +225,7 @@ class Worldbuilder:
 
 
 def display_world(file_path, ui):
-    wb = Worldbuilder(file_path, ui)
+    wb = Scene(file_path, ui)
 
     clock = pygame.time.Clock()
     drag_mode = False
