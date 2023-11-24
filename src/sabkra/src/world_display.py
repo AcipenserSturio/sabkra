@@ -181,6 +181,7 @@ class Worldbuilder:
 
     def set_current_tile(self, tile):
         self.current_tile = tile
+        pygame.display.set_caption(f"World Display - ({tile.col}, {tile.row})")
         # tell the ui to update here
         if self.ui:
             self.ui.configure(text=self.get_info_from_tile(tile))
@@ -300,6 +301,3 @@ def display_world(file_path, ui):
         wb.update_mouse_vector()
         wb.draw()
     pygame.display.quit()
-
-
-display_world(path_by_default, None)

@@ -30,7 +30,7 @@ label2.grid(row=1, column=0)"""
 
 def select_file():
     filetypes = (
-        ('Civilization V Map', '*.Civ5Map'),
+        ('Civilization V Map', '*.civ5map'),
         ('All files', '*.*')
     )
 
