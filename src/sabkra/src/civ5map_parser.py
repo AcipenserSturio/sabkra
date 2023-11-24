@@ -1,53 +1,12 @@
 from .tile import Tile
 from .world import World
-
-
-# Reading bytes as variables from file
-def get_byte(f):
-    return int.from_bytes(f.read(1), "little")
-
-
-def get_int(f):
-    return int.from_bytes(f.read(4), "little")
-
-
-def get_flags(f):
-    return list(map(lambda x: True if x == '1' else False,
-                    '{0:b}'.format(get_byte(f)).zfill(8)))
-
-
-def get_string(f, length):
-    string = ""
-    for i in range(length):
-        value = f.read(1)
-        string += value.decode()
-    return string[:-1]
-
-
-def get_string_array(f, length):
-    return get_string(f, length).split("\0")
-
-
-# Reading several variables from file as tile data
-def get_tile_data_from_file(f):
-    terrain = get_byte(f)
-    resourse = get_byte(f)
-    feature = get_byte(f)
-    _, _, _, _, _, river_southwest, river_southeast, river_east = get_flags(f)
-    elevation = get_byte(f)
-    _ = get_byte(f)
-    wonder = get_byte(f)
-    _ = get_byte(f)
-    return (
-        terrain,
-        resourse,
-        feature,
-        river_southwest,
-        river_southeast,
-        river_east,
-        elevation,
-        wonder,
-    )
+from .utils import (
+    get_byte,
+    get_int,
+    get_flags,
+    get_string,
+    get_string_array,
+)
 
 
 def get_world_data_from_file(f):
@@ -111,6 +70,6 @@ def read_world_data(input_file_path):
         for row in range(world.height):
             tilemap.append([])
             for col in range(world.width):
-                tile = Tile(world, row, col, *get_tile_data_from_file(f))
+                tile = Tile.from_file(world, row, col, f)
                 tilemap[row].append(tile)
     return world, tilemap
