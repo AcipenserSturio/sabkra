@@ -27,6 +27,7 @@ label2 = Label(root, text="First program yo")
 label1.grid(row=0, column=0)
 label2.grid(row=1, column=0)"""
 
+
 def select_file():
     filetypes = (
         ('Civilization V Map', '*.Civ5Map'),
@@ -38,10 +39,11 @@ def select_file():
         initialdir=r"~/.local/share/Aspyr/Sid Meier's Civilization 5/",
         filetypes=filetypes)
 
-    p = Thread(target=world_display.display_world, args=(filename,tile_label))
+    p = Thread(target=world_display.display_world, args=(filename, tile_label))
     p.start()
 
     print('got here')
+
 
 open_button = tk.Button(
     root,

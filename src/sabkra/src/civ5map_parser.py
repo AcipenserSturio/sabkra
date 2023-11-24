@@ -1,5 +1,21 @@
 class World:
-    def __init__(self, version, width, height, players, randomgoodies, randomresourses, wrap, terrain, feature, wonder, resourse, moddata, name, description, elevation):
+    def __init__(self,
+                 version,
+                 width,
+                 height,
+                 players,
+                 randomgoodies,
+                 randomresourses,
+                 wrap,
+                 terrain,
+                 feature,
+                 wonder,
+                 resourse,
+                 moddata,
+                 name,
+                 description,
+                 elevation,
+                 ):
         self.version = version
         self.width = width
         self.height = height
@@ -15,6 +31,7 @@ class World:
         self.name = name
         self.description = description
         self.elevation = elevation
+
     def __repr__(self):
         string = ""
         string += "Version\t\t\t{}\n".format(self.version)
@@ -33,8 +50,22 @@ class World:
         string += "Description\t\t{}\n".format(self.description)
         string += "Elevation\t\t{}\n".format(self.elevation)
         return string
+
+
 class Tile:
-    def __init__(self, world, row, col, terrain_id, resourse_id, feature_id, river_southwest, river_southeast, river_east, elevation_id, wonder_id):
+    def __init__(self,
+                 world,
+                 row,
+                 col,
+                 terrain_id,
+                 resourse_id,
+                 feature_id,
+                 river_southwest,
+                 river_southeast,
+                 river_east,
+                 elevation_id,
+                 wonder_id,
+                 ):
         self.world = world
         self.row = row
         self.col = col
@@ -46,6 +77,7 @@ class Tile:
         self.river_east = river_east
         self.elevation_id = elevation_id
         self.wonder_id = wonder_id
+
     def __repr__(self):
         string = ""
         string += "Row\t\t\t{}\n".format(self.row)
@@ -53,41 +85,58 @@ class Tile:
         string += "Terrain\t\t\t{}\n".format(self.get_terrain())
         string += "Resourse\t\t{}\n".format(self.get_resourse())
         string += "Feature\t\t\t{}\n".format(self.get_feature())
-        string += "River (SW, SE, E)\t{} {} {}\n".format(self.river_southwest, self.river_southeast, self.river_east)
+        string += "River (SW, SE, E)\t{} {} {}\n".format(
+            self.river_southwest, self.river_southeast, self.river_east)
         string += "Elevation\t\t{}\n".format(self.get_elevation())
         string += "Wonder\t\t\t{}\n".format(self.get_wonder())
         return string
+
     def get_terrain(self):
         if not self.terrain_id == 255:
             return self.world.terrain[self.terrain_id]
+
     def get_resourse(self):
         if not self.resourse_id == 255:
             return self.world.resourse[self.resourse_id]
+
     def get_feature(self):
         if not self.feature_id == 255:
             return self.world.feature[self.feature_id]
+
     def get_elevation(self):
         if not self.elevation_id == 255:
             return self.world.elevation[self.elevation_id]
+
     def get_wonder(self):
         if not self.wonder_id == 255:
             return self.world.wonder[self.wonder_id]
 
+
 # Reading bytes as variables from file
 def get_byte(f):
     return int.from_bytes(f.read(1), "little")
+
+
 def get_int(f):
     return int.from_bytes(f.read(4), "little")
+
+
 def get_flags(f):
-    return list(map(lambda x : True if x == '1' else False, '{0:b}'.format(get_byte(f)).zfill(8)))
+    return list(map(lambda x: True if x == '1' else False,
+                    '{0:b}'.format(get_byte(f)).zfill(8)))
+
+
 def get_string(f, length):
     string = ""
     for i in range(length):
         value = f.read(1)
         string += value.decode()
     return string[:-1]
+
+
 def get_string_array(f, length):
     return get_string(f, length).split("\0")
+
 
 # Reading several variables from file as tile data
 def get_tile_data_from_file(f):
@@ -99,10 +148,19 @@ def get_tile_data_from_file(f):
     _ = get_byte(f)
     wonder = get_byte(f)
     _ = get_byte(f)
-    return terrain, resourse, feature, river_southwest, river_southeast, river_east, elevation, wonder
+    return (
+        terrain,
+        resourse,
+        feature,
+        river_southwest,
+        river_southeast,
+        river_east,
+        elevation,
+        wonder,
+    )
+
 
 def get_world_data_from_file(f):
-    
     version = get_byte(f)
     width = get_int(f)
     height = get_int(f)
@@ -134,7 +192,24 @@ def get_world_data_from_file(f):
 
     elevation = ['FLAT', 'HILL', 'MOUNTAIN']
 
-    return version, width, height, players, randomgoodies, randomresourses, wrap, terrain, feature, wonder, resourse, moddata, name, description, elevation
+    return (
+        version,
+        width,
+        height,
+        players,
+        randomgoodies,
+        randomresourses,
+        wrap,
+        terrain,
+        feature,
+        wonder,
+        resourse,
+        moddata,
+        name,
+        description,
+        elevation
+    )
+
 
 def read_world_data(input_file_path):
     with open(input_file_path, 'rb') as f:
@@ -149,4 +224,3 @@ def read_world_data(input_file_path):
                 tile = Tile(world, row, col, *get_tile_data_from_file(f))
                 tilemap[row].append(tile)
     return world, tilemap
-
