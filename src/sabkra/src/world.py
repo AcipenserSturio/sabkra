@@ -1,53 +1,80 @@
+from dataclasses import dataclass
+
+from .utils import (
+    get_byte,
+    get_int,
+    get_flags,
+    get_string,
+    get_string_array,
+)
+
+
+@dataclass
 class World:
-    def __init__(self,
-                 version,
-                 width,
-                 height,
-                 players,
-                 randomgoodies,
-                 randomresourses,
-                 wrap,
-                 terrain,
-                 feature,
-                 wonder,
-                 resourse,
-                 moddata,
-                 name,
-                 description,
-                 elevation,
-                 ):
-        self.version = version
-        self.width = width
-        self.height = height
-        self.players = players
-        self.randomgoodies = randomgoodies
-        self.randomresourses = randomresourses
-        self.wrap = wrap
-        self.terrain = terrain
-        self.feature = feature
-        self.wonder = wonder
-        self.resourse = resourse
-        self.moddata = moddata
-        self.name = name
-        self.description = description
-        self.elevation = elevation
+    version: int
+    width: int
+    height: int
+    players: int
+    randomgoodies: bool
+    randomresourses: bool
+    wrap: bool
+    terrain: list
+    feature: list
+    wonder: list
+    resourse: list
+    moddata: str
+    name: str
+    description: str
+    elevation: list
 
-    def __repr__(self):
-        string = ""
-        string += "Version\n{}\n".format(self.version)
-        string += "Width\n{}\n".format(self.width)
-        string += "Height\n{}\n".format(self.height)
-        string += "Players\n{}\n".format(self.players)
-        string += "Random goodies\n{}\n".format(self.randomgoodies)
-        string += "Random resourses\t{}\n".format(self.randomresourses)
-        string += "World wrap\n{}\n".format(self.wrap)
-        # string += "Terrain\n{}\n".format(self.terrain)
-        # string += "Feature\n{}\n".format(self.feature)
-        # string += "Wonder\n{}\n".format(self.wonder)
-        # string += "Resourse\n{}\n".format(self.resourse)
-        string += "Mod data\n{}\n".format(self.moddata)
-        string += "Name\n{}\n".format(self.name)
-        string += "Description\n{}\n".format(self.description)
-        string += "Elevation\n{}\n".format(self.elevation)
-        return string
+    @classmethod
+    def from_file(cls, f):
 
+        version = get_byte(f)
+        width = get_int(f)
+        height = get_int(f)
+        players = get_byte(f)
+
+        _, _, _, _, _, randomgoodies, randomresourses, wrap = get_flags(f)
+        _ = get_byte(f)
+        _ = get_byte(f)
+        _ = get_byte(f)
+
+        terrain_length = get_int(f)
+        feature_length = get_int(f)
+        wonder_length = get_int(f)
+        resourse_length = get_int(f)
+        moddata_length = get_int(f)
+        name_length = get_int(f)
+        description_length = get_int(f)
+
+        terrain = get_string_array(f, terrain_length)
+        feature = get_string_array(f, feature_length)
+        wonder = get_string_array(f, wonder_length)
+        resourse = get_string_array(f, resourse_length)
+        moddata = get_string(f, moddata_length)
+        name = get_string(f, name_length)
+        description = get_string(f, description_length)
+
+        string3_length = get_int(f)
+        string3 = get_string_array(f, string3_length)
+
+        elevation = ['FLAT', 'HILL', 'MOUNTAIN']
+
+        return cls(
+            version,
+            width,
+            height,
+            players,
+            randomgoodies,
+            randomresourses,
+            wrap,
+            terrain,
+            feature,
+            wonder,
+            resourse,
+            moddata,
+            name,
+            description,
+            elevation
+        )
