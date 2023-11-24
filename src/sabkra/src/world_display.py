@@ -1,8 +1,6 @@
 import os
 import pygame
-from sabkra.src import civ5map_parser
-
-path_by_default = "./src/sabkra/maps/lungorajapan_ai.Civ5Map"
+from . import civ5map_parser
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, 25)
 
@@ -301,7 +299,3 @@ def display_world(file_path, ui):
         wb.update_mouse_vector()
         wb.draw()
     pygame.display.quit()
-
-
-if __name__ == "__main__":
-    display_world(path_by_default, None)

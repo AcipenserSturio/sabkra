@@ -18,4 +18,3 @@ build-backend = "pdm.backend"
 
 [tool.pdm.scripts]
 start = "python -m sabkra"
-display = "python src/sabkra/src/world_display.py"
