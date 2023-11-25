@@ -1,3 +1,4 @@
+import os
 import pygame
 
 from .camera import Camera
@@ -138,6 +139,9 @@ class Scene:
     # Image manipulation
     def add_sprite(self, name, path):
         # print(name, path)
+        # Skip missing images and hope they aren't used in the map!
+        if not os.path.isfile(path):
+            return
         image = pygame.image.load(path).convert_alpha()
         self._sprites[name] = image
         self.rescale_sprite(name, image)

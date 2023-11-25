@@ -8,7 +8,6 @@ parser.add_argument(
     action=argparse.BooleanOptionalAction,
 )
 args = parser.parse_args()
-print(args)
 map_path_default = "./src/sabkra/maps/lungorajapan_ai.Civ5Map"
 
 if args.standalone:
