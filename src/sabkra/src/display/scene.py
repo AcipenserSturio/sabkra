@@ -25,8 +25,8 @@ def mouse_pos():
     return pygame.mouse.get_pos()
 
 
-def pythagoras(x1, y1, x2, y2):
-    return (x1-x2)**2 + (y1-y2)**2
+def euclidean(x1, y1, x2, y2):
+    return (x1-x2) ** 2 + (y1-y2) ** 2
 
 
 def get_tile_world_pos(tile):
@@ -38,8 +38,8 @@ def get_tile_world_pos(tile):
 
 def get_tile_centre_world_pos(tile):
     x, y = get_tile_world_pos(tile)
-    x += int(image_tiling_width/2)
-    y += int(image_tiling_height_full/2)
+    x += int(image_tiling_width / 2)
+    y += int(image_tiling_height_full / 2)
     return (x, y)
 
 
@@ -58,24 +58,15 @@ class Scene:
         self._previous_mouse_position = None
         self._current_mouse_position = None
 
-        self.load_worldinfo_map_from_path(file_path)
-        self.create_window()
-        self.load_sprites()
-        self.give_tiles_worldpos()
-
-        self.position_camera_by_default()
-        self.mouse_by_default()
-
-    # Setup
-    def create_window(self):
-        self.on_resize_window(default_window_width, default_window_height)
-        pygame.display.set_caption("World Display")
-
-    def load_worldinfo_map_from_path(self, file_path):
+        # Load world info and map from path
         self.worldinfo, self.map = civ5map_parser.read_world_data(file_path)
         self.set_current_tile(self.map[0][0])
 
-    def load_sprites(self):
+        # Create window
+        self.on_resize_window(default_window_width, default_window_height)
+        pygame.display.set_caption("World Display")
+
+        # Load sprites
         for terrain in self.worldinfo.terrain:
             self.add_sprite(terrain, './src/sabkra/assets/terrain/{}.png'
                             .format(terrain.replace("TERRAIN_", "").lower()))
@@ -84,7 +75,13 @@ class Scene:
                             .format(feature.replace("FEATURE_", "").lower()))
         self.add_sprite('selected', './src/sabkra/assets/selected.png')
 
-    def position_camera_by_default(self):
+        # Give tiles world positions
+        for row in self.map:
+            for tile in row:
+                tile.worldpos = get_tile_world_pos(tile)
+                tile.worldpos_centre = get_tile_centre_world_pos(tile)
+
+        # Position camera by default
         middle_tile = (
             self.map[self.worldinfo.height // 2][self.worldinfo.width // 2]
         )
@@ -93,20 +90,13 @@ class Scene:
         centre_x = tile_x - window_width/2
         centre_y = tile_y - window_height/2
         self.camera.drag((centre_x, centre_y))
-        pass
 
-    def mouse_by_default(self):
+        # Set defaults for mouse
         self._previous_mouse_position = mouse_pos()
         self._current_mouse_position = mouse_pos()
 
     def mouse_pos(self):
         return mouse_pos()
-
-    def give_tiles_worldpos(self):
-        for row in self.map:
-            for tile in row:
-                tile.worldpos = get_tile_world_pos(tile)
-                tile.worldpos_centre = get_tile_centre_world_pos(tile)
 
     # Event handling
     def on_resize_window(self, width, height):
@@ -122,13 +112,13 @@ class Scene:
     def get_nearest_tile_from_canvas_pos(self, canvaspos):
         # Bad code. Rewrite when you can think of a better structure
         world_x, world_y = self.camera.get_world_pos_from_canvas_pos(canvaspos)
-        min_distance = 99999999999
+        min_distance = float("inf")
         nearest_tile = self.map[0][0]
         for row in self.map:
             for tile in row:
                 tile_world_x, tile_world_y = tile.worldpos_centre
-                distance = pythagoras(tile_world_x, tile_world_y,
-                                      world_x, world_y)
+                distance = euclidean(tile_world_x, tile_world_y,
+                                     world_x, world_y)
                 if distance < min_distance:
                     nearest_tile = tile
                     min_distance = distance
@@ -160,6 +150,7 @@ class Scene:
     def rescale_all_sprites(self):
         for name, image in self._sprites.items():
             self.rescale_sprite(name, image)
+        # print(len(self._sprites_scaled))
 
     def rescale_sprite(self, name, image):
         self._sprites_scaled[name] = self.get_scaled_image(image,)
