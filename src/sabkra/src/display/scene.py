@@ -142,6 +142,11 @@ class Scene:
             self.ui.configure(text=self.get_info_from_tile(tile))
             self.ui.update()
 
+    def tiles(self):
+        for row in self.map:
+            for tile in row:
+                yield tile
+
     def get_info_from_tile(self, tile):
         return "{}\n\n{}".format(self.worldinfo, tile)
 
@@ -198,48 +203,40 @@ class Scene:
                                         self._current_mouse_position)
         # print(self._current_mouse_position)
 
-    def get_tile_canvaspos(self, tile):
-        worldpos = tile.worldpos
-        canvaspos = self.camera.get_canvas_pos_from_world_pos(worldpos)
-        return canvaspos
-
     # Draw
     def draw(self):
         self.window.fill(background_colour)
 
         # Draw terrain
-        for row in self.map:
-            for tile in row:
-                pos = self.get_tile_canvaspos(tile)
-                if terrain := self.get_terrain_image(tile):
-                    self.draw_sprite(terrain, pos)
+        for tile in self.tiles():
+            if terrain := self.get_terrain_image(tile):
+                self.draw_tilesprite(terrain, tile)
 
         # Draw elevation
-        for row in self.map:
-            for tile in row:
-                pos = self.get_tile_canvaspos(tile)
-                if elevation := self.get_elevation_image(tile):
-                    self.draw_sprite(elevation, pos)
+        for tile in self.tiles():
+            if elevation := self.get_elevation_image(tile):
+                self.draw_tilesprite(elevation, tile)
 
         # Draw feature
-        for row in self.map:
-            for tile in row:
-                pos = self.get_tile_canvaspos(tile)
-                if feature := self.get_feature_image(tile):
-                    self.draw_sprite(feature, pos)
+        for tile in self.tiles():
+            if feature := self.get_feature_image(tile):
+                self.draw_tilesprite(feature, tile)
 
         # Draw river
-        for row in self.map:
-            for tile in row:
-                pos = self.get_tile_canvaspos(tile)
-                if river := self.get_river_image(tile):
-                    self.draw_sprite(river, pos)
+        for tile in self.tiles():
+            if river := self.get_river_image(tile):
+                self.draw_tilesprite(river, tile)
 
         # Draw tile selection
-        self.draw_sprite(self.get_sprite('selected'),
-                         self.get_tile_canvaspos(self.current_tile))
+        self.draw_tilesprite(
+            self.get_sprite('selected'),
+            self.current_tile
+        )
         pygame.display.update()
 
+    def draw_tilesprite(self, image, tile):
+        pos = self.get_tile_canvaspos(tile)
+        self.window.blit(image, pos)
 
-    def draw_sprite(self, image, canvaspos):
-        self.window.blit(image, canvaspos)
+    def get_tile_canvaspos(self, tile):
+        return self.camera.get_canvas_pos_from_world_pos(tile.worldpos)
