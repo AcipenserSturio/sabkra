@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog as fd
 from . import world_display
-from threading import Thread
 import os
 import platform
 

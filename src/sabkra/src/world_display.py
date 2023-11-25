@@ -17,13 +17,17 @@ def display_world_tk(file_path, ui, frame):
     wb.previous_mousepos = [0, 0]
 
     def on_motion(event):
-        print(event.x, event.y)
         wb.previous_mousepos = wb.current_mousepos
-        wb.current_mousepos = [event.x, event.y]
+        wb.current_mousepos = [-event.x, -event.y]
+
+    def on_drag(event):
+        wb.previous_mousepos = wb.current_mousepos
+        wb.current_mousepos = [-event.x, -event.y]
         mouse_vector = vector_diff(wb.current_mousepos, wb.previous_mousepos)
         wb.camera.drag(mouse_vector)
         wb.draw()
 
+    frame.bind('<B1-Motion>', on_drag)
     frame.bind('<Motion>', on_motion)
 
     wb.update_mouse_vector()
