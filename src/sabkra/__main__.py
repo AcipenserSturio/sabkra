@@ -13,6 +13,6 @@ map_path_default = "./src/sabkra/maps/lungorajapan_ai.Civ5Map"
 
 if args.standalone:
     from .src import world_display
-    world_display.display_world(map_path_default, None)
+    world_display.display_world(map_path_default, None, None)
 else:
     from .src import gui

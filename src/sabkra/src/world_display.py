@@ -9,14 +9,27 @@ os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, 25)
 fps = 60
 
 
-def display_world(file_path, ui):
+def on_event(event):
+    print(event)
+
+
+def display_world(file_path, ui, frame):
     wb = Scene(file_path, ui)
+
+    if frame:
+        frame.bind('<Enter>', on_event)
+        frame.bind('<Leave>', on_event)
+        frame.bind('<Motion>', on_event)
+        frame.bind('<B1-Motion>', on_event)
+        frame.bind('<B2-Motion>', on_event)
+        frame.bind('<B3-Motion>', on_event)
 
     clock = pygame.time.Clock()
     drag_mode = False
     run = True
     while run:
         clock.tick(fps)
+        # print(clock)
         for event in pygame.event.get():
             # print(event)
             if event.type == pygame.QUIT:

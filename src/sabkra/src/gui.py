@@ -44,7 +44,7 @@ def select_file():
         initialdir=r"~/.local/share/Aspyr/Sid Meier's Civilization 5/MODS/gedemon's ynaemp (v 25)/",
         filetypes=filetypes)
 
-    p = Thread(target=world_display.display_world, args=(filename, tile_label))
+    p = Thread(target=world_display.display_world, args=(filename, tile_label, pygame_frame))
     p.start()
 
     print('got here')
@@ -74,18 +74,6 @@ tile_label = tk.Message(sidebar_frame, text='')
 tile_label.pack(fill=None, expand=False)
 pygame_frame.pack(side="left", fill="both")
 sidebar_frame.pack(side="right", fill="both")
-
-
-def on_event(event):
-    print(event)
-
-
-pygame_frame.bind('<Enter>', on_event)
-pygame_frame.bind('<Leave>', on_event)
-pygame_frame.bind('<Motion>', on_event)
-pygame_frame.bind('<B1-Motion>', on_event)
-pygame_frame.bind('<B2-Motion>', on_event)
-pygame_frame.bind('<B3-Motion>', on_event)
 
 
 os.environ['SDL_WINDOWID'] = str(pygame_frame.winfo_id())
