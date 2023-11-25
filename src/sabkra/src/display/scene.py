@@ -75,6 +75,15 @@ class Scene:
             self.add_sprite(feature, './src/sabkra/assets/feature/{}.png'
                             .format(feature.replace("FEATURE_", "").lower()))
         self.add_sprite('selected', './src/sabkra/assets/selected.png')
+        self.add_sprite('MOUNTAIN', './src/sabkra/assets/mountain.png')
+        self.add_sprite('HILL', './src/sabkra/assets/hill.png')
+        self.add_sprite('001', './src/sabkra/assets/rivers/001.png')
+        self.add_sprite('010', './src/sabkra/assets/rivers/010.png')
+        self.add_sprite('011', './src/sabkra/assets/rivers/011.png')
+        self.add_sprite('100', './src/sabkra/assets/rivers/100.png')
+        self.add_sprite('101', './src/sabkra/assets/rivers/101.png')
+        self.add_sprite('110', './src/sabkra/assets/rivers/110.png')
+        self.add_sprite('111', './src/sabkra/assets/rivers/111.png')
 
         # Give tiles world positions
         for row in self.map:
@@ -175,6 +184,12 @@ class Scene:
     def get_feature_image(self, tile):
         return self.get_sprite(tile.get_feature())
 
+    def get_elevation_image(self, tile):
+        return self.get_sprite(tile.get_elevation())
+
+    def get_river_image(self, tile):
+        return self.get_sprite(tile.get_river_state())
+
     # Coordinates
     def update_mouse_vector(self):
         self._previous_mouse_position = self._current_mouse_position
@@ -191,24 +206,40 @@ class Scene:
     # Draw
     def draw(self):
         self.window.fill(background_colour)
+
+        # Draw terrain
         for row in self.map:
             for tile in row:
-                self.draw_tile(tile, self.get_tile_canvaspos(tile))
+                pos = self.get_tile_canvaspos(tile)
+                if terrain := self.get_terrain_image(tile):
+                    self.draw_sprite(terrain, pos)
+
+        # Draw elevation
+        for row in self.map:
+            for tile in row:
+                pos = self.get_tile_canvaspos(tile)
+                if elevation := self.get_elevation_image(tile):
+                    self.draw_sprite(elevation, pos)
+
+        # Draw feature
+        for row in self.map:
+            for tile in row:
+                pos = self.get_tile_canvaspos(tile)
+                if feature := self.get_feature_image(tile):
+                    self.draw_sprite(feature, pos)
+
+        # Draw river
+        for row in self.map:
+            for tile in row:
+                pos = self.get_tile_canvaspos(tile)
+                if river := self.get_river_image(tile):
+                    self.draw_sprite(river, pos)
+
         # Draw tile selection
         self.draw_sprite(self.get_sprite('selected'),
                          self.get_tile_canvaspos(self.current_tile))
         pygame.display.update()
 
-    def draw_tile(self, tile, pos):
-        # Draw terrain
-        terrain = self.get_terrain_image(tile)
-        if terrain:
-            self.draw_sprite(terrain, pos)
-        # Draw feature
-        feature = self.get_feature_image(tile)
-        if feature:
-            self.draw_sprite(feature, pos)
-        # print('tile drawn at', pos)
 
     def draw_sprite(self, image, canvaspos):
         self.window.blit(image, canvaspos)

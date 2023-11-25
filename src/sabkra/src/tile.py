@@ -69,3 +69,10 @@ class Tile:
     def get_wonder(self):
         if not self.wonder_id == 255:
             return self.world.wonder[self.wonder_id]
+
+    def get_river_state(self):
+        return ("".join([
+            str(int(self.river_southwest)),
+            str(int(self.river_southeast)),
+            str(int(self.river_east)),
+        ]))
