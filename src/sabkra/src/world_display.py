@@ -16,6 +16,10 @@ def display_world_tk(file_path, ui, frame):
         sc.set_current_tile_to_mouse((event.x, event.y))
         sc.draw()
 
+    def on_click_drag(event):
+        sc.set_current_tile_to_mouse((event.x, event.y))
+        sc.draw()
+
     def on_motion(event):
         sc.mouse.update(event.x, event.y)
 
@@ -33,6 +37,7 @@ def display_world_tk(file_path, ui, frame):
         sc.draw()
 
     frame.bind('<Button-1>', on_click)
+    frame.bind('<B1-Motion>', on_click_drag)
     frame.bind('<B3-Motion>', on_drag)
     frame.bind('<Motion>', on_motion)
     # TODO: Windows scroll support
