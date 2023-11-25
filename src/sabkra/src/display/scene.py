@@ -3,6 +3,7 @@ import pygame
 
 from .camera import Camera
 from .. import civ5map_parser
+from ..mouse import Mouse
 
 background_colour = (0, 0, 0)
 
@@ -20,10 +21,6 @@ def vector_diff(vec_a, vec_b):
 
 def vector_sum(vec_a, vec_b):
     return (vec_a[0] + vec_b[0], vec_a[1] + vec_b[1])
-
-
-def mouse_pos():
-    return pygame.mouse.get_pos()
 
 
 def euclidean(x1, y1, x2, y2):
@@ -47,6 +44,7 @@ def get_tile_centre_world_pos(tile):
 class Scene:
     def __init__(self, file_path, update_sidebar):
         self.camera = Camera(self)
+        self.mouse = Mouse()
         self.update_sidebar = update_sidebar
         self.window = None
         self.worldinfo = None
@@ -54,10 +52,6 @@ class Scene:
         self.current_tile = None
         self._sprites = {}
         self._sprites_scaled = {}
-
-        self.mouse_vector = (0, 0)
-        self._previous_mouse_position = None
-        self._current_mouse_position = None
 
         # Load world info and map from path
         self.worldinfo, self.map = civ5map_parser.read_world_data(file_path)
@@ -100,13 +94,6 @@ class Scene:
         centre_x = tile_x - window_width/2
         centre_y = tile_y - window_height/2
         self.camera.drag((centre_x, centre_y))
-
-        # Set defaults for mouse
-        self._previous_mouse_position = mouse_pos()
-        self._current_mouse_position = mouse_pos()
-
-    def mouse_pos(self):
-        return mouse_pos()
 
     # Event handling
     def on_resize_window(self, width, height):
@@ -193,14 +180,6 @@ class Scene:
 
     def get_river_image(self, tile):
         return self.get_sprite(tile.get_river_state())
-
-    # Coordinates
-    def update_mouse_vector(self):
-        self._previous_mouse_position = self._current_mouse_position
-        self._current_mouse_position = mouse_pos()
-        self.mouse_vector = vector_diff(self._previous_mouse_position,
-                                        self._current_mouse_position)
-        # print(self._current_mouse_position)
 
     # Draw
     def draw(self):

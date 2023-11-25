@@ -13,18 +13,12 @@ fps = 60
 def display_world_tk(file_path, ui, frame):
     wb = Scene(file_path, ui)
 
-    wb.current_mousepos = [0, 0]
-    wb.previous_mousepos = [0, 0]
-
     def on_motion(event):
-        wb.previous_mousepos = wb.current_mousepos
-        wb.current_mousepos = [-event.x, -event.y]
+        wb.mouse.update(event.x, event.y)
 
     def on_drag(event):
-        wb.previous_mousepos = wb.current_mousepos
-        wb.current_mousepos = [-event.x, -event.y]
-        mouse_vector = vector_diff(wb.current_mousepos, wb.previous_mousepos)
-        wb.camera.drag(mouse_vector)
+        wb.mouse.update(event.x, event.y)
+        wb.camera.drag(wb.mouse.vector())
         wb.draw()
 
     def on_zoom_in(event):
@@ -41,7 +35,6 @@ def display_world_tk(file_path, ui, frame):
     frame.bind("<Button-4>", on_zoom_in)
     frame.bind("<Button-5>", on_zoom_out)
 
-    wb.update_mouse_vector()
     wb.draw()
 
 
@@ -80,7 +73,7 @@ def display_world(file_path, ui):
                     # Left click / wheel click ended
                     drag_mode = False
         if drag_mode:
-            wb.camera.drag(wb.mouse_vector)
-        wb.update_mouse_vector()
+            wb.camera.drag(wb.mouse.vector())
+        wb.mouse.update(*pygame.mouse.get_pos())
         wb.draw()
     pygame.display.quit()

@@ -27,9 +27,8 @@ class Camera:
 
     def rescale(self, factor):
         self.scale *= factor
-        mouse_x, mouse_y = self.scene.mouse_pos()
-        self.y += int((1/self.scale) * (1 - factor) * mouse_y)
-        self.x += int((1/self.scale) * (1 - factor) * mouse_x)
+        self.y += int((1/self.scale) * (1 - factor) * self.scene.mouse.y)
+        self.x += int((1/self.scale) * (1 - factor) * self.scene.mouse.x)
         self.scene.rescale_all_sprites()
         # print(self.scale)
 
