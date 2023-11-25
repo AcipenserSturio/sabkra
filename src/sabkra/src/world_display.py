@@ -2,6 +2,7 @@ import os
 import pygame
 
 from .display.scene import Scene
+from .display.scene import vector_diff
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, 25)
 
@@ -9,20 +10,28 @@ os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, 25)
 fps = 60
 
 
-def on_event(event):
-    print(event)
-
-
-def display_world(file_path, ui, frame):
+def display_world_tk(file_path, ui, frame):
     wb = Scene(file_path, ui)
 
-    if frame:
-        frame.bind('<Enter>', on_event)
-        frame.bind('<Leave>', on_event)
-        frame.bind('<Motion>', on_event)
-        frame.bind('<B1-Motion>', on_event)
-        frame.bind('<B2-Motion>', on_event)
-        frame.bind('<B3-Motion>', on_event)
+    wb.current_mousepos = [0, 0]
+    wb.previous_mousepos = [0, 0]
+
+    def on_motion(event):
+        print(event.x, event.y)
+        wb.previous_mousepos = wb.current_mousepos
+        wb.current_mousepos = [event.x, event.y]
+        mouse_vector = vector_diff(wb.current_mousepos, wb.previous_mousepos)
+        wb.camera.drag(mouse_vector)
+        wb.draw()
+
+    frame.bind('<Motion>', on_motion)
+
+    wb.update_mouse_vector()
+    wb.draw()
+
+
+def display_world(file_path, ui):
+    wb = Scene(file_path, ui)
 
     clock = pygame.time.Clock()
     drag_mode = False

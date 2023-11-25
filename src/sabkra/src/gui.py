@@ -44,9 +44,7 @@ def select_file():
         initialdir=r"~/.local/share/Aspyr/Sid Meier's Civilization 5/MODS/gedemon's ynaemp (v 25)/",
         filetypes=filetypes)
 
-    p = Thread(target=world_display.display_world, args=(filename, tile_label, pygame_frame))
-    p.start()
-
+    world_display.display_world_tk(filename, tile_label, pygame_frame)
     print('got here')
 
 
