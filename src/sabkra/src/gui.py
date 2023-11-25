@@ -43,6 +43,7 @@ def select_file():
         initialdir=r"~/.local/share/Aspyr/Sid Meier's Civilization 5/MODS/gedemon's ynaemp (v 25)/",
         filetypes=filetypes)
 
+    root.title(f"Sabkra - {filename}")
     world_display.display_world_tk(filename, update_sidebar, pygame_frame)
 
 
