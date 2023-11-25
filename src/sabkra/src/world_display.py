@@ -27,8 +27,19 @@ def display_world_tk(file_path, ui, frame):
         wb.camera.drag(mouse_vector)
         wb.draw()
 
+    def on_zoom_in(event):
+        wb.camera.clean_rescale(1)
+        wb.draw()
+
+    def on_zoom_out(event):
+        wb.camera.clean_rescale(-1)
+        wb.draw()
+
     frame.bind('<B1-Motion>', on_drag)
     frame.bind('<Motion>', on_motion)
+    # TODO: Windows scroll support
+    frame.bind("<Button-4>", on_zoom_in)
+    frame.bind("<Button-5>", on_zoom_out)
 
     wb.update_mouse_vector()
     wb.draw()
