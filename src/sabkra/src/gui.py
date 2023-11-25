@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import filedialog as fd
-from tkinter import ttk
 from . import world_display
 import os
 import platform

@@ -1,8 +1,7 @@
 import os
 import pygame
 
-from .display.scene import Scene
-from .display.scene import vector_diff
+from .scene import Scene
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, 25)
 

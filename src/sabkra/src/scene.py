@@ -2,8 +2,8 @@ import os
 import pygame
 
 from .camera import Camera
-from .. import civ5map_parser
-from ..mouse import Mouse
+from . import civ5map_parser
+from .mouse import Mouse
 
 background_colour = (0, 0, 0)
 
