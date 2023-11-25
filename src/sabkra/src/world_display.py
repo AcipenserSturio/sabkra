@@ -12,6 +12,10 @@ fps = 60
 def display_world_tk(file_path, ui, frame):
     wb = Scene(file_path, ui)
 
+    def on_click(event):
+        wb.set_current_tile_to_mouse((event.x, event.y))
+        wb.draw()
+
     def on_motion(event):
         wb.mouse.update(event.x, event.y)
 
@@ -28,7 +32,8 @@ def display_world_tk(file_path, ui, frame):
         wb.camera.clean_rescale(-1)
         wb.draw()
 
-    frame.bind('<B1-Motion>', on_drag)
+    frame.bind('<Button-1>', on_click)
+    frame.bind('<B3-Motion>', on_drag)
     frame.bind('<Motion>', on_motion)
     # TODO: Windows scroll support
     frame.bind("<Button-4>", on_zoom_in)
