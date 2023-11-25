@@ -45,9 +45,9 @@ def get_tile_centre_world_pos(tile):
 
 
 class Scene:
-    def __init__(self, file_path, ui):
+    def __init__(self, file_path, update_sidebar):
         self.camera = Camera(self)
-        self.ui = ui
+        self.update_sidebar = update_sidebar
         self.window = None
         self.worldinfo = None
         self.map = None
@@ -138,9 +138,8 @@ class Scene:
     def set_current_tile(self, tile):
         self.current_tile = tile
         # tell the ui to update here
-        if self.ui:
-            self.ui.configure(text=self.get_info_from_tile(tile))
-            self.ui.update()
+        if self.update_sidebar:
+            self.update_sidebar(tile)
 
     def tiles(self):
         for row in self.map:

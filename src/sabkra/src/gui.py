@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog as fd
+from tkinter import ttk
 from . import world_display
 import os
 import platform
@@ -43,8 +44,23 @@ def select_file():
         initialdir=r"~/.local/share/Aspyr/Sid Meier's Civilization 5/MODS/gedemon's ynaemp (v 25)/",
         filetypes=filetypes)
 
-    world_display.display_world_tk(filename, tile_label, pygame_frame)
-    print('got here')
+    world_display.display_world_tk(filename, update_sidebar, pygame_frame)
+
+
+def update_sidebar(tile):
+    tile_label.configure(text=f"""
+    Coordinates
+    {tile.row}, {tile.col}
+    Terrain
+    {tile.get_terrain()}
+    Features
+    {tile.get_feature()}
+    Elevation
+    {tile.get_elevation()}
+    Resources
+    {tile.get_resourse()}
+    """)
+    tile_label.update()
 
 
 menu = tk.Menu(root)
