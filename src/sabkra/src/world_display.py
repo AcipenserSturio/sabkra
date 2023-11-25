@@ -13,12 +13,12 @@ def display_world_tk(file_path, ui, frame):
     sc = Scene(file_path, ui)
 
     def on_click(event):
-        sc.set_current_tile_to_mouse((event.x, event.y))
-        sc.draw()
+        if sc.set_current_tile_to_mouse((event.x, event.y)):
+            sc.draw()
 
     def on_click_drag(event):
-        sc.set_current_tile_to_mouse((event.x, event.y))
-        sc.draw()
+        if sc.set_current_tile_to_mouse((event.x, event.y)):
+            sc.draw()
 
     def on_motion(event):
         sc.mouse.update(event.x, event.y)

@@ -104,7 +104,10 @@ class Scene:
     # Current tile
     def set_current_tile_to_mouse(self, mousepos):
         tile = self.get_nearest_tile_from_canvas_pos(mousepos)
+        if tile == self.current_tile:
+            return False
         self.set_current_tile(tile)
+        return True
 
     def get_nearest_tile_from_canvas_pos(self, canvaspos):
         # Bad code. Rewrite when you can think of a better structure
