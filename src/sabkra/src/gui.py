@@ -1,10 +1,12 @@
 import tkinter as tk
+from tkinter import ttk
 from tkinter import filedialog as fd
+from ttkthemes import ThemedTk
 from . import world_display
 import os
 import platform
 
-root = tk.Tk()
+root = ThemedTk(theme="breeze")
 root.title("Sabkra - Civ 5 World previewer")
 
 screen_width = root.winfo_screenwidth()
