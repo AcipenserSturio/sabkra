@@ -16,9 +16,9 @@ class Tile:
     terrain_id: int
     resourse_id: int
     feature_id: int
-    river_southwest: bool
-    river_southeast: bool
-    river_east: bool
+    river_sw: bool
+    river_se: bool
+    river_e: bool
     elevation_id: int
     wonder_id: int
 
@@ -27,10 +27,7 @@ class Tile:
         terrain = get_byte(f)
         resourse = get_byte(f)
         feature = get_byte(f)
-        (_, _, _, _, _,
-         river_southwest,
-         river_southeast,
-         river_east) = get_flags(f)
+        (_, _, _, _, _, river_sw, river_se, river_e) = get_flags(f)
         elevation = get_byte(f)
         _ = get_byte(f)
         wonder = get_byte(f)
@@ -43,9 +40,9 @@ class Tile:
             terrain,
             resourse,
             feature,
-            river_southwest,
-            river_southeast,
-            river_east,
+            river_sw,
+            river_se,
+            river_e,
             elevation,
             wonder,
         )
@@ -72,7 +69,7 @@ class Tile:
 
     def get_river_state(self):
         return ("".join([
-            str(int(self.river_southwest)),
-            str(int(self.river_southeast)),
-            str(int(self.river_east)),
+            str(int(self.river_sw)),
+            str(int(self.river_se)),
+            str(int(self.river_e)),
         ]))
