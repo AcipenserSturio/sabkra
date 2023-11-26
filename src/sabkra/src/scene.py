@@ -2,7 +2,7 @@ import os
 import pygame
 
 from .camera import Camera
-from . import civ5map_parser
+from .world import init_world
 from .mouse import Mouse
 
 background_colour = (0, 0, 0)
@@ -53,7 +53,7 @@ class Scene:
         self._sprites_scaled = {}
 
         # Load world info and map from path
-        self.world = civ5map_parser.read_world_data(file_path)
+        self.world = init_world(file_path)
         self.set_current_tile(self.world.get_tile(0, 0))
 
         # Create window

@@ -13,6 +13,13 @@ from .utils import (
 from .tile import Tile
 
 
+def init_world(file_path):
+    with open(file_path, 'rb') as f:
+        world = World.from_file(f)
+        world.init(f)
+    return world
+
+
 @dataclass
 class World:
     version: int
