@@ -50,22 +50,27 @@ class Tile:
     def get_terrain(self):
         if not self.terrain_id == 255:
             return self.world.terrain[self.terrain_id]
+        return ""
 
     def get_resource(self):
         if not self.resource_id == 255:
             return self.world.resource[self.resource_id]
+        return ""
 
     def get_feature(self):
         if not self.feature_id == 255:
             return self.world.feature[self.feature_id]
+        return ""
 
     def get_elevation(self):
         if not self.elevation_id == 255:
             return self.world.elevation[self.elevation_id]
+        return ""
 
     def get_wonder(self):
         if not self.wonder_id == 255:
             return self.world.wonder[self.wonder_id]
+        return ""
 
     def get_river_state(self):
         return ("".join([
@@ -73,3 +78,4 @@ class Tile:
             str(int(self.river_se)),
             str(int(self.river_e)),
         ]))
+        return ""

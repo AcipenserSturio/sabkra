@@ -51,10 +51,14 @@ def select_file():
 
 def update_sidebar(tile):
     sidebar_1["text"] = f"Plot: ({tile.row}, {tile.col})"
-    sidebar_2["text"] = f"Terrain: {tile.get_terrain()}"
-    sidebar_3["text"] = f"Features: {tile.get_feature()}"
-    sidebar_4["text"] = f"Elevation: {tile.get_elevation()}"
-    sidebar_5["text"] = f"Resources: {tile.get_resource()}"
+    sidebar_2["values"] = tile.world.terrain
+    sidebar_2.set(tile.get_terrain())
+    sidebar_3["values"] = tile.world.elevation
+    sidebar_3.set(tile.get_elevation())
+    sidebar_4["values"] = ["", *tile.world.feature]
+    sidebar_4.set(tile.get_feature())
+    sidebar_5["values"] = ["", *tile.world.resource]
+    sidebar_5.set(tile.get_resource())
 
 
 menu = tk.Menu(root)
@@ -67,26 +71,24 @@ pygame_frame = tk.Frame(
     root,
     width=window_width - sidebar_width,
     height=window_height,
-    highlightbackground='#595959',
-    highlightthickness=2,
 )
 sidebar_frame = tk.Frame(
     root,
     width=sidebar_width,
     height=window_height,
-    highlightbackground='#595959',
-    highlightthickness=2,
+    padx=15,
+    pady=15,
 )
 sidebar_1 = ttk.Label(sidebar_frame)
 sidebar_1.pack()
-sidebar_2 = ttk.Label(sidebar_frame)
-sidebar_2.pack()
-sidebar_3 = ttk.Label(sidebar_frame)
-sidebar_3.pack()
-sidebar_4 = ttk.Label(sidebar_frame)
-sidebar_4.pack()
-sidebar_5 = ttk.Label(sidebar_frame)
-sidebar_5.pack()
+sidebar_2 = ttk.Combobox(sidebar_frame, state="readonly")
+sidebar_2.pack(fill="x")
+sidebar_3 = ttk.Combobox(sidebar_frame, state="readonly")
+sidebar_3.pack(fill="x")
+sidebar_4 = ttk.Combobox(sidebar_frame, state="readonly")
+sidebar_4.pack(fill="x")
+sidebar_5 = ttk.Combobox(sidebar_frame, state="readonly")
+sidebar_5.pack(fill="x")
 pygame_frame.pack(side="left", fill="both")
 sidebar_frame.pack_propagate(False)
 sidebar_frame.pack(side="right", fill="both")
