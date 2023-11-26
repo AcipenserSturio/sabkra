@@ -12,7 +12,7 @@ screen_height = root.winfo_screenheight()
 window_width = screen_width
 window_height = screen_height - 50
 
-sidebar_width = 500
+sidebar_width = 250
 
 world_display.default_window_width = screen_width
 world_display.default_window_height = screen_height - 50
@@ -86,6 +86,7 @@ sidebar_frame = tk.Frame(
 tile_label = tk.Message(sidebar_frame, text='')
 tile_label.pack(fill=None, expand=False)
 pygame_frame.pack(side="left", fill="both")
+sidebar_frame.pack_propagate(False)
 sidebar_frame.pack(side="right", fill="both")
 
 
