@@ -14,7 +14,7 @@ class Tile:
     row: int
     col: int
     terrain_id: int
-    resourse_id: int
+    resource_id: int
     feature_id: int
     river_sw: bool
     river_se: bool
@@ -25,7 +25,7 @@ class Tile:
     @classmethod
     def from_file(cls, world, row, col, f):
         terrain = get_byte(f)
-        resourse = get_byte(f)
+        resource = get_byte(f)
         feature = get_byte(f)
         (_, _, _, _, _, river_sw, river_se, river_e) = get_flags(f)
         elevation = get_byte(f)
@@ -38,7 +38,7 @@ class Tile:
             row,
             col,
             terrain,
-            resourse,
+            resource,
             feature,
             river_sw,
             river_se,
@@ -51,9 +51,9 @@ class Tile:
         if not self.terrain_id == 255:
             return self.world.terrain[self.terrain_id]
 
-    def get_resourse(self):
-        if not self.resourse_id == 255:
-            return self.world.resourse[self.resourse_id]
+    def get_resource(self):
+        if not self.resource_id == 255:
+            return self.world.resource[self.resource_id]
 
     def get_feature(self):
         if not self.feature_id == 255:

@@ -27,12 +27,12 @@ class World:
     height: int
     players: int
     randomgoodies: bool
-    randomresourses: bool
+    randomresources: bool
     wrap: bool
     terrain: list
     feature: list
     wonder: list
-    resourse: list
+    resource: list
     moddata: str
     name: str
     description: str
@@ -46,7 +46,7 @@ class World:
         height = get_int(f)
         players = get_byte(f)
 
-        _, _, _, _, _, randomgoodies, randomresourses, wrap = get_flags(f)
+        _, _, _, _, _, randomgoodies, randomresources, wrap = get_flags(f)
         _ = get_byte(f)
         _ = get_byte(f)
         _ = get_byte(f)
@@ -54,7 +54,7 @@ class World:
         terrain_length = get_int(f)
         feature_length = get_int(f)
         wonder_length = get_int(f)
-        resourse_length = get_int(f)
+        resource_length = get_int(f)
         moddata_length = get_int(f)
         name_length = get_int(f)
         description_length = get_int(f)
@@ -62,7 +62,7 @@ class World:
         terrain = get_string_array(f, terrain_length)
         feature = get_string_array(f, feature_length)
         wonder = get_string_array(f, wonder_length)
-        resourse = get_string_array(f, resourse_length)
+        resource = get_string_array(f, resource_length)
         moddata = get_string(f, moddata_length)
         name = get_string(f, name_length)
         description = get_string(f, description_length)
@@ -78,12 +78,12 @@ class World:
             height,
             players,
             randomgoodies,
-            randomresourses,
+            randomresources,
             wrap,
             terrain,
             feature,
             wonder,
-            resourse,
+            resource,
             moddata,
             name,
             description,

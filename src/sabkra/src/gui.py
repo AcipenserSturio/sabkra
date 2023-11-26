@@ -50,19 +50,11 @@ def select_file():
 
 
 def update_sidebar(tile):
-    tile_label.configure(text=f"""
-    Coordinates
-    {tile.row}, {tile.col}
-    Terrain
-    {tile.get_terrain()}
-    Features
-    {tile.get_feature()}
-    Elevation
-    {tile.get_elevation()}
-    Resources
-    {tile.get_resourse()}
-    """)
-    tile_label.update()
+    sidebar_1["text"] = f"Plot: ({tile.row}, {tile.col})"
+    sidebar_2["text"] = f"Terrain: {tile.get_terrain()}"
+    sidebar_3["text"] = f"Features: {tile.get_feature()}"
+    sidebar_4["text"] = f"Elevation: {tile.get_elevation()}"
+    sidebar_5["text"] = f"Resources: {tile.get_resource()}"
 
 
 menu = tk.Menu(root)
@@ -85,8 +77,16 @@ sidebar_frame = tk.Frame(
     highlightbackground='#595959',
     highlightthickness=2,
 )
-tile_label = tk.Message(sidebar_frame, text='')
-tile_label.pack(fill=None, expand=False)
+sidebar_1 = ttk.Label(sidebar_frame)
+sidebar_1.pack()
+sidebar_2 = ttk.Label(sidebar_frame)
+sidebar_2.pack()
+sidebar_3 = ttk.Label(sidebar_frame)
+sidebar_3.pack()
+sidebar_4 = ttk.Label(sidebar_frame)
+sidebar_4.pack()
+sidebar_5 = ttk.Label(sidebar_frame)
+sidebar_5.pack()
 pygame_frame.pack(side="left", fill="both")
 sidebar_frame.pack_propagate(False)
 sidebar_frame.pack(side="right", fill="both")
