@@ -47,25 +47,24 @@ class Scene:
         self.mouse = Mouse()
         self.update_sidebar = update_sidebar
         self.window = None
-        self.worldinfo = None
-        self.map = None
+        self.world = None
         self.current_tile = None
         self._sprites = {}
         self._sprites_scaled = {}
 
         # Load world info and map from path
-        self.worldinfo, self.map = civ5map_parser.read_world_data(file_path)
-        self.set_current_tile(self.map[0][0])
+        self.world = civ5map_parser.read_world_data(file_path)
+        self.set_current_tile(self.world.get_tile(0, 0))
 
         # Create window
         self.on_resize_window(default_window_width, default_window_height)
         pygame.display.set_caption("World Display")
 
         # Load sprites
-        for terrain in self.worldinfo.terrain:
+        for terrain in self.world.terrain:
             self.add_sprite(terrain, './src/sabkra/assets/terrain/{}.png'
                             .format(terrain.replace("TERRAIN_", "").lower()))
-        for feature in self.worldinfo.feature:
+        for feature in self.world.feature:
             self.add_sprite(feature, './src/sabkra/assets/feature/{}.png'
                             .format(feature.replace("FEATURE_", "").lower()))
         self.add_sprite('selected', './src/sabkra/assets/selected.png')
@@ -80,15 +79,13 @@ class Scene:
         self.add_sprite('111', './src/sabkra/assets/rivers/111.png')
 
         # Give tiles world positions
-        for row in self.map:
-            for tile in row:
-                tile.worldpos = get_tile_world_pos(tile)
-                tile.worldpos_centre = get_tile_centre_world_pos(tile)
+        for tile in self.world.tiles():
+            tile.worldpos = get_tile_world_pos(tile)
+            tile.worldpos_centre = get_tile_centre_world_pos(tile)
 
         # Position camera by default
-        middle_tile = (
-            self.map[self.worldinfo.height // 2][self.worldinfo.width // 2]
-        )
+        middle_tile = self.world.get_tile(self.world.height // 2,
+                                          self.world.width // 2)
         tile_x, tile_y = middle_tile.worldpos_centre
         window_width, window_height = pygame.display.get_window_size()
         centre_x = tile_x - window_width/2
@@ -113,15 +110,13 @@ class Scene:
         # Bad code. Rewrite when you can think of a better structure
         world_x, world_y = self.camera.get_world_pos_from_canvas_pos(canvaspos)
         min_distance = float("inf")
-        nearest_tile = self.map[0][0]
-        for row in self.map:
-            for tile in row:
-                tile_world_x, tile_world_y = tile.worldpos_centre
-                distance = euclidean(tile_world_x, tile_world_y,
-                                     world_x, world_y)
-                if distance < min_distance:
-                    nearest_tile = tile
-                    min_distance = distance
+        nearest_tile = self.world.get_tile(0, 0)
+        for tile in self.world.tiles():
+            tile_world_x, tile_world_y = tile.worldpos_centre
+            distance = euclidean(tile_world_x, tile_world_y, world_x, world_y)
+            if distance < min_distance:
+                nearest_tile = tile
+                min_distance = distance
         # print(*nearest_tile.worldpos_centre, world_x, world_y)
         return nearest_tile
 
@@ -130,14 +125,6 @@ class Scene:
         # tell the ui to update here
         if self.update_sidebar:
             self.update_sidebar(tile)
-
-    def tiles(self):
-        for row in self.map:
-            for tile in row:
-                yield tile
-
-    def get_info_from_tile(self, tile):
-        return "{}\n\n{}".format(self.worldinfo, tile)
 
     # Image manipulation
     def add_sprite(self, name, path):
@@ -189,22 +176,22 @@ class Scene:
         self.window.fill(background_colour)
 
         # Draw terrain
-        for tile in self.tiles():
+        for tile in self.world.tiles():
             if terrain := self.get_terrain_image(tile):
                 self.draw_tilesprite(terrain, tile)
 
         # Draw elevation
-        for tile in self.tiles():
+        for tile in self.world.tiles():
             if elevation := self.get_elevation_image(tile):
                 self.draw_tilesprite(elevation, tile)
 
         # Draw feature
-        for tile in self.tiles():
+        for tile in self.world.tiles():
             if feature := self.get_feature_image(tile):
                 self.draw_tilesprite(feature, tile)
 
         # Draw river
-        for tile in self.tiles():
+        for tile in self.world.tiles():
             if river := self.get_river_image(tile):
                 self.draw_tilesprite(river, tile)
 

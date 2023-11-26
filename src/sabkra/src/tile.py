@@ -1,6 +1,6 @@
-from dataclasses import dataclass
+from __future__ import annotations
 
-from .world import World
+from dataclasses import dataclass
 
 from .utils import (
     get_byte,

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 
 from .utils import (
@@ -7,6 +9,8 @@ from .utils import (
     get_string,
     get_string_array,
 )
+
+from .tile import Tile
 
 
 @dataclass
@@ -78,3 +82,23 @@ class World:
             description,
             elevation
         )
+
+    def tiles(self):
+        for row in self.tilemap:
+            for tile in row:
+                yield tile
+
+    def get_tile(self, row, col):
+        return self.tilemap[row][col]
+
+    def init(self, f):
+
+        # Load tiles
+        self.tilemap = []
+        for row in range(self.height):
+            self.tilemap.append([])
+            for col in range(self.width):
+                tile = Tile.from_file(self, row, col, f)
+                self.tilemap[row].append(tile)
+
+        #
