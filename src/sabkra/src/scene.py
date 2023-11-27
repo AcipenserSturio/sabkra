@@ -1,5 +1,6 @@
 import os
 import pygame
+from pygame._sdl2 import Renderer, Window, Texture
 
 from .camera import Camera
 from .world import init_world
@@ -44,6 +45,7 @@ class Scene:
 
         # Create window
         self.on_resize_window(default_window_width, default_window_height)
+        self.renderer = Renderer.from_window(Window.from_display_module())
         pygame.display.set_caption("World Display")
 
         # Load sprites
@@ -121,6 +123,7 @@ class Scene:
 
     def set_current_tile(self, tile):
         self.current_tile = tile
+        # print(tile)
         # tell the ui to update here
         if self.update_sidebar:
             self.update_sidebar(tile)
@@ -131,22 +134,11 @@ class Scene:
         # Skip missing images and hope they aren't used in the map!
         if not os.path.isfile(path):
             return
-        image = pygame.image.load(path).convert_alpha()
-        self._sprites[name] = image
-        self.rescale_sprite(name, image)
+        self._sprites[name] = pygame.image.load(path).convert_alpha()
         # print('added', name)
 
     def get_sprite(self, name):
-        if name in self._sprites_scaled.keys():
-            return self._sprites_scaled[name]
-
-    def rescale_all_sprites(self):
-        for name, image in self._sprites.items():
-            self.rescale_sprite(name, image)
-        # print(len(self._sprites_scaled))
-
-    def rescale_sprite(self, name, image):
-        self._sprites_scaled[name] = self.get_scaled_image(image,)
+        return self._sprites.get(name)
 
     def get_scaled_image(self, image):
         return pygame.transform.scale(
@@ -192,24 +184,26 @@ class Scene:
 
     def rerender_tile(self, tile):
         self.render_tile(tile)
-        self.rescale()
+        self.texture = Texture.from_surface(self.renderer, self.canvas)
+        self.draw()
 
     def render(self):
         self.canvas.fill(background_colour)
         # Draw terrain
         for tile in self.world.tiles():
             self.render_tile(tile)
-
-    def rescale(self):
-        self.canvas_scaled = pygame.transform.scale_by(self.canvas,
-                                                       self.camera.scale)
+        self.texture = Texture.from_surface(self.renderer, self.canvas)
 
     def draw(self):
         # print((self.camera.x, self.camera.y))
-        self.window.fill(background_colour)
-        canvas = self.canvas_scaled if self.canvas_scaled else self.canvas
-        self.window.blit(canvas, (self.camera.x, self.camera.y))
-        pygame.display.update()
+        self.renderer.clear()
+        self.texture.draw(dstrect=(
+            self.camera.x,
+            self.camera.y,
+            self.canvas.get_width() * self.camera.scale,
+            self.canvas.get_height() * self.camera.scale,
+        ))
+        self.renderer.present()
 
     def canvaspos(self, tile):
         x = int(tile.col * image_tiling_width

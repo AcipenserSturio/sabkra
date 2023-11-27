@@ -27,11 +27,10 @@ class Camera:
             self.rescale(1/scale_factor)
 
     def rescale(self, factor):
-        print(self.x, self.y, self.scene.mouse.x, self.scene.mouse.y)
+        # print(self.x, self.y, self.scene.mouse.x, self.scene.mouse.y)
         self.scale *= factor
         self.y += int((1 - factor) * (self.scene.mouse.y - self.y))
         self.x += int((1 - factor) * (self.scene.mouse.x - self.x))
-        self.scene.rescale()
         # print(self.scale)
 
     def get_world_pos_from_canvas_pos(self, canvaspos):
