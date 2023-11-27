@@ -5,6 +5,7 @@ from pygame._sdl2 import Renderer, Window, Texture
 from .camera import Camera
 from .world import init_world
 from .mouse import Mouse
+from .sprite import Sprite
 
 background_colour = (0, 0, 0)
 
@@ -33,161 +34,105 @@ class Scene:
         self.camera = Camera(self)
         self.mouse = Mouse()
         self.update_sidebar = update_sidebar
-        self.window = None
-        self.world = None
-        self.current_tile = None
-        self.sprites = {}
+        self._current_sprite = None
+        self.images = {}
 
         # Load world info and map from path
         self.world = init_world(file_path)
-        self.set_current_tile(self.world.get_tile(0, 0))
+        self.spritemap = {(tile.col, tile.row): Sprite(self, tile)
+                          for tile in self.world.tiles()}
 
         # Create window
-        self.on_resize_window(default_window_width, default_window_height)
+        self.window = pygame.display.set_mode(
+            (default_window_width, default_window_height), pygame.RESIZABLE
+        )
         self.renderer = Renderer.from_window(Window.from_display_module())
         pygame.display.set_caption("World Display")
 
-        # Load sprites
-        for terrain in self.world.terrain:
-            self.add_sprite(terrain, './src/sabkra/assets/terrain/{}.png'
-                            .format(terrain.replace("TERRAIN_", "").lower()))
-        for feature in self.world.feature:
-            self.add_sprite(feature, './src/sabkra/assets/feature/{}.png'
-                            .format(feature.replace("FEATURE_", "").lower()))
-        self.add_sprite('selected', './src/sabkra/assets/selected.png')
-        self.add_sprite('neighbour', './src/sabkra/assets/selected_neighbour.png')
-        self.add_sprite('MOUNTAIN', './src/sabkra/assets/mountain.png')
-        self.add_sprite('HILL', './src/sabkra/assets/hill.png')
-        self.add_sprite('river_nw', './src/sabkra/assets/rivers/nw.png')
-        self.add_sprite('river_w', './src/sabkra/assets/rivers/w.png')
-        self.add_sprite('river_sw', './src/sabkra/assets/rivers/sw.png')
-        self.add_sprite('river_ne', './src/sabkra/assets/rivers/ne.png')
-        self.add_sprite('river_e', './src/sabkra/assets/rivers/e.png')
-        self.add_sprite('river_se', './src/sabkra/assets/rivers/se.png')
+        # Load images
+        self.load_images()
 
-        last_tile = self.world.get_tile(0, -1)
-        self.canvas = pygame.Surface((
-            self.canvaspos(last_tile)[0]+image_tiling_width*1.5,
-            self.canvaspos(last_tile)[1]+image_tiling_height_full,
-        )).convert_alpha()
-
+        # Draw
+        self.canvas = self.get_sprite(self.world.get_tile(0, -1)).canvas()
         self.render()
-
+        self.current_sprite = self.get_sprite(self.world.get_tile(0, 0))
         self.camera.drag_to_centre(*pygame.display.get_window_size())
 
-    # Event handling
-    def on_resize_window(self, width, height):
-        self.window = pygame.display.set_mode(
-            (width, height), pygame.RESIZABLE
-        )
+    def load_images(self):
+        for terrain in self.world.terrain:
+            self.add_image(terrain, './src/sabkra/assets/terrain/{}.png'
+                           .format(terrain.replace("TERRAIN_", "").lower()))
+        for feature in self.world.feature:
+            self.add_image(feature, './src/sabkra/assets/feature/{}.png'
+                           .format(feature.replace("FEATURE_", "").lower()))
+        self.add_image('selected', './src/sabkra/assets/selected.png')
+        self.add_image('neighbour', './src/sabkra/assets/selected_neighbour.png')
+        self.add_image('MOUNTAIN', './src/sabkra/assets/mountain.png')
+        self.add_image('HILL', './src/sabkra/assets/hill.png')
+        self.add_image('river_nw', './src/sabkra/assets/rivers/nw.png')
+        self.add_image('river_w', './src/sabkra/assets/rivers/w.png')
+        self.add_image('river_sw', './src/sabkra/assets/rivers/sw.png')
+        self.add_image('river_ne', './src/sabkra/assets/rivers/ne.png')
+        self.add_image('river_e', './src/sabkra/assets/rivers/e.png')
+        self.add_image('river_se', './src/sabkra/assets/rivers/se.png')
+
+    def get_sprite(self, tile):
+        return self.spritemap[(tile.col, tile.row)]
 
     # Current tile
-    def set_current_tile_to_mouse(self, mousepos):
-        prev = self.current_tile
-        tile = self.get_nearest_tile_from_canvas_pos(
-            self.mouse_pos_to_canvas_pos(mousepos))
-        if tile == prev:
+    @property
+    def current_sprite(self):
+        return self._current_sprite
+
+    @current_sprite.setter
+    def current_sprite(self, sprite):
+        prev = self._current_sprite
+        if sprite == prev:
             return
-        self.set_current_tile(tile)
-        self.rerender_tile(tile)
-        self.rerender_tile(prev)
-        self.draw()
+        self._current_sprite = sprite
+        sprite.highlight = True
+        sprite.rerender()
+        if prev:
+            prev.highlight = False
+            prev.rerender()
+        if self.update_sidebar:
+            self.update_sidebar(sprite)
 
-    def mouse_pos_to_canvas_pos(self, mousepos):
-        return (mousepos[0], mousepos[1])
+    def set_current_sprite_to_mouse(self, mousepos):
+        self.current_sprite = self.nearest_sprite(mousepos)
 
-    def get_nearest_tile_from_canvas_pos(self, canvaspos):
+    def nearest_sprite(self, canvaspos):
         # Bad code. Rewrite when you can think of a better structure
         world_x, world_y = self.camera.get_world_pos_from_canvas_pos(canvaspos)
         min_distance = float("inf")
-        nearest_tile = self.world.get_tile(0, 0)
+        nearest_sprite = self.world.get_tile(0, 0)
         for tile in self.world.tiles():
-            tile_world_x, tile_world_y = self.centre_canvaspos(tile)
-            distance = euclidean(tile_world_x, tile_world_y, world_x, world_y)
+            sprite = self.get_sprite(tile)
+            sprite_x, sprite_y = self.get_sprite(tile).centre_pos
+            distance = euclidean(sprite_x, sprite_y, world_x, world_y)
             if distance < min_distance:
-                nearest_tile = tile
+                nearest_sprite = sprite
                 min_distance = distance
         # print(*nearest_tile.worldpos_centre, world_x, world_y)
-        return nearest_tile
-
-    def set_current_tile(self, tile):
-        self.current_tile = tile
-        # print(tile)
-        # tell the ui to update here
-        if self.update_sidebar:
-            self.update_sidebar(tile)
+        return nearest_sprite
 
     # Image manipulation
-    def add_sprite(self, name, path):
+    def add_image(self, name, path):
         # print(name, path)
         # Skip missing images and hope they aren't used in the map!
         if not os.path.isfile(path):
             return
-        self.sprites[name] = pygame.image.load(path).convert_alpha()
+        self.images[name] = pygame.image.load(path).convert_alpha()
         # print('added', name)
 
-    def get_sprite(self, name):
-        return self.sprites.get(name)
-
-    # Get image for tile
-    def get_terrain_image(self, tile):
-        return self.get_sprite(tile.get_terrain())
-
-    def get_feature_image(self, tile):
-        return self.get_sprite(tile.get_feature())
-
-    def get_elevation_image(self, tile):
-        return self.get_sprite(tile.get_elevation())
-
-    def get_river_image(self, tile):
-        return self.get_sprite(tile.get_river_state())
-
     # Draw
-    def render_tile(self, tile):
-        pos = self.canvaspos(tile)
-
-        # Draw terrain
-        if terrain := self.get_terrain_image(tile):
-            self.canvas.blit(terrain, pos)
-        # Draw elevation
-        if elevation := self.get_elevation_image(tile):
-            self.canvas.blit(elevation, pos)
-        # Draw feature
-        if feature := self.get_feature_image(tile):
-            self.canvas.blit(feature, pos)
-        # Draw river
-        for river in tile.get_river_state():
-            self.canvas.blit(self.get_sprite(river), pos)
-        # Draw current tile selector
-        if tile == self.current_tile:
-            self.canvas.blit(self.get_sprite("selected"), pos)
-
-    def rerender_tile(self, tile):
-        self.render_tile(tile)
-        self.texture.update(
-            self.canvas.subsurface(
-                self.canvaspos(tile)[0],
-                self.canvaspos(tile)[1],
-                image_tiling_width,
-                image_tiling_height_full,
-            ),
-            area=(
-                self.canvaspos(tile)[0],
-                self.canvaspos(tile)[1],
-                image_tiling_width,
-                image_tiling_height_full,
-            )
-        )
-        self.draw()
-
     def render(self):
         self.canvas.fill(background_colour)
         # Draw terrain
         for tile in self.world.tiles():
-            self.render_tile(tile)
+            self.get_sprite(tile).render()
         self.texture = Texture.from_surface(self.renderer, self.canvas)
         self.texture.blend_mode = 1
-        self.draw()
 
     def draw(self):
         # print((self.camera.x, self.camera.y))
@@ -199,15 +144,3 @@ class Scene:
             self.canvas.get_height() * self.camera.scale,
         ))
         self.renderer.present()
-
-    def canvaspos(self, tile):
-        x = int(tile.col * image_tiling_width
-                + tile.row % 2 * image_tiling_width / 2)
-        y = int((self.world.height - tile.row) * image_tiling_height)
-        return (x, y)
-
-    def centre_canvaspos(self, tile):
-        x, y = self.canvaspos(tile)
-        x += int(image_tiling_width / 2)
-        y += int(image_tiling_height_full / 2)
-        return (x, y)

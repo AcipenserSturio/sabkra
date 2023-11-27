@@ -51,16 +51,16 @@ def select_file():
     world_display.display_world_tk(filename, update_sidebar, pygame_frame)
 
 
-def update_sidebar(tile):
-    sidebar_1["text"] = f"Plot: ({tile.row}, {tile.col})"
-    sidebar_2["values"] = tile.world.terrain
-    sidebar_2.set(tile.get_terrain())
-    sidebar_3["values"] = tile.world.elevation
-    sidebar_3.set(tile.get_elevation())
-    sidebar_4["values"] = ["", *tile.world.feature]
-    sidebar_4.set(tile.get_feature())
-    sidebar_5["values"] = ["", *tile.world.resource]
-    sidebar_5.set(tile.get_resource())
+def update_sidebar(sprite):
+    sidebar_1["text"] = f"Plot: ({sprite.tile.row}, {sprite.tile.col})"
+    sidebar_2["values"] = sprite.tile.world.terrain
+    sidebar_2.set(sprite.tile.get_terrain())
+    sidebar_3["values"] = sprite.tile.world.elevation
+    sidebar_3.set(sprite.tile.get_elevation())
+    sidebar_4["values"] = ["", *sprite.tile.world.feature]
+    sidebar_4.set(sprite.tile.get_feature())
+    sidebar_5["values"] = ["", *sprite.tile.world.resource]
+    sidebar_5.set(sprite.tile.get_resource())
 
 
 menu = tk.Menu(root)

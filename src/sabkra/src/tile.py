@@ -86,3 +86,23 @@ class Tile:
             river.append("river_sw")
         # TODO: ne, nw, wx
         return river
+
+    def neighbours(self):
+        for neighbour in [
+            self.get_neighbour("w"),
+            self.get_neighbour("nw"),
+            self.get_neighbour("ne"),
+            self.get_neighbour("e"),
+            self.get_neighbour("se"),
+            self.get_neighbour("sw"),
+        ]:
+            if neighbour:
+                yield neighbour
+
+    def get_neighbour(self, direction):
+        if direction == "w":
+            return self.world.get_tile(self.row, self.col-1)
+        if direction == "e":
+            return self.world.get_tile(self.row, self.col+1)
+        # TODO: weird directions
+        return

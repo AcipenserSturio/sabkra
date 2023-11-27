@@ -13,11 +13,11 @@ def display_world_tk(file_path, ui, frame):
     sc = Scene(file_path, ui)
 
     def on_click(event):
-        sc.set_current_tile_to_mouse((event.x, event.y))
+        sc.set_current_sprite_to_mouse((event.x, event.y))
 
     def on_click_drag(event):
         sc.mouse.update(event.x, event.y)
-        sc.set_current_tile_to_mouse((event.x, event.y))
+        sc.set_current_sprite_to_mouse((event.x, event.y))
 
     def on_motion(event):
         sc.mouse.update(event.x, event.y)
@@ -59,9 +59,9 @@ def display_world(file_path, ui):
             if event.type == pygame.QUIT:
                 # Close the window
                 run = False
-            if event.type == pygame.VIDEORESIZE:
+            # if event.type == pygame.VIDEORESIZE:
                 # Resize the window
-                sc.on_resize_window(event.w, event.h)
+                # sc.on_resize_window(event.w, event.h)
             if event.type == pygame.MOUSEWHEEL:
                 # Wheel scroll
                 sc.camera.clean_rescale(event.y)
@@ -75,7 +75,7 @@ def display_world(file_path, ui):
             if event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 1:
                     # Right click ended
-                    sc.set_current_tile_to_mouse(event.pos)
+                    sc.set_current_sprite_to_mouse(event.pos)
                 else:
                     # Left click / wheel click ended
                     drag_mode = False
