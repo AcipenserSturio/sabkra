@@ -35,7 +35,7 @@ class Sprite:
         if feature := self.get_image(self.tile.get_feature()):
             self.scene.canvas.blit(feature, self.pos)
         # Draw grid
-        self.scene.canvas.blit(self.get_image("grid"), self.pos)
+        # self.scene.canvas.blit(self.get_image("grid"), self.pos)
         # Draw river
         for river in self.tile.get_river_state():
             self.scene.canvas.blit(self.get_image(river), self.pos)
