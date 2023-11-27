@@ -105,7 +105,6 @@ class World:
         return self.tilemap[row][col]
 
     def init(self, f):
-
         # Load tiles
         self.tilemap = []
         for row in range(self.height):
@@ -113,5 +112,3 @@ class World:
             for col in range(self.width):
                 tile = Tile.from_file(self, row, col, f)
                 self.tilemap[row].append(tile)
-
-        #

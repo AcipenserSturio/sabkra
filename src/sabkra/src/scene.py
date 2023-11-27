@@ -1,6 +1,6 @@
 import os
 import pygame
-from pygame._sdl2 import Renderer, Window, Texture
+from pygame._sdl2 import Renderer, Texture, Window
 
 from .camera import Camera
 from .world import init_world
@@ -53,6 +53,7 @@ class Scene:
                            .format(feature.replace("FEATURE_", "").lower()))
         self.add_image("selected", "./src/sabkra/assets/selected.png")
         self.add_image("neighbour", "./src/sabkra/assets/neighbour.png")
+        self.add_image("grid", "./src/sabkra/assets/grid.png")
         self.add_image("MOUNTAIN", "./src/sabkra/assets/mountain.png")
         self.add_image("HILL", "./src/sabkra/assets/hill.png")
         self.add_image("river_nw", "./src/sabkra/assets/rivers/nw.png")
@@ -134,7 +135,13 @@ class Scene:
         # Draw terrain
         for tile in self.world.tiles():
             self.get_sprite(tile).render()
-        self.texture = Texture.from_surface(self.renderer, self.canvas)
+        self.texture = Texture(
+            self.renderer,
+            (self.canvas.get_width(), self.canvas.get_height()),
+            streaming=True,
+            # scale_quality=1,
+        )
+        self.texture.update(self.canvas)
         self.texture.blend_mode = 1
 
     def draw(self):
