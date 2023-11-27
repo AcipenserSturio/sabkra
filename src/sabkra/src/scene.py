@@ -164,7 +164,26 @@ class Scene:
 
     def rerender_tile(self, tile):
         self.render_tile(tile)
-        self.texture.update(self.canvas)
+        print(
+            self.canvaspos(tile)[0],
+            self.canvaspos(tile)[1],
+            image_tiling_width,
+            image_tiling_height_full,
+        )
+        self.texture.update(
+            self.canvas.subsurface(
+                self.canvaspos(tile)[0],
+                self.canvaspos(tile)[1],
+                image_tiling_width,
+                image_tiling_height_full,
+            ),
+            area=(
+                self.canvaspos(tile)[0],
+                self.canvaspos(tile)[1],
+                image_tiling_width,
+                image_tiling_height_full,
+            )
+        )
         self.draw()
 
     def render(self):
