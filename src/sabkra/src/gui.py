@@ -98,7 +98,7 @@ sidebar_frame.pack(side="right", fill="both")
 
 
 os.environ["SDL_WINDOWID"] = str(pygame_frame.winfo_id())
-os.environ["SDL_VIDEODRIVER"] = ("windib" if platform.system() == "Windows"
+os.environ["SDL_VIDEODRIVER"] = ("windows" if platform.system() == "Windows"
                                  else "x11")
 
 root.mainloop()

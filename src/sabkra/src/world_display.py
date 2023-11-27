@@ -26,21 +26,24 @@ def display_world_tk(file_path, ui, frame):
         sc.mouse.update(event.x, event.y)
         sc.camera.drag(sc.mouse.vector())
 
-    def on_zoom_in(event):
-        sc.camera.clean_rescale(1)
-        sc.draw()
-
-    def on_zoom_out(event):
-        sc.camera.clean_rescale(-1)
+    def on_zoom(event):
+        # zoom out
+        if event.num == 5 or event.delta < 0:
+            sc.camera.clean_rescale(-1)
+        # zoom in
+        if event.num == 4 or event.delta > 0:
+            sc.camera.clean_rescale(1)
         sc.draw()
 
     frame.bind("<Button-1>", on_click)
     frame.bind("<B1-Motion>", on_click_drag)
     frame.bind("<B3-Motion>", on_drag)
     frame.bind("<Motion>", on_motion)
-    # TODO: Windows scroll support
-    frame.bind("<Button-4>", on_zoom_in)
-    frame.bind("<Button-5>", on_zoom_out)
+    # Windows scroll
+    frame.bind("<MouseWheel>", on_zoom)
+    # X11 scroll
+    frame.bind("<Button-4>", on_zoom)
+    frame.bind("<Button-5>", on_zoom)
 
     sc.draw()
 
