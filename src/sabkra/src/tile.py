@@ -24,6 +24,15 @@ class Tile:
     wonder_id: int
     resource_amount: int
 
+    # def __eq__(self, other):
+    #     return (self.col, self.row) == (other.col, other.row)
+
+    def __hash__(self):
+        return (self.col, self.row).__hash__()
+
+    def __repr__(self):
+        return f"Tile({self.col}, {self.row})"
+
     @classmethod
     def from_file(cls, world, row, col, f):
         terrain = get_byte(f)
@@ -88,16 +97,14 @@ class Tile:
         return river
 
     def neighbours(self):
-        for neighbour in [
+        return [tile for tile in [
             self.get_neighbour("w"),
             self.get_neighbour("nw"),
             self.get_neighbour("ne"),
             self.get_neighbour("e"),
             self.get_neighbour("se"),
             self.get_neighbour("sw"),
-        ]:
-            if neighbour:
-                yield neighbour
+        ] if tile]
 
     def get_neighbour(self, direction):
         if direction == "w":

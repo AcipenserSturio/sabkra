@@ -26,6 +26,7 @@ class Scene:
         self.spritemap = {(tile.col, tile.row): Sprite(self, tile)
                           for tile in self.world.tiles()}
         self._current_sprite = self.get_sprite(self.world.get_tile(0, 0))
+        self._brush = []
 
         # Create window
         self.window = pygame.display.set_mode(
@@ -63,6 +64,9 @@ class Scene:
     def get_sprite(self, tile):
         return self.spritemap[(tile.col, tile.row)]
 
+    def get_sprites(self, tiles):
+        return [self.get_sprite(tile) for tile in tiles]
+
     # Current tile
     @property
     def current_sprite(self):
@@ -74,10 +78,33 @@ class Scene:
         if sprite == prev:
             return
         self._current_sprite = sprite
-        prev.highlight = False
-        sprite.highlight = True
+        # prev.highlight = False
+        # sprite.highlight = True
         if self.sidebar:
             self.sidebar(sprite)
+
+        self.brush = [self.current_sprite,
+                      *self.get_sprites(self.current_sprite.tile.neighbours())]
+        self.draw()
+
+    @property
+    def brush(self):
+        return self._brush
+
+    @brush.setter
+    def brush(self, value):
+        removed_sprites = list(set(self._brush) - set(value))
+        added_sprites = list(set(value) - set(self._brush))
+        print(f"remove {removed_sprites}")
+        print(f"add {added_sprites}")
+        for sprite in removed_sprites:
+            sprite.highlight = False
+        for sprite in added_sprites:
+            sprite.highlight = True
+        self._brush = value
+        for sprite in self._brush:
+            print(f"{sprite.highlight} {sprite}")
+        self.draw()
 
     def set_current_sprite_to_mouse(self, mousepos):
         self.current_sprite = self.nearest_sprite(mousepos)

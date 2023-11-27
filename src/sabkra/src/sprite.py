@@ -11,6 +11,9 @@ class Sprite:
         self.tile = tile
         self.highlight = None
 
+    def __repr__(self):
+        return f"Sprite({self.tile.col}, {self.tile.row})"
+
     @property
     def highlight(self):
         return self._highlight
@@ -56,7 +59,6 @@ class Sprite:
                 image_tiling_height_full,
             )
         )
-        self.scene.draw()
 
     def get_image(self, name):
         return self.scene.images.get(name)
