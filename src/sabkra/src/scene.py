@@ -12,22 +12,6 @@ background_colour = (0, 0, 0)
 default_window_width = 1920
 default_window_height = 1080
 
-image_tiling_width = 76
-image_tiling_height = 65
-image_tiling_height_full = 86
-
-
-def vector_diff(vec_a, vec_b):
-    return (vec_a[0] - vec_b[0], vec_a[1] - vec_b[1])
-
-
-def vector_sum(vec_a, vec_b):
-    return (vec_a[0] + vec_b[0], vec_a[1] + vec_b[1])
-
-
-def euclidean(x1, y1, x2, y2):
-    return (x1-x2) ** 2 + (y1-y2) ** 2
-
 
 class Scene:
     def __init__(self, file_path, sidebar):
@@ -106,7 +90,7 @@ class Scene:
         for tile in self.world.tiles():
             sprite = self.get_sprite(tile)
             sprite_x, sprite_y = self.get_sprite(tile).centre_pos
-            distance = euclidean(sprite_x, sprite_y, world_x, world_y)
+            distance = (sprite_x - world_x) ** 2 + (sprite_y - world_y) ** 2
             if distance < min_distance:
                 nearest_sprite = sprite
                 min_distance = distance
