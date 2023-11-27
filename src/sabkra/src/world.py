@@ -96,10 +96,11 @@ class World:
                 yield tile
 
     def get_tile(self, row, col):
-        # TODO: world wrap
-        if col >= self.width:
+        if self.wrap:
+            col = col % self.width
+        if col >= self.width or col < 0:
             return
-        if row >= self.height:
+        if row >= self.height or row < 0:
             return
         return self.tilemap[row][col]
 
