@@ -91,8 +91,17 @@ class Tile:
             river.append("river_e")
         if self.river_se:
             river.append("river_se")
-        if self.river_se:
+        if self.river_sw:
             river.append("river_sw")
+        if neighbour := self.get_neighbour("w"):
+            if neighbour.river_e:
+                river.append("river_w")
+        if neighbour := self.get_neighbour("nw"):
+            if neighbour.river_se:
+                river.append("river_nw")
+        if neighbour := self.get_neighbour("ne"):
+            if neighbour.river_sw:
+                river.append("river_ne")
         # TODO: ne, nw, wx
         return river
 
