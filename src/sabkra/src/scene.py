@@ -39,7 +39,8 @@ class Scene:
         self.load_images()
 
         # Draw
-        self.canvas = self.get_sprite(self.world.get_tile(0, -1)).canvas()
+        self.canvas = self.get_sprite(
+            self.world.get_tile(0, self.world.width-1)).canvas()
         self.render()
         self.camera.drag_to_centre(*pygame.display.get_window_size())
 
@@ -95,15 +96,11 @@ class Scene:
     def brush(self, value):
         removed_sprites = list(set(self._brush) - set(value))
         added_sprites = list(set(value) - set(self._brush))
-        print(f"remove {removed_sprites}")
-        print(f"add {added_sprites}")
         for sprite in removed_sprites:
             sprite.highlight = False
         for sprite in added_sprites:
             sprite.highlight = True
         self._brush = value
-        for sprite in self._brush:
-            print(f"{sprite.highlight} {sprite}")
         self.draw()
 
     def set_current_sprite_to_mouse(self, mousepos):
