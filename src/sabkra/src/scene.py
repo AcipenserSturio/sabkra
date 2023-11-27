@@ -164,16 +164,14 @@ class Scene:
 
     def rerender_tile(self, tile):
         self.render_tile(tile)
-        self.update_texture()
+        self.texture.update(self.canvas)
+        self.draw()
 
     def render(self):
         self.canvas.fill(background_colour)
         # Draw terrain
         for tile in self.world.tiles():
             self.render_tile(tile)
-        self.update_texture()
-
-    def update_texture(self):
         self.texture = Texture.from_surface(self.renderer, self.canvas)
         self.texture.blend_mode = 1
         self.draw()
