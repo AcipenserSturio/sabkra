@@ -139,10 +139,10 @@ class Scene:
             self.renderer,
             (self.canvas.get_width(), self.canvas.get_height()),
             streaming=True,
-            # scale_quality=1,
+            scale_quality=0,
         )
         self.texture.update(self.canvas)
-        self.texture.blend_mode = 1
+        # self.texture.blend_mode = 1
 
     def draw(self):
         # print((self.camera.x, self.camera.y))
