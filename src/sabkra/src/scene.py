@@ -11,9 +11,9 @@ background_colour = (0, 0, 0)
 default_window_width = 1920
 default_window_height = 1080
 
-image_tiling_width = 34
-image_tiling_height = 30
-image_tiling_height_full = 40
+image_tiling_width = 76
+image_tiling_height = 65
+image_tiling_height_full = 86
 
 
 def vector_diff(vec_a, vec_b):
@@ -55,15 +55,15 @@ class Scene:
             self.add_sprite(feature, './src/sabkra/assets/feature/{}.png'
                             .format(feature.replace("FEATURE_", "").lower()))
         self.add_sprite('selected', './src/sabkra/assets/selected.png')
+        self.add_sprite('neighbour', './src/sabkra/assets/selected_neighbour.png')
         self.add_sprite('MOUNTAIN', './src/sabkra/assets/mountain.png')
         self.add_sprite('HILL', './src/sabkra/assets/hill.png')
-        self.add_sprite('001', './src/sabkra/assets/rivers/001.png')
-        self.add_sprite('010', './src/sabkra/assets/rivers/010.png')
-        self.add_sprite('011', './src/sabkra/assets/rivers/011.png')
-        self.add_sprite('100', './src/sabkra/assets/rivers/100.png')
-        self.add_sprite('101', './src/sabkra/assets/rivers/101.png')
-        self.add_sprite('110', './src/sabkra/assets/rivers/110.png')
-        self.add_sprite('111', './src/sabkra/assets/rivers/111.png')
+        self.add_sprite('river_nw', './src/sabkra/assets/rivers/nw.png')
+        self.add_sprite('river_w', './src/sabkra/assets/rivers/w.png')
+        self.add_sprite('river_sw', './src/sabkra/assets/rivers/sw.png')
+        self.add_sprite('river_ne', './src/sabkra/assets/rivers/ne.png')
+        self.add_sprite('river_e', './src/sabkra/assets/rivers/e.png')
+        self.add_sprite('river_se', './src/sabkra/assets/rivers/se.png')
 
         last_tile = self.world.get_tile(0, -1)
         self.canvas = pygame.Surface((
@@ -156,20 +156,14 @@ class Scene:
         if feature := self.get_feature_image(tile):
             self.canvas.blit(feature, pos)
         # Draw river
-        if river := self.get_river_image(tile):
-            self.canvas.blit(river, pos)
+        for river in tile.get_river_state():
+            self.canvas.blit(self.get_sprite(river), pos)
         # Draw current tile selector
         if tile == self.current_tile:
             self.canvas.blit(self.get_sprite("selected"), pos)
 
     def rerender_tile(self, tile):
         self.render_tile(tile)
-        print(
-            self.canvaspos(tile)[0],
-            self.canvaspos(tile)[1],
-            image_tiling_width,
-            image_tiling_height_full,
-        )
         self.texture.update(
             self.canvas.subsurface(
                 self.canvaspos(tile)[0],

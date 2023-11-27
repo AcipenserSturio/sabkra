@@ -1,6 +1,6 @@
 scale_factor = 1.2
-scale_upper_bound = 8
-scale_lower_bound = 0.24
+scale_upper_bound = 6
+scale_lower_bound = 0.1
 
 
 class Camera:

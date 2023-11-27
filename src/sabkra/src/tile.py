@@ -77,9 +77,12 @@ class Tile:
         return ""
 
     def get_river_state(self):
-        return ("".join([
-            str(int(self.river_sw)),
-            str(int(self.river_se)),
-            str(int(self.river_e)),
-        ]))
-        return ""
+        river = []
+        if self.river_e:
+            river.append("river_e")
+        if self.river_se:
+            river.append("river_se")
+        if self.river_se:
+            river.append("river_sw")
+        # TODO: ne, nw, wx
+        return river
