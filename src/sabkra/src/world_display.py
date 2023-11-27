@@ -45,42 +45,42 @@ def display_world_tk(file_path, ui, frame):
     sc.draw()
 
 
-def display_world(file_path, ui):
-    sc = Scene(file_path, ui)
-
-    clock = pygame.time.Clock()
-    drag_mode = False
-    run = True
-    while run:
-        clock.tick(fps)
-        # print(clock)
-        for event in pygame.event.get():
-            # print(event)
-            if event.type == pygame.QUIT:
-                # Close the window
-                run = False
-            # if event.type == pygame.VIDEORESIZE:
-                # Resize the window
-                # sc.on_resize_window(event.w, event.h)
-            if event.type == pygame.MOUSEWHEEL:
-                # Wheel scroll
-                sc.camera.clean_rescale(event.y)
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    # Right click
-                    pass
-                else:
-                    # Left click / wheel click
-                    drag_mode = True
-            if event.type == pygame.MOUSEBUTTONUP:
-                if event.button == 1:
-                    # Right click ended
-                    sc.set_current_sprite_to_mouse(event.pos)
-                else:
-                    # Left click / wheel click ended
-                    drag_mode = False
-        if drag_mode:
-            sc.camera.drag(sc.mouse.vector())
-        sc.mouse.update(*pygame.mouse.get_pos())
-        sc.draw()
-    pygame.display.quit()
+# def display_world(file_path, ui):
+#     sc = Scene(file_path, ui)
+#
+#     clock = pygame.time.Clock()
+#     drag_mode = False
+#     run = True
+#     while run:
+#         clock.tick(fps)
+#         # print(clock)
+#         for event in pygame.event.get():
+#             # print(event)
+#             if event.type == pygame.QUIT:
+#                 # Close the window
+#                 run = False
+#             # if event.type == pygame.VIDEORESIZE:
+#                 # Resize the window
+#                 # sc.on_resize_window(event.w, event.h)
+#             if event.type == pygame.MOUSEWHEEL:
+#                 # Wheel scroll
+#                 sc.camera.clean_rescale(event.y)
+#             if event.type == pygame.MOUSEBUTTONDOWN:
+#                 if event.button == 1:
+#                     # Right click
+#                     pass
+#                 else:
+#                     # Left click / wheel click
+#                     drag_mode = True
+#             if event.type == pygame.MOUSEBUTTONUP:
+#                 if event.button == 1:
+#                     # Right click ended
+#                     sc.set_current_sprite_to_mouse(event.pos)
+#                 else:
+#                     # Left click / wheel click ended
+#                     drag_mode = False
+#         if drag_mode:
+#             sc.camera.drag(sc.mouse.vector())
+#         sc.mouse.update(*pygame.mouse.get_pos())
+#         sc.draw()
+#     pygame.display.quit()
