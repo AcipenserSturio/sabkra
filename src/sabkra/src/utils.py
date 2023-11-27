@@ -8,8 +8,8 @@ def get_int(f):
 
 
 def get_flags(f):
-    return list(map(lambda x: True if x == '1' else False,
-                    '{0:b}'.format(get_byte(f)).zfill(8)))
+    return list(map(lambda x: True if x == "1" else False,
+                    "{0:b}".format(get_byte(f)).zfill(8)))
 
 
 def get_string(f, length):

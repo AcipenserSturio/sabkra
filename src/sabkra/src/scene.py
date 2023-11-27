@@ -46,21 +46,21 @@ class Scene:
 
     def load_images(self):
         for terrain in self.world.terrain:
-            self.add_image(terrain, './src/sabkra/assets/terrain/{}.png'
+            self.add_image(terrain, "./src/sabkra/assets/terrain/{}.png"
                            .format(terrain.replace("TERRAIN_", "").lower()))
         for feature in self.world.feature:
-            self.add_image(feature, './src/sabkra/assets/feature/{}.png'
+            self.add_image(feature, "./src/sabkra/assets/feature/{}.png"
                            .format(feature.replace("FEATURE_", "").lower()))
-        self.add_image('selected', './src/sabkra/assets/selected.png')
-        self.add_image('neighbour', './src/sabkra/assets/selected_neighbour.png')
-        self.add_image('MOUNTAIN', './src/sabkra/assets/mountain.png')
-        self.add_image('HILL', './src/sabkra/assets/hill.png')
-        self.add_image('river_nw', './src/sabkra/assets/rivers/nw.png')
-        self.add_image('river_w', './src/sabkra/assets/rivers/w.png')
-        self.add_image('river_sw', './src/sabkra/assets/rivers/sw.png')
-        self.add_image('river_ne', './src/sabkra/assets/rivers/ne.png')
-        self.add_image('river_e', './src/sabkra/assets/rivers/e.png')
-        self.add_image('river_se', './src/sabkra/assets/rivers/se.png')
+        self.add_image("selected", "./src/sabkra/assets/selected.png")
+        self.add_image("neighbour", "./src/sabkra/assets/neighbour.png")
+        self.add_image("MOUNTAIN", "./src/sabkra/assets/mountain.png")
+        self.add_image("HILL", "./src/sabkra/assets/hill.png")
+        self.add_image("river_nw", "./src/sabkra/assets/rivers/nw.png")
+        self.add_image("river_w", "./src/sabkra/assets/rivers/w.png")
+        self.add_image("river_sw", "./src/sabkra/assets/rivers/sw.png")
+        self.add_image("river_ne", "./src/sabkra/assets/rivers/ne.png")
+        self.add_image("river_e", "./src/sabkra/assets/rivers/e.png")
+        self.add_image("river_se", "./src/sabkra/assets/rivers/se.png")
 
     def get_sprite(self, tile):
         return self.spritemap[(tile.col, tile.row)]
@@ -118,7 +118,6 @@ class Scene:
             if distance < min_distance:
                 nearest_sprite = sprite
                 min_distance = distance
-        # print(*nearest_tile.worldpos_centre, world_x, world_y)
         return nearest_sprite
 
     # Image manipulation
@@ -128,7 +127,6 @@ class Scene:
         if not os.path.isfile(path):
             return
         self.images[name] = pygame.image.load(path).convert_alpha()
-        # print('added', name)
 
     # Draw
     def render(self):

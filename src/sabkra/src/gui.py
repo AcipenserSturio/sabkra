@@ -1,14 +1,11 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog as fd
-from ttkthemes import ThemedTk
 from . import world_display
 import os
 import platform
 
-root = ThemedTk(
-#    theme="breeze"
-)
+root = tk.Tk()
 root.title("Sabkra - Civ 5 World previewer")
 
 screen_width = root.winfo_screenwidth()
@@ -38,15 +35,15 @@ label2.grid(row=1, column=0)"""
 
 def select_file():
     filetypes = (
-        ('Civilization V Map', '*.civ5map'),
-        ('All files', '*.*')
+        ("Civilization V Map", "*.civ5map"),
+        ("All files", "*.*")
     )
 
     filename = fd.askopenfilename(
-        title='Open',
+        title="Open",
         initialdir=r"~/.local/share/Aspyr/Sid Meier's Civilization 5/MODS/gedemon's ynaemp (v 25)/",
-        filetypes=filetypes)
-
+        filetypes=filetypes
+    )
     root.title(f"Sabkra - {filename}")
     world_display.display_world_tk(filename, update_sidebar, pygame_frame)
 
@@ -66,7 +63,7 @@ def update_sidebar(sprite):
 menu = tk.Menu(root)
 root.config(menu=menu)
 menu.add_command(
-    label='Open',
+    label="Open",
     command=select_file
 )
 pygame_frame = tk.Frame(
@@ -100,8 +97,8 @@ sidebar_frame.pack_propagate(False)
 sidebar_frame.pack(side="right", fill="both")
 
 
-os.environ['SDL_WINDOWID'] = str(pygame_frame.winfo_id())
-os.environ['SDL_VIDEODRIVER'] = ('windib' if platform.system() == "Windows"
-                                 else 'x11')
+os.environ["SDL_WINDOWID"] = str(pygame_frame.winfo_id())
+os.environ["SDL_VIDEODRIVER"] = ("windib" if platform.system() == "Windows"
+                                 else "x11")
 
 root.mainloop()

@@ -14,7 +14,7 @@ from .tile import Tile
 
 
 def init_world(file_path):
-    with open(file_path, 'rb') as f:
+    with open(file_path, "rb") as f:
         world = World.from_file(f)
         world.init(f)
     return world
@@ -70,7 +70,7 @@ class World:
         length_world_size = get_int(f)
         world_size = get_string_array(f, length_world_size)
 
-        elevation = ['FLAT', 'HILL', 'MOUNTAIN']
+        elevation = ["FLAT", "HILL", "MOUNTAIN"]
 
         return cls(
             version,

@@ -3,7 +3,7 @@ import pygame
 
 from .scene import Scene
 
-os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, 25)
+os.environ["SDL_VIDEO_WINDOW_POS"] = "%d,%d" % (0, 25)
 
 
 fps = 60
@@ -34,10 +34,10 @@ def display_world_tk(file_path, ui, frame):
         sc.camera.clean_rescale(-1)
         sc.draw()
 
-    frame.bind('<Button-1>', on_click)
-    frame.bind('<B1-Motion>', on_click_drag)
-    frame.bind('<B3-Motion>', on_drag)
-    frame.bind('<Motion>', on_motion)
+    frame.bind("<Button-1>", on_click)
+    frame.bind("<B1-Motion>", on_click_drag)
+    frame.bind("<B3-Motion>", on_drag)
+    frame.bind("<Motion>", on_motion)
     # TODO: Windows scroll support
     frame.bind("<Button-4>", on_zoom_in)
     frame.bind("<Button-5>", on_zoom_out)
