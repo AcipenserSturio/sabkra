@@ -36,8 +36,7 @@ class Scene:
         self.window = None
         self.world = None
         self.current_tile = None
-        self._sprites = {}
-        self._sprites_scaled = {}
+        self.sprites = {}
 
         # Load world info and map from path
         self.world = init_world(file_path)
@@ -66,25 +65,15 @@ class Scene:
         self.add_sprite('110', './src/sabkra/assets/rivers/110.png')
         self.add_sprite('111', './src/sabkra/assets/rivers/111.png')
 
-        # Position camera by default
-        # middle_tile = self.world.get_tile(self.world.height // 2,
-        #                                   self.world.width // 2)
-        # tile_x, tile_y = middle_tile.worldpos_centre
-        # window_width, window_height = pygame.display.get_window_size()
-        # centre_x = tile_x - window_width/2
-        # centre_y = tile_y - window_height/2
-        # self.camera.drag((centre_x, centre_y))
-
         last_tile = self.world.get_tile(0, -1)
-        # print(
         self.canvas = pygame.Surface((
             self.canvaspos(last_tile)[0]+image_tiling_width*1.5,
             self.canvaspos(last_tile)[1]+image_tiling_height_full,
         )).convert_alpha()
-        # )
-        self.canvas_scaled = None
 
         self.render()
+
+        self.camera.drag_to_centre(*pygame.display.get_window_size())
 
     # Event handling
     def on_resize_window(self, width, height):
@@ -134,20 +123,11 @@ class Scene:
         # Skip missing images and hope they aren't used in the map!
         if not os.path.isfile(path):
             return
-        self._sprites[name] = pygame.image.load(path).convert_alpha()
+        self.sprites[name] = pygame.image.load(path).convert_alpha()
         # print('added', name)
 
     def get_sprite(self, name):
-        return self._sprites.get(name)
-
-    def get_scaled_image(self, image):
-        return pygame.transform.scale(
-            image,
-            (
-                int(image.get_width()*self.camera.scale),
-                int(image.get_height()*self.camera.scale)
-            )
-        )
+        return self.sprites.get(name)
 
     # Get image for tile
     def get_terrain_image(self, tile):
@@ -184,15 +164,19 @@ class Scene:
 
     def rerender_tile(self, tile):
         self.render_tile(tile)
-        self.texture = Texture.from_surface(self.renderer, self.canvas)
-        self.draw()
+        self.update_texture()
 
     def render(self):
         self.canvas.fill(background_colour)
         # Draw terrain
         for tile in self.world.tiles():
             self.render_tile(tile)
+        self.update_texture()
+
+    def update_texture(self):
         self.texture = Texture.from_surface(self.renderer, self.canvas)
+        self.texture.blend_mode = 1
+        self.draw()
 
     def draw(self):
         # print((self.camera.x, self.camera.y))
