@@ -11,6 +11,15 @@ class Sprite:
         self.tile = tile
         self.highlight = None
 
+    @property
+    def highlight(self):
+        return self._highlight
+
+    @highlight.setter
+    def highlight(self, value):
+        self._highlight = value
+        self.rerender()
+
     # Draw
     def render(self):
         # Draw terrain
@@ -30,6 +39,8 @@ class Sprite:
             self.scene.canvas.blit(self.get_image("selected"), self.pos)
 
     def rerender(self):
+        if not self.scene.canvas:
+            return
         self.render()
         self.scene.texture.update(
             self.scene.canvas.subsurface(

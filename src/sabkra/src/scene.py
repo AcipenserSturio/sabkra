@@ -30,17 +30,18 @@ def euclidean(x1, y1, x2, y2):
 
 
 class Scene:
-    def __init__(self, file_path, update_sidebar):
+    def __init__(self, file_path, sidebar):
         self.camera = Camera(self)
         self.mouse = Mouse()
-        self.update_sidebar = update_sidebar
-        self._current_sprite = None
+        self.sidebar = sidebar
         self.images = {}
+        self.canvas = None
 
         # Load world info and map from path
         self.world = init_world(file_path)
         self.spritemap = {(tile.col, tile.row): Sprite(self, tile)
                           for tile in self.world.tiles()}
+        self._current_sprite = self.get_sprite(self.world.get_tile(0, 0))
 
         # Create window
         self.window = pygame.display.set_mode(
@@ -55,7 +56,6 @@ class Scene:
         # Draw
         self.canvas = self.get_sprite(self.world.get_tile(0, -1)).canvas()
         self.render()
-        self.current_sprite = self.get_sprite(self.world.get_tile(0, 0))
         self.camera.drag_to_centre(*pygame.display.get_window_size())
 
     def load_images(self):
@@ -90,13 +90,10 @@ class Scene:
         if sprite == prev:
             return
         self._current_sprite = sprite
+        prev.highlight = False
         sprite.highlight = True
-        sprite.rerender()
-        if prev:
-            prev.highlight = False
-            prev.rerender()
-        if self.update_sidebar:
-            self.update_sidebar(sprite)
+        if self.sidebar:
+            self.sidebar(sprite)
 
     def set_current_sprite_to_mouse(self, mousepos):
         self.current_sprite = self.nearest_sprite(mousepos)
