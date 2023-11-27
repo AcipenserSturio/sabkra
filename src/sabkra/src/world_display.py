@@ -13,13 +13,11 @@ def display_world_tk(file_path, ui, frame):
     sc = Scene(file_path, ui)
 
     def on_click(event):
-        if sc.set_current_tile_to_mouse((event.x, event.y)):
-            sc.draw()
+        sc.set_current_tile_to_mouse((event.x, event.y))
 
     def on_click_drag(event):
         sc.mouse.update(event.x, event.y)
-        if sc.set_current_tile_to_mouse((event.x, event.y)):
-            sc.draw()
+        sc.set_current_tile_to_mouse((event.x, event.y))
 
     def on_motion(event):
         sc.mouse.update(event.x, event.y)
@@ -27,14 +25,13 @@ def display_world_tk(file_path, ui, frame):
     def on_drag(event):
         sc.mouse.update(event.x, event.y)
         sc.camera.drag(sc.mouse.vector())
-        sc.draw()
 
     def on_zoom_in(event):
-        sc.camera.clean_rescale(1)
+        # sc.camera.clean_rescale(1)
         sc.draw()
 
     def on_zoom_out(event):
-        sc.camera.clean_rescale(-1)
+        # sc.camera.clean_rescale(-1)
         sc.draw()
 
     frame.bind('<Button-1>', on_click)

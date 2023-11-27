@@ -27,20 +27,6 @@ def euclidean(x1, y1, x2, y2):
     return (x1-x2) ** 2 + (y1-y2) ** 2
 
 
-def get_tile_world_pos(tile):
-    x = int(tile.col * image_tiling_width
-            + tile.row % 2 * image_tiling_width / 2)
-    y = int(- tile.row * image_tiling_height)
-    return (x, y)
-
-
-def get_tile_centre_world_pos(tile):
-    x, y = get_tile_world_pos(tile)
-    x += int(image_tiling_width / 2)
-    y += int(image_tiling_height_full / 2)
-    return (x, y)
-
-
 class Scene:
     def __init__(self, file_path, update_sidebar):
         self.camera = Camera(self)
@@ -78,19 +64,24 @@ class Scene:
         self.add_sprite('110', './src/sabkra/assets/rivers/110.png')
         self.add_sprite('111', './src/sabkra/assets/rivers/111.png')
 
-        # Give tiles world positions
-        for tile in self.world.tiles():
-            tile.worldpos = get_tile_world_pos(tile)
-            tile.worldpos_centre = get_tile_centre_world_pos(tile)
-
         # Position camera by default
-        middle_tile = self.world.get_tile(self.world.height // 2,
-                                          self.world.width // 2)
-        tile_x, tile_y = middle_tile.worldpos_centre
-        window_width, window_height = pygame.display.get_window_size()
-        centre_x = tile_x - window_width/2
-        centre_y = tile_y - window_height/2
-        self.camera.drag((centre_x, centre_y))
+        # middle_tile = self.world.get_tile(self.world.height // 2,
+        #                                   self.world.width // 2)
+        # tile_x, tile_y = middle_tile.worldpos_centre
+        # window_width, window_height = pygame.display.get_window_size()
+        # centre_x = tile_x - window_width/2
+        # centre_y = tile_y - window_height/2
+        # self.camera.drag((centre_x, centre_y))
+
+        last_tile = self.world.get_tile(0, -1)
+        # print(
+        self.canvas = pygame.Surface((
+            self.canvaspos(last_tile)[0]+image_tiling_width*1.5,
+            self.canvaspos(last_tile)[1]+image_tiling_height,
+        )).convert_alpha()
+        # )
+
+        self.render()
 
     # Event handling
     def on_resize_window(self, width, height):
@@ -100,11 +91,14 @@ class Scene:
 
     # Current tile
     def set_current_tile_to_mouse(self, mousepos):
+        prev = self.current_tile
         tile = self.get_nearest_tile_from_canvas_pos(mousepos)
-        if tile == self.current_tile:
-            return False
+        if tile == prev:
+            return
         self.set_current_tile(tile)
-        return True
+        self.render_tile(tile)
+        self.render_tile(prev)
+        self.draw()
 
     def get_nearest_tile_from_canvas_pos(self, canvaspos):
         # Bad code. Rewrite when you can think of a better structure
@@ -112,7 +106,7 @@ class Scene:
         min_distance = float("inf")
         nearest_tile = self.world.get_tile(0, 0)
         for tile in self.world.tiles():
-            tile_world_x, tile_world_y = tile.worldpos_centre
+            tile_world_x, tile_world_y = self.centre_canvaspos(tile)
             distance = euclidean(tile_world_x, tile_world_y, world_x, world_y)
             if distance < min_distance:
                 nearest_tile = tile
@@ -172,39 +166,45 @@ class Scene:
         return self.get_sprite(tile.get_river_state())
 
     # Draw
-    def draw(self):
-        self.window.fill(background_colour)
+    def render_tile(self, tile):
+        pos = self.canvaspos(tile)
 
         # Draw terrain
-        for tile in self.world.tiles():
-            if terrain := self.get_terrain_image(tile):
-                self.draw_tilesprite(terrain, tile)
-
+        if terrain := self.get_terrain_image(tile):
+            self.canvas.blit(terrain, pos)
         # Draw elevation
-        for tile in self.world.tiles():
-            if elevation := self.get_elevation_image(tile):
-                self.draw_tilesprite(elevation, tile)
-
+        if elevation := self.get_elevation_image(tile):
+            self.canvas.blit(elevation, pos)
         # Draw feature
-        for tile in self.world.tiles():
-            if feature := self.get_feature_image(tile):
-                self.draw_tilesprite(feature, tile)
-
+        if feature := self.get_feature_image(tile):
+            self.canvas.blit(feature, pos)
         # Draw river
-        for tile in self.world.tiles():
-            if river := self.get_river_image(tile):
-                self.draw_tilesprite(river, tile)
+        if river := self.get_river_image(tile):
+            self.canvas.blit(river, pos)
+        # Draw current tile selector
+        if tile == self.current_tile:
+            self.canvas.blit(self.get_sprite("selected"), pos)
 
-        # Draw tile selection
-        self.draw_tilesprite(
-            self.get_sprite('selected'),
-            self.current_tile
-        )
+    def render(self):
+        self.canvas.fill(background_colour)
+        # Draw terrain
+        for tile in self.world.tiles():
+            self.render_tile(tile)
+
+    def draw(self):
+        # print((self.camera.x, self.camera.y))
+        self.window.fill(background_colour)
+        self.window.blit(self.canvas, (self.camera.x, self.camera.y))
         pygame.display.update()
 
-    def draw_tilesprite(self, image, tile):
-        pos = self.get_tile_canvaspos(tile)
-        self.window.blit(image, pos)
+    def canvaspos(self, tile):
+        x = int(tile.col * image_tiling_width
+                + tile.row % 2 * image_tiling_width / 2)
+        y = int((self.world.height - tile.row) * image_tiling_height)
+        return (x, y)
 
-    def get_tile_canvaspos(self, tile):
-        return self.camera.get_canvas_pos_from_world_pos(tile.worldpos)
+    def centre_canvaspos(self, tile):
+        x, y = self.canvaspos(tile)
+        x += int(image_tiling_width / 2)
+        y += int(image_tiling_height_full / 2)
+        return (x, y)

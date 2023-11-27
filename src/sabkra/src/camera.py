@@ -13,24 +13,25 @@ class Camera:
     def drag(self, vector):
         self.x -= int(vector[0] / self.scale)
         self.y -= int(vector[1] / self.scale)
+        self.scene.draw()
         # print(self.x, self.y)
-
-    def clean_rescale(self, direction):
-        if direction > 0:
-            if self.scale > scale_upper_bound:
-                return
-            self.rescale(scale_factor)
-        else:
-            if self.scale < scale_lower_bound:
-                return
-            self.rescale(1/scale_factor)
-
-    def rescale(self, factor):
-        self.scale *= factor
-        self.y += int((1/self.scale) * (1 - factor) * self.scene.mouse.y)
-        self.x += int((1/self.scale) * (1 - factor) * self.scene.mouse.x)
-        self.scene.rescale_all_sprites()
-        # print(self.scale)
+    #
+    # def clean_rescale(self, direction):
+    #     if direction > 0:
+    #         if self.scale > scale_upper_bound:
+    #             return
+    #         self.rescale(scale_factor)
+    #     else:
+    #         if self.scale < scale_lower_bound:
+    #             return
+    #         self.rescale(1/scale_factor)
+    #
+    # def rescale(self, factor):
+    #     self.scale *= factor
+    #     self.y += int((1/self.scale) * (1 - factor) * self.scene.mouse.y)
+    #     self.x += int((1/self.scale) * (1 - factor) * self.scene.mouse.x)
+    #     self.scene.rescale_all_sprites()
+    #     # print(self.scale)
 
     def get_canvas_pos_from_world_pos(self, worldpos):
         return ((worldpos[0] + self.x) * self.scale,

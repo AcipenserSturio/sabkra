@@ -6,7 +6,9 @@ from . import world_display
 import os
 import platform
 
-root = ThemedTk(theme="breeze")
+root = ThemedTk(
+#    theme="breeze"
+)
 root.title("Sabkra - Civ 5 World previewer")
 
 screen_width = root.winfo_screenwidth()
