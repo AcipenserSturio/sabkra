@@ -77,9 +77,10 @@ class Scene:
         # print(
         self.canvas = pygame.Surface((
             self.canvaspos(last_tile)[0]+image_tiling_width*1.5,
-            self.canvaspos(last_tile)[1]+image_tiling_height,
+            self.canvaspos(last_tile)[1]+image_tiling_height_full,
         )).convert_alpha()
         # )
+        self.canvas_scaled = None
 
         self.render()
 
@@ -92,13 +93,17 @@ class Scene:
     # Current tile
     def set_current_tile_to_mouse(self, mousepos):
         prev = self.current_tile
-        tile = self.get_nearest_tile_from_canvas_pos(mousepos)
+        tile = self.get_nearest_tile_from_canvas_pos(
+            self.mouse_pos_to_canvas_pos(mousepos))
         if tile == prev:
             return
         self.set_current_tile(tile)
-        self.render_tile(tile)
-        self.render_tile(prev)
+        self.rerender_tile(tile)
+        self.rerender_tile(prev)
         self.draw()
+
+    def mouse_pos_to_canvas_pos(self, mousepos):
+        return (mousepos[0], mousepos[1])
 
     def get_nearest_tile_from_canvas_pos(self, canvaspos):
         # Bad code. Rewrite when you can think of a better structure
@@ -185,16 +190,25 @@ class Scene:
         if tile == self.current_tile:
             self.canvas.blit(self.get_sprite("selected"), pos)
 
+    def rerender_tile(self, tile):
+        self.render_tile(tile)
+        self.rescale()
+
     def render(self):
         self.canvas.fill(background_colour)
         # Draw terrain
         for tile in self.world.tiles():
             self.render_tile(tile)
 
+    def rescale(self):
+        self.canvas_scaled = pygame.transform.scale_by(self.canvas,
+                                                       self.camera.scale)
+
     def draw(self):
         # print((self.camera.x, self.camera.y))
         self.window.fill(background_colour)
-        self.window.blit(self.canvas, (self.camera.x, self.camera.y))
+        canvas = self.canvas_scaled if self.canvas_scaled else self.canvas
+        self.window.blit(canvas, (self.camera.x, self.camera.y))
         pygame.display.update()
 
     def canvaspos(self, tile):

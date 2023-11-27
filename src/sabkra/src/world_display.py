@@ -27,11 +27,11 @@ def display_world_tk(file_path, ui, frame):
         sc.camera.drag(sc.mouse.vector())
 
     def on_zoom_in(event):
-        # sc.camera.clean_rescale(1)
+        sc.camera.clean_rescale(1)
         sc.draw()
 
     def on_zoom_out(event):
-        # sc.camera.clean_rescale(-1)
+        sc.camera.clean_rescale(-1)
         sc.draw()
 
     frame.bind('<Button-1>', on_click)
