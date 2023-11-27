@@ -20,7 +20,9 @@ class Tile:
     river_se: bool
     river_e: bool
     elevation_id: int
+    continent_id: int
     wonder_id: int
+    resource_amount: int
 
     @classmethod
     def from_file(cls, world, row, col, f):
@@ -29,9 +31,9 @@ class Tile:
         feature = get_byte(f)
         (_, _, _, _, _, river_sw, river_se, river_e) = get_flags(f)
         elevation = get_byte(f)
-        _ = get_byte(f)
+        continent = get_byte(f)
         wonder = get_byte(f)
-        _ = get_byte(f)
+        resource_amount = get_byte(f)
 
         return cls(
             world,
@@ -44,7 +46,9 @@ class Tile:
             river_se,
             river_e,
             elevation,
+            continent,
             wonder,
+            resource_amount,
         )
 
     def get_terrain(self):
