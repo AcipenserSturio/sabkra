@@ -16,4 +16,5 @@
 # else:
 #     from .src import gui
 
-from .src import gui
+from .src.gui import Gui
+Gui().run()
