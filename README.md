@@ -10,13 +10,16 @@ A .civ5map previewer that doesn't require you to load the whole game!
 
 * Python >=3.11
 
-* pdm (`pip install pdm`).
+* pdm (you can install it with `pip install pdm`).
 
 ## Installation and usage
 
-`pdm install`
-
-`pdm run start`
+```bash
+git clone https://github.com/AcipenserSturio/sabkra
+cd sabkra
+pdm install
+pdm run start
+```
 
 # License
 
