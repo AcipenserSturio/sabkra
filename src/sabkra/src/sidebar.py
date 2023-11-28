@@ -15,12 +15,12 @@ class Sidebar:
 
         self.plot = ttk.Label(self.frame)
         self.plot.pack()
-        self.terr = Dropdown(self, self.set_terr)
-        self.elev = Dropdown(self, self.set_elev)
-        self.feat = Dropdown(self, self.set_feat)
-        self.reso = Dropdown(self, self.set_reso)
-        self.cont = Dropdown(self, self.set_cont)
-        self.wond = Dropdown(self, self.set_wond)
+        self.terr = Dropdown(self, self.set_terr, "Terrain")
+        self.elev = Dropdown(self, self.set_elev, "Elevation")
+        self.feat = Dropdown(self, self.set_feat, "Feature")
+        self.reso = Dropdown(self, self.set_reso, "Resource")
+        self.cont = Dropdown(self, self.set_cont, "Continent")
+        self.wond = Dropdown(self, self.set_wond, "Wonder")
 
     @property
     def sprite(self):
@@ -81,10 +81,11 @@ class Sidebar:
 
 
 class Dropdown:
-    def __init__(self, sidebar, updater):
+    def __init__(self, sidebar, updater, label):
         self.sidebar = sidebar
         self.updater = updater
         self.var = tk.StringVar()
+        ttk.Label(sidebar.frame, text=label).pack()
         self.box = ttk.Combobox(
             sidebar.frame,
             state="readonly",
