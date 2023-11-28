@@ -1,6 +1,7 @@
 import tkinter as tk
 import os
 import platform
+import pygame
 
 from .scene import Scene
 
@@ -18,6 +19,7 @@ class View:
         )
 
     def run(self, file_path, ui):
+        pygame.init()
         sc = Scene(file_path, ui)
 
         def on_click(event):
