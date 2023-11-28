@@ -5,8 +5,12 @@ HEIGHT, WIDTH = 200, 200
 
 pygame.init()
 
+print("=============================")
+print("Found drivers:")
+print(list(pygame._sdl2.get_drivers()), sep="\n")
+
 display = pygame.display.set_mode(
-    (WIDTH, HEIGHT), pygame.RESIZABLE
+    (WIDTH, HEIGHT)
 )
 window = Window.from_display_module()
 renderer = Renderer.from_window(window)
