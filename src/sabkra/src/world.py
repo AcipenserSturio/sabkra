@@ -11,6 +11,7 @@ from .utils import (
 )
 
 from .tile import Tile
+from .scenario import Scenario
 
 
 def init_world(file_path):
@@ -115,3 +116,4 @@ class World:
             for col in range(self.width):
                 tile = Tile.from_file(self, row, col, f)
                 self.tilemap[row].append(tile)
+        print(Scenario.from_file(f))
