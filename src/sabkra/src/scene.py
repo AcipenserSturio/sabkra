@@ -84,13 +84,13 @@ class Scene:
         if sprite == prev:
             return
         self._current_sprite = sprite
-        # prev.highlight = False
-        # sprite.highlight = True
+        prev.highlight = False
+        sprite.highlight = True
         if self.sidebar:
             self.sidebar.sprite = sprite
-
-        self.brush = [self.current_sprite,
-                      *self.get_sprites(self.current_sprite.tile.neighbours())]
+        #
+        # self.brush = [self.current_sprite,
+        #               *self.get_sprites(self.current_sprite.tile.neighbours())]
         self.draw()
 
     @property
