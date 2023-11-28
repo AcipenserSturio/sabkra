@@ -106,6 +106,9 @@ class Sprite:
         # Draw feature
         if feature := self.get_image(self.tile.get_feature()):
             self.scene.canvas.blit(feature, self.pos)
+        # Draw feature
+        if resource := self.get_image(self.tile.get_resource()):
+            self.scene.canvas.blit(resource, self.pos)
         # Draw grid
         # self.scene.canvas.blit(self.get_image("grid"), self.pos)
         # Draw river

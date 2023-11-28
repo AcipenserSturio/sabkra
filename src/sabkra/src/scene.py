@@ -55,6 +55,9 @@ class Scene:
         for feature in self.world.feature:
             self.add_image(feature, "./src/sabkra/assets/feature/{}.png"
                            .format(feature.replace("FEATURE_", "").lower()))
+        for resource in self.world.resource:
+            self.add_image(resource, "./src/sabkra/assets/resource/{}.png"
+                           .format(resource.replace("RESOURCE_", "").lower()))
         self.add_image("selected", "./src/sabkra/assets/selected.png")
         self.add_image("neighbour", "./src/sabkra/assets/neighbour.png")
         self.add_image("grid", "./src/sabkra/assets/grid.png")
