@@ -4,11 +4,6 @@ import platform
 
 from .scene import Scene
 
-os.environ["SDL_VIDEO_WINDOW_POS"] = "%d,%d" % (0, 25)
-
-
-fps = 60
-
 
 class View:
     def __init__(self, parent, width, height):

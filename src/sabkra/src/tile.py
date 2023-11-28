@@ -128,5 +128,4 @@ class Tile:
             return self.world.get_tile(self.row - 1, self.col + (self.row % 2))
         if direction == "sw":
             return self.world.get_tile(self.row - 1, self.col + (self.row % 2) - 1)
-        # TODO: weird directions
         return
