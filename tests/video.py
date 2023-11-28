@@ -1,19 +1,26 @@
+
+print("=============================")
+
 import pygame
-from pygame._sdl2 import Renderer, Window
+from pygame._sdl2 import Renderer, Window, error
 
 HEIGHT, WIDTH = 200, 200
 
-pygame.init()
-
 print("=============================")
 print("Found drivers:")
-print(list(pygame._sdl2.get_drivers()), sep="\n")
+print(*list(pygame._sdl2.get_drivers()), sep="\n")
+print("=============================")
+
+pygame.init()
 
 display = pygame.display.set_mode(
     (WIDTH, HEIGHT)
 )
 window = Window.from_display_module()
-renderer = Renderer.from_window(window)
+try:
+    renderer = Renderer.from_window(window)
+except error:
+    renderer = Renderer(window)
 
 
 def run():
