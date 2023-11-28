@@ -20,6 +20,7 @@ class Sidebar:
         self.feat = Dropdown(self, self.set_feat)
         self.reso = Dropdown(self, self.set_reso)
         self.cont = Dropdown(self, self.set_cont)
+        self.wond = Dropdown(self, self.set_wond)
 
     @property
     def sprite(self):
@@ -45,6 +46,9 @@ class Sidebar:
     def set_cont(self, value):
         self.sprite.continent = value
 
+    def set_wond(self, value):
+        self.sprite.wonder = value
+
     def update(self):
         self.plot["text"] = f"""Plot: {
             self.sprite.tile.row, self.sprite.tile.col
@@ -69,6 +73,10 @@ class Sidebar:
         self.cont.update(
             self.sprite.continent,
             self.sprite.tile.world.continent
+        )
+        self.wond.update(
+            self.sprite.wonder,
+            ["", *self.sprite.tile.world.wonder]
         )
 
 

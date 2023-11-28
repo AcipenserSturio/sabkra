@@ -83,6 +83,18 @@ class Sprite:
             self.rerender()
             self.scene.draw()
 
+    @property
+    def wonder(self):
+        return self.tile.get_wonder()
+
+    @wonder.setter
+    def wonder(self, value):
+        index = self.tile.world.wonder.index(value) if value else 255
+        if self.wonder != value:
+            self.tile.wonder_id = index
+            self.rerender()
+            self.scene.draw()
+
     # Draw
     def render(self):
         # Draw terrain
