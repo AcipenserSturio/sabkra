@@ -85,6 +85,11 @@ class Tile:
             return self.world.wonder[self.wonder_id]
         return ""
 
+    def get_continent(self):
+        if not self.continent_id == 255:
+            return self.world.continent[self.continent_id]
+        return ""
+
     def get_river_state(self):
         river = []
         if self.river_e:

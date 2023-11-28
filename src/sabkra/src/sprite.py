@@ -23,6 +23,66 @@ class Sprite:
         self._highlight = value
         self.rerender()
 
+    @property
+    def terrain(self):
+        return self.tile.get_terrain()
+
+    @terrain.setter
+    def terrain(self, value):
+        index = self.tile.world.terrain.index(value) if value else 255
+        if self.terrain != value:
+            self.tile.terrain_id = index
+            self.rerender()
+            self.scene.draw()
+
+    @property
+    def elevation(self):
+        return self.tile.get_elevation()
+
+    @elevation.setter
+    def elevation(self, value):
+        index = self.tile.world.elevation.index(value) if value else 255
+        if self.elevation != value:
+            self.tile.elevation_id = index
+            self.rerender()
+            self.scene.draw()
+
+    @property
+    def feature(self):
+        return self.tile.get_feature()
+
+    @feature.setter
+    def feature(self, value):
+        index = self.tile.world.feature.index(value) if value else 255
+        if self.feature != value:
+            self.tile.feature_id = index
+            self.rerender()
+            self.scene.draw()
+
+    @property
+    def resource(self):
+        return self.tile.get_resource()
+
+    @resource.setter
+    def resource(self, value):
+        index = self.tile.world.resource.index(value) if value else 255
+        if self.resource != value:
+            self.tile.resource_id = index
+            self.rerender()
+            self.scene.draw()
+
+    @property
+    def continent(self):
+        return self.tile.get_continent()
+
+    @continent.setter
+    def continent(self, value):
+        index = self.tile.world.continent.index(value) if value else 255
+        if self.continent != value:
+            self.tile.continent_id = index
+            self.rerender()
+            self.scene.draw()
+
     # Draw
     def render(self):
         # Draw terrain

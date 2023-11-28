@@ -11,35 +11,83 @@ class Sidebar:
             padx=15,
             pady=15,
         )
+        self._sprite = None
 
         self.plot = ttk.Label(self.frame)
         self.plot.pack()
-        self.terr, self.terr_var = self.make_dropdown()
-        self.elev, self.elev_var = self.make_dropdown()
-        self.feat, self.feat_var = self.make_dropdown()
-        self.reso, self.reso_var = self.make_dropdown()
+        self.terr = Dropdown(self, self.set_terr)
+        self.elev = Dropdown(self, self.set_elev)
+        self.feat = Dropdown(self, self.set_feat)
+        self.reso = Dropdown(self, self.set_reso)
+        self.cont = Dropdown(self, self.set_cont)
 
-    def make_dropdown(self):
-        var = tk.StringVar()
-        dropdown = ttk.Combobox(
-            self.frame,
-            state="readonly",
-            textvariable=var,
+    @property
+    def sprite(self):
+        return self._sprite
+
+    @sprite.setter
+    def sprite(self, value):
+        self._sprite = value
+        self.update()
+
+    def set_terr(self, value):
+        self.sprite.terrain = value
+
+    def set_elev(self, value):
+        self.sprite.elevation = value
+
+    def set_feat(self, value):
+        self.sprite.feature = value
+
+    def set_reso(self, value):
+        self.sprite.resource = value
+
+    def set_cont(self, value):
+        self.sprite.continent = value
+
+    def update(self):
+        self.plot["text"] = f"""Plot: {
+            self.sprite.tile.row, self.sprite.tile.col
+        }"""
+
+        self.terr.update(
+            self.sprite.terrain,
+            self.sprite.tile.world.terrain
         )
-        dropdown.pack(fill="x")
-        return dropdown, var
+        self.elev.update(
+            self.sprite.elevation,
+            self.sprite.tile.world.elevation
+        )
+        self.feat.update(
+            self.sprite.feature,
+            ["", *self.sprite.tile.world.feature]
+        )
+        self.reso.update(
+            self.sprite.resource,
+            self.sprite.tile.world.resource
+        )
+        self.cont.update(
+            self.sprite.continent,
+            self.sprite.tile.world.continent
+        )
 
-    def update(self, sprite):
-        self.plot["text"] = f"Plot: ({sprite.tile.row}, {sprite.tile.col})"
 
-        self.terr["values"] = sprite.tile.world.terrain
-        self.terr.set(sprite.tile.get_terrain())
+class Dropdown:
+    def __init__(self, sidebar, updater):
+        self.sidebar = sidebar
+        self.updater = updater
+        self.var = tk.StringVar()
+        self.box = ttk.Combobox(
+            sidebar.frame,
+            state="readonly",
+            textvariable=self.var,
+        )
+        self.box.pack(fill="x")
+        self.var.trace_add("write", self.on_update)
 
-        self.elev["values"] = sprite.tile.world.elevation
-        self.elev.set(sprite.tile.get_elevation())
+    def on_update(self, var_, index, mode):
+        self.updater(self.var.get())
 
-        self.feat["values"] = ["", *sprite.tile.world.feature]
-        self.feat.set(sprite.tile.get_feature())
-
-        self.reso["values"] = ["", *sprite.tile.world.resource]
-        self.reso.set(sprite.tile.get_resource())
+    def update(self, value, options):
+        self.box["values"] = options
+        self.box.set(value)

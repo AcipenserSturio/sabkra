@@ -37,6 +37,7 @@ class World:
     name: str
     description: str
     elevation: list
+    continent: list
 
     @classmethod
     def from_file(cls, f):
@@ -71,6 +72,7 @@ class World:
         world_size = get_string_array(f, length_world_size)
 
         elevation = ["FLAT", "HILL", "MOUNTAIN"]
+        continent = ["None", "Americas", "Asia", "Africa", "Europe"]
 
         return cls(
             version,
@@ -87,7 +89,8 @@ class World:
             moddata,
             name,
             description,
-            elevation
+            elevation,
+            continent,
         )
 
     def tiles(self):

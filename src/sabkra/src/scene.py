@@ -87,7 +87,7 @@ class Scene:
         # prev.highlight = False
         # sprite.highlight = True
         if self.sidebar:
-            self.sidebar(sprite)
+            self.sidebar.sprite = sprite
 
         self.brush = [self.current_sprite,
                       *self.get_sprites(self.current_sprite.tile.neighbours())]

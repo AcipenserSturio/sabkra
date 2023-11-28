@@ -37,7 +37,7 @@ class Gui:
             ),
         )
         self.window.title(f"Sabkra - {filename}")
-        self.view.run(filename, self.sidebar.update)
+        self.view.run(filename, self.sidebar)
 
     def run(self):
         self.view.frame.pack(side="left", fill="both")
