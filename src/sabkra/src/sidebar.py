@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
+
 class Sidebar:
     def __init__(self, parent, width, height):
         self.frame = tk.Frame(
@@ -30,11 +31,15 @@ class Sidebar:
 
     def update(self, sprite):
         self.plot["text"] = f"Plot: ({sprite.tile.row}, {sprite.tile.col})"
+
         self.terr["values"] = sprite.tile.world.terrain
         self.terr.set(sprite.tile.get_terrain())
+
         self.elev["values"] = sprite.tile.world.elevation
         self.elev.set(sprite.tile.get_elevation())
+
         self.feat["values"] = ["", *sprite.tile.world.feature]
         self.feat.set(sprite.tile.get_feature())
+
         self.reso["values"] = ["", *sprite.tile.world.resource]
         self.reso.set(sprite.tile.get_resource())
