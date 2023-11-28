@@ -1,6 +1,7 @@
 import os
 import pygame
 from pygame._sdl2 import Renderer, Texture, Window
+from pygame._sdl2 import error as SDL_error
 
 from .camera import Camera
 from .world import init_world
@@ -32,7 +33,10 @@ class Scene:
         self.window = pygame.display.set_mode(
             (default_window_width, default_window_height), pygame.RESIZABLE
         )
-        self.renderer = Renderer.from_window(Window.from_display_module())
+        try:
+            self.renderer = Renderer.from_window(Window.from_display_module())
+        except SDL_error:
+            self.renderer = Renderer(Window.from_display_module())
         pygame.display.set_caption("World Display")
 
         # Load images
