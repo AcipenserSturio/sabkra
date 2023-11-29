@@ -24,3 +24,9 @@ pdm run start
 # License
 
 sabkra is licensed under the GNU General Public License Version 3.
+
+## Credits
+
+* [CivFanatics civ5map forum thread](https://forums.civfanatics.com/threads/civ5map-file-format.418566/) for initial work documenting the civ5map format.
+
+* [samuelyuan/Civ5MapImage](https://github.com/samuelyuan/Civ5MapImage) for documenting the scenario part of the format.
