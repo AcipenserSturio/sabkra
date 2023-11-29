@@ -68,7 +68,7 @@ class Sidebar:
         )
         self.reso.update(
             self.sprite.resource,
-            self.sprite.tile.world.resource
+            ["", *self.sprite.tile.world.resource]
         )
         self.cont.update(
             self.sprite.continent,
