@@ -4,7 +4,7 @@ from pygame._sdl2 import Renderer, Texture, Window
 from pygame._sdl2 import error as SDL_error
 
 from .camera import Camera
-from .world import init_world
+from .world import World
 from .mouse import Mouse
 from .sprite import Sprite
 
@@ -23,7 +23,9 @@ class Scene:
         self.canvas = None
 
         # Load world info and map from path
-        self.world = init_world(file_path)
+
+        with open(file_path, "rb") as f:
+            self.world = World.from_file(f)
         self.spritemap = {(tile.col, tile.row): Sprite(self, tile)
                           for tile in self.world.tiles()}
         self._current_sprite = self.get_sprite(self.world.get_tile(0, 0))

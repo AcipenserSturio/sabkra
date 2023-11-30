@@ -7,6 +7,7 @@ from .utils import (
     get_string,
     get_string_array,
 )
+from .unit import Unit
 
 
 @dataclass
@@ -27,7 +28,7 @@ class Scenario:
     @classmethod
     def from_file(cls, f):
         for _ in range(68):
-            print(get_byte(f))
+            get_byte(f)
         max_turns = get_int(f)
         get_int(f)
         start_year = get_int(f)
@@ -53,6 +54,7 @@ class Scenario:
         policies = get_string_array(f, length_policies)
         buildings = get_string_array(f, length_buildings)
         promotions = get_string_array(f, length_promotions)
+        units = [Unit.from_file(f) for _ in range(length_units)]
         return cls(
             max_turns,
             start_year,

@@ -14,13 +14,6 @@ from .tile import Tile
 from .scenario import Scenario
 
 
-def init_world(file_path):
-    with open(file_path, "rb") as f:
-        world = World.from_file(f)
-        world.init(f)
-    return world
-
-
 @dataclass
 class World:
     version: int
@@ -75,7 +68,7 @@ class World:
         elevation = ["FLAT", "HILL", "MOUNTAIN"]
         continent = ["None", "Americas", "Asia", "Africa", "Europe"]
 
-        return cls(
+        self = cls(
             version,
             width,
             height,
@@ -94,6 +87,18 @@ class World:
             continent,
         )
 
+        self.tilemap = [
+            [
+                Tile.from_file(f, self, row, col)
+                for col in range(width)
+            ]
+            for row in range(height)
+        ]
+
+        self.scenario = Scenario.from_file(f)
+
+        return self
+
     def tiles(self):
         for row in self.tilemap:
             for tile in row:
@@ -107,13 +112,3 @@ class World:
         if row >= self.height or row < 0:
             return
         return self.tilemap[row][col]
-
-    def init(self, f):
-        # Load tiles
-        self.tilemap = []
-        for row in range(self.height):
-            self.tilemap.append([])
-            for col in range(self.width):
-                tile = Tile.from_file(self, row, col, f)
-                self.tilemap[row].append(tile)
-        print(Scenario.from_file(f))

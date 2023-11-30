@@ -34,7 +34,7 @@ class Tile:
         return f"Tile({self.col}, {self.row})"
 
     @classmethod
-    def from_file(cls, world, row, col, f):
+    def from_file(cls, f, world, row, col):
         terrain = get_byte(f)
         resource = get_byte(f)
         feature = get_byte(f)
