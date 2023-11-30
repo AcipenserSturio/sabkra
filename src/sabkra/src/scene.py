@@ -15,17 +15,16 @@ default_window_height = 1080
 
 
 class Scene:
-    def __init__(self, file_path, sidebar):
+    def __init__(self, world, sidebar):
         self.camera = Camera(self)
         self.mouse = Mouse()
         self.sidebar = sidebar
         self.images = {}
         self.canvas = None
 
-        # Load world info and map from path
+        # Load world info and map
 
-        with open(file_path, "rb") as f:
-            self.world = World.from_file(f)
+        self.world = world
         self.spritemap = {(tile.col, tile.row): Sprite(self, tile)
                           for tile in self.world.tiles()}
         self._current_sprite = self.get_sprite(self.world.get_tile(0, 0))

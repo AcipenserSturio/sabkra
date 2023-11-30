@@ -37,7 +37,11 @@ class Gui:
             ),
         )
         self.window.title(f"Sabkra - {filename}")
-        self.view.run(filename, self.sidebar)
+        self.view.open_scene(filename, self.sidebar)
+
+    def new_file(self):
+        self.window.title("Sabkra - new file")
+        self.view.new_scene(self.sidebar)
 
     def run(self):
         self.view.frame.pack(side="left", fill="both")
@@ -48,6 +52,10 @@ class Gui:
     def make_menu(self):
         menu = tk.Menu(self.window)
         self.window.config(menu=menu)
+        menu.add_command(
+            label="New",
+            command=self.new_file
+        )
         menu.add_command(
             label="Open",
             command=self.select_file

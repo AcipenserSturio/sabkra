@@ -34,7 +34,7 @@ class Tile:
         return f"Tile({self.col}, {self.row})"
 
     @classmethod
-    def from_file(cls, f, world, row, col):
+    def from_file(cls, world, row, col, f):
         terrain = get_byte(f)
         resource = get_byte(f)
         feature = get_byte(f)
@@ -59,6 +59,25 @@ class Tile:
             wonder,
             resource_amount,
         )
+
+    @classmethod
+    def blank(cls, world, row, col):
+        return cls(
+            world=world,
+            row=row,
+            col=col,
+            terrain_id=6,  # TERRAIN_OCEAN
+            resource_id=255,
+            feature_id=255,
+            river_sw=False,
+            river_se=False,
+            river_e=False,
+            elevation_id=0,  # FLAT
+            continent_id=0,  # None
+            wonder_id=255,
+            resource_amount=255,
+        )
+
 
     def get_terrain(self):
         if not self.terrain_id == 255:

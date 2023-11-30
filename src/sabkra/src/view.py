@@ -3,8 +3,8 @@ import os
 import platform
 import pygame
 
+from .world import World
 from .scene import Scene
-
 
 class View:
     def __init__(self, parent, width, height):
@@ -18,9 +18,17 @@ class View:
             "windows" if platform.system() == "Windows" else "x11"
         )
 
-    def run(self, file_path, ui):
+    def open_scene(self, file_path, sidebar):
+        with open(file_path, "rb") as f:
+            world = World.from_file(f)
+        self.run(Scene(world, sidebar))
+
+    def new_scene(self, sidebar):
+        world = World.blank(32, 20)
+        self.run(Scene(world, sidebar))
+
+    def run(self, sc):
         pygame.init()
-        sc = Scene(file_path, ui)
 
         def on_click(event):
             sc.set_current_sprite_to_mouse((event.x, event.y))

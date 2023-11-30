@@ -89,13 +89,124 @@ class World:
 
         self.tilemap = [
             [
-                Tile.from_file(f, self, row, col)
+                Tile.from_file(self, row, col, f)
                 for col in range(width)
             ]
             for row in range(height)
         ]
 
         self.scenario = Scenario.from_file(f)
+
+        return self
+
+    @classmethod
+    def blank(cls, width, height):
+        self = cls(
+            version=12,  # or 140? unclear
+            width=width,
+            height=height,
+            players=0,
+            randomgoodies=False,
+            randomresources=False,
+            wrap=True,
+            terrain=[
+                "TERRAIN_GRASS",
+                "TERRAIN_PLAINS",
+                "TERRAIN_DESERT",
+                "TERRAIN_TUNDRA",
+                "TERRAIN_SNOW",
+                "TERRAIN_COAST",
+                "TERRAIN_OCEAN",
+            ],
+            feature=[
+                "FEATURE_ICE",
+                "FEATURE_JUNGLE",
+                "FEATURE_MARSH",
+                "FEATURE_OASIS",
+                "FEATURE_FLOOD_PLAINS",
+                "FEATURE_FOREST",
+                "FEATURE_FALLOUT",
+                "FEATURE_ATOLL",
+            ],
+            wonder=[
+                "FEATURE_CRATER",
+                "FEATURE_FUJI",
+                "FEATURE_MESA",
+                "FEATURE_REEF",
+                "FEATURE_VOLCANO",
+                "FEATURE_GIBRALTAR",
+                "FEATURE_GEYSER",
+                "FEATURE_FOUNTAIN_YOUTH",
+                "FEATURE_POTOSI",
+                "FEATURE_EL_DORADO",
+                "FEATURE_SRI_PADA",
+                "FEATURE_MT_SINAI",
+                "FEATURE_MT_KAILASH",
+                "FEATURE_ULURU",
+                "FEATURE_LAKE_VICTORIA",
+                "FEATURE_KILIMANJARO",
+                "FEATURE_SOLOMONS_MINES",
+            ],
+            resource=[
+                "RESOURCE_IRON",
+                "RESOURCE_HORSE",
+                "RESOURCE_COAL",
+                "RESOURCE_OIL",
+                "RESOURCE_ALUMINUM",
+                "RESOURCE_URANIUM",
+                "RESOURCE_WHEAT",
+                "RESOURCE_COW",
+                "RESOURCE_SHEEP",
+                "RESOURCE_DEER",
+                "RESOURCE_BANANA",
+                "RESOURCE_FISH",
+                "RESOURCE_STONE",
+                "RESOURCE_WHALE",
+                "RESOURCE_PEARLS",
+                "RESOURCE_GOLD",
+                "RESOURCE_SILVER",
+                "RESOURCE_GEMS",
+                "RESOURCE_MARBLE",
+                "RESOURCE_IVORY",
+                "RESOURCE_FUR",
+                "RESOURCE_DYE",
+                "RESOURCE_SPICES",
+                "RESOURCE_SILK",
+                "RESOURCE_SUGAR",
+                "RESOURCE_COTTON",
+                "RESOURCE_WINE",
+                "RESOURCE_INCENSE",
+                "RESOURCE_JEWELRY",
+                "RESOURCE_PORCELAIN",
+                "RESOURCE_COPPER",
+                "RESOURCE_SALT",
+                "RESOURCE_CRAB",
+                "RESOURCE_TRUFFLES",
+                "RESOURCE_CITRUS",
+                "RESOURCE_ARTIFACTS",
+                "RESOURCE_NUTMEG",
+                "RESOURCE_CLOVES",
+                "RESOURCE_PEPPER",
+                "RESOURCE_HIDDEN_ARTIFACTS",
+                "RESOURCE_BISON",
+                "RESOURCE_COCOA"
+                ],
+            moddata="",
+            name="",
+            description="",
+            elevation=["FLAT", "HILL", "MOUNTAIN"],
+            continent=["None", "Americas", "Asia", "Africa", "Europe"],
+        )
+
+        self.tilemap = [
+            [
+                Tile.blank(self, row, col)
+                for col in range(width)
+            ]
+            for row in range(height)
+        ]
+
+        # self.scenario = Scenario.blank()
 
         return self
 
