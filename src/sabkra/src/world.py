@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from queue import PriorityQueue
 
 from .utils import (
     get_byte,
@@ -223,3 +224,21 @@ class World:
         if row >= self.height or row < 0:
             return
         return self.tilemap[row][col]
+
+    def get_tiles_in_radius(self, tile, radius):
+        tiles = []
+        queue = PriorityQueue()
+        # counter acting as a secondary priority
+        # to avoid comparisons between equal-priority objects
+        c = 0
+        queue.put((0, c, tile))
+        while not queue.empty():
+            priority, _, tile = queue.get()
+            tiles.append(tile)
+            for neighbour in tile.neighbours():
+                if neighbour in tiles:
+                    continue
+                if priority > radius:
+                    continue
+                queue.put((priority+1, c := c+1, neighbour))
+        return tiles

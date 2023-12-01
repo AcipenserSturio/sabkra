@@ -6,6 +6,7 @@ import pygame
 from .world import World
 from .scene import Scene
 
+
 class View:
     def __init__(self, parent, width, height):
         self.frame = tk.Frame(
