@@ -4,23 +4,44 @@ from tkinter import ttk
 
 class Sidebar:
     def __init__(self, parent, width, height):
-        self.frame = tk.Frame(
+        self.frame = ttk.Notebook(
             parent,
+            padding=15,
             width=width,
-            height=height,
-            padx=15,
-            pady=15,
         )
         self._sprite = None
 
-        self.plot = ttk.Label(self.frame)
+        self.edit_tab = tk.Frame(
+            self.frame,
+            padx=15,
+            pady=15,
+        )
+
+        self.plot = ttk.Label(self.edit_tab)
         self.plot.pack()
-        self.terr = Dropdown(self, self.set_terr, "Terrain")
-        self.elev = Dropdown(self, self.set_elev, "Elevation")
-        self.feat = Dropdown(self, self.set_feat, "Feature")
-        self.reso = Dropdown(self, self.set_reso, "Resource")
-        self.cont = Dropdown(self, self.set_cont, "Continent")
-        self.wond = Dropdown(self, self.set_wond, "Wonder")
+        self.terr = Dropdown(self.edit_tab, self.set_terr, "Terrain")
+        self.elev = Dropdown(self.edit_tab, self.set_elev, "Elevation")
+        self.feat = Dropdown(self.edit_tab, self.set_feat, "Feature")
+        self.reso = Dropdown(self.edit_tab, self.set_reso, "Resource")
+        self.cont = Dropdown(self.edit_tab, self.set_cont, "Continent")
+        self.wond = Dropdown(self.edit_tab, self.set_wond, "Wonder")
+
+        self.frame.add(
+            self.edit_tab,
+            text="Edit Plot",
+            sticky="nsew",
+        )
+
+        self.brush_tab = tk.Frame(
+            self.frame,
+            padx=15,
+            pady=15,
+        )
+        self.frame.add(
+            self.brush_tab,
+            text="Brush",
+            sticky="nsew",
+        )
 
     @property
     def sprite(self):
@@ -81,13 +102,13 @@ class Sidebar:
 
 
 class Dropdown:
-    def __init__(self, sidebar, updater, label):
-        self.sidebar = sidebar
+    def __init__(self, parent, updater, label):
+        self.parent = parent
         self.updater = updater
         self.var = tk.StringVar()
-        ttk.Label(sidebar.frame, text=label).pack()
+        ttk.Label(parent, text=label).pack()
         self.box = ttk.Combobox(
-            sidebar.frame,
+            parent,
             state="readonly",
             textvariable=self.var,
         )

@@ -4,7 +4,7 @@ from .sidebar import Sidebar
 from .view import View
 
 desktop_panel = 50
-sidebar_width = 250
+sidebar_width = 300
 
 
 def default_directory():
