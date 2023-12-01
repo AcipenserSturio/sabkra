@@ -96,7 +96,7 @@ class Scene:
         self.brush = self.get_sprites(
             self.world.get_tiles_in_radius(
                 self.current_sprite.tile,
-                4,
+                7,
             )
         )
         self.draw()
