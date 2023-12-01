@@ -96,7 +96,7 @@ class Scene:
         self.brush = self.get_sprites(
             self.world.get_tiles_in_radius(
                 self.current_sprite.tile,
-                7,
+                11,
             )
         )
         self.draw()
@@ -114,6 +114,10 @@ class Scene:
         for sprite in added_sprites:
             sprite.highlight = True
         self._brush = value
+        #
+        # for sprite in value:
+        #     sprite.terrain = "TERRAIN_SNOW"
+
         self.draw()
 
     def set_current_sprite_to_mouse(self, mousepos):

@@ -225,15 +225,15 @@ class World:
         return self.tilemap[row][col]
 
     def get_tiles_in_radius(self, tile, radius):
-        tiles = [(0, tile)]
-        # counter acting as a secondary priority
-        # to avoid comparisons between equal-priority objects
-        for priority, tile in iter(tiles):
+        tiles = set([tile])
+        queue = [(0, tile)]
+        for priority, tile in iter(queue):
             priority += 1
             if priority > radius:
                 continue
             for neighbour in tile.neighbours():
-                if (priority, neighbour) in tiles:
+                if neighbour in tiles:
                     continue
-                tiles.append((priority, neighbour))
-        return [tile for priority, tile in tiles]
+                queue.append((priority, neighbour))
+                tiles.add(neighbour)
+        return list(tiles)
