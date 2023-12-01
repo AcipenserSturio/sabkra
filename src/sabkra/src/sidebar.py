@@ -6,7 +6,7 @@ class Sidebar:
     def __init__(self, parent, width, height):
         self.frame = ttk.Notebook(
             parent,
-            padding=15,
+            padding=5,
             width=width,
         )
         self._sprite = None
