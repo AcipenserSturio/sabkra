@@ -3,8 +3,8 @@ import os
 import platform
 import pygame
 
-from .world import World
-from .scene import Scene
+from ..parser.world import World
+from ..pygame.scene import Scene
 
 
 class View:

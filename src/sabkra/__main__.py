@@ -1,2 +1,2 @@
-from .src.gui import Gui
+from .src.tk.gui import Gui
 Gui().run()

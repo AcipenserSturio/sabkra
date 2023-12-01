@@ -4,7 +4,6 @@ from pygame._sdl2 import Renderer, Texture, Window
 from pygame._sdl2 import error as SDL_error
 
 from .camera import Camera
-from .world import World
 from .mouse import Mouse
 from .sprite import Sprite
 
