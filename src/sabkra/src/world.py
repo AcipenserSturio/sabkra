@@ -36,7 +36,7 @@ class World:
     @classmethod
     def from_file(cls, f):
 
-        version = get_byte(f)
+        version = get_byte(f) - 128
         width = get_int(f)
         height = get_int(f)
         players = get_byte(f)
@@ -95,7 +95,7 @@ class World:
             for row in range(height)
         ]
 
-        self.scenario = Scenario.from_file(f)
+        self.scenario = Scenario.from_file(version, f)
 
         return self
 

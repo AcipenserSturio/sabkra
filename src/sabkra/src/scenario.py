@@ -26,7 +26,7 @@ class Scenario:
     promotions: list
 
     @classmethod
-    def from_file(cls, f):
+    def from_file(cls, version, f):
         for _ in range(68):
             get_byte(f)
         max_turns = get_int(f)
@@ -54,7 +54,7 @@ class Scenario:
         policies = get_string_array(f, length_policies)
         buildings = get_string_array(f, length_buildings)
         promotions = get_string_array(f, length_promotions)
-        units = [Unit.from_file(f) for _ in range(length_units)]
+        units = [Unit.from_file(version, f) for _ in range(length_units)]
         return cls(
             max_turns,
             start_year,
