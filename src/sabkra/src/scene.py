@@ -114,9 +114,9 @@ class Scene:
         for sprite in added_sprites:
             sprite.highlight = True
         self._brush = value
-        #
-        # for sprite in value:
-        #     sprite.terrain = "TERRAIN_SNOW"
+
+        for sprite in value:
+            sprite.terrain = "TERRAIN_SNOW"
 
         self.draw()
 

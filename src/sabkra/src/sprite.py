@@ -33,7 +33,6 @@ class Sprite:
         if self.terrain != value:
             self.tile.terrain_id = index
             self.rerender()
-            self.scene.draw()
 
     @property
     def elevation(self):
@@ -45,7 +44,6 @@ class Sprite:
         if self.elevation != value:
             self.tile.elevation_id = index
             self.rerender()
-            self.scene.draw()
 
     @property
     def feature(self):
@@ -57,7 +55,6 @@ class Sprite:
         if self.feature != value:
             self.tile.feature_id = index
             self.rerender()
-            self.scene.draw()
 
     @property
     def resource(self):
@@ -69,7 +66,6 @@ class Sprite:
         if self.resource != value:
             self.tile.resource_id = index
             self.rerender()
-            self.scene.draw()
 
     @property
     def continent(self):
@@ -81,7 +77,6 @@ class Sprite:
         if self.continent != value:
             self.tile.continent_id = index
             self.rerender()
-            self.scene.draw()
 
     @property
     def wonder(self):
@@ -93,7 +88,6 @@ class Sprite:
         if self.wonder != value:
             self.tile.wonder_id = index
             self.rerender()
-            self.scene.draw()
 
     # Draw
     def render(self):

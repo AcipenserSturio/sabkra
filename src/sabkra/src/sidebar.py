@@ -54,21 +54,27 @@ class Sidebar:
 
     def set_terr(self, value):
         self.sprite.terrain = value
+        self.sprite.scene.draw()
 
     def set_elev(self, value):
         self.sprite.elevation = value
+        self.sprite.scene.draw()
 
     def set_feat(self, value):
         self.sprite.feature = value
+        self.sprite.scene.draw()
 
     def set_reso(self, value):
         self.sprite.resource = value
+        self.sprite.scene.draw()
 
     def set_cont(self, value):
         self.sprite.continent = value
+        self.sprite.scene.draw()
 
     def set_wond(self, value):
         self.sprite.wonder = value
+        self.sprite.scene.draw()
 
     def update(self):
         self.plot["text"] = f"""Plot: {
