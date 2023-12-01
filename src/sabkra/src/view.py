@@ -12,6 +12,7 @@ class View:
             parent,
             width=width,
             height=height,
+            background="black",
         )
         os.environ["SDL_WINDOWID"] = str(self.frame.winfo_id())
         os.environ["SDL_VIDEODRIVER"] = (
