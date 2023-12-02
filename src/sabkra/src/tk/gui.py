@@ -15,6 +15,8 @@ class Gui:
     def __init__(self):
         self.window = tk.Tk()
         self.window.title("Sabkra - Civ 5 World previewer")
+        self.window.bind("<Escape>", self.on_close)
+        self.window.bind("<Control-w>", self.on_close)
 
         screen_width = self.window.winfo_screenwidth()
         screen_height = self.window.winfo_screenheight()
@@ -61,3 +63,6 @@ class Gui:
             command=self.select_file
         )
         return menu
+
+    def on_close(self, event):
+        self.window.destroy()
