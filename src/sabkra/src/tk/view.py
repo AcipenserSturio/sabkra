@@ -3,7 +3,7 @@ import os
 import platform
 import pygame
 
-from ..pygame.scene import WorldPygame
+from ..pygame.world import WorldPygame as World
 
 
 class View:
@@ -24,9 +24,9 @@ class View:
 
         if file_path:
             with open(file_path, "rb") as f:
-                world = WorldPygame.from_file(f, sidebar)
+                world = World.from_file(f, sidebar)
         else:
-            world = WorldPygame.blank(32, 20, sidebar)
+            world = World.blank(32, 20, sidebar)
 
         def on_click(event):
             world.set_current_tile_to_mouse((event.x, event.y))

@@ -7,7 +7,7 @@ from ..parser.world import World
 
 from .camera import Camera
 from .mouse import Mouse
-from .sprite import TilePygame
+from .tile import TilePygame as Tile
 
 
 background_colour = (0, 0, 0)
@@ -19,13 +19,13 @@ default_window_height = 1080
 class WorldPygame(World):
     @classmethod
     def from_file(cls, f, sidebar):
-        self = super().from_file(f, TilePygame)
+        self = super().from_file(f, Tile)
         self.init_scene(sidebar)
         return self
 
     @classmethod
     def blank(cls, width, height, sidebar):
-        self = super().blank(width, height, TilePygame)
+        self = super().blank(width, height, Tile)
         self.init_scene(sidebar)
         return self
 
