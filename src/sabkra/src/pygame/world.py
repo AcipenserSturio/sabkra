@@ -17,15 +17,17 @@ default_window_height = 1080
 
 
 class WorldPygame(World):
+    tile_class = Tile
+
     @classmethod
     def from_file(cls, f, sidebar):
-        self = super().from_file(f, Tile)
+        self = super().from_file(f)
         self.init_scene(sidebar)
         return self
 
     @classmethod
     def blank(cls, width, height, sidebar):
-        self = super().blank(width, height, Tile)
+        self = super().blank(width, height)
         self.init_scene(sidebar)
         return self
 

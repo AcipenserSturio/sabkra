@@ -17,9 +17,6 @@ class TilePygame(Tile):
     def __hash__(self):
         return (self.col, self.row).__hash__()
 
-    def __repr__(self):
-        return f"Sprite({self.col}, {self.row})"
-
     @property
     def highlight(self):
         return self._highlight

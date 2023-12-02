@@ -1,10 +1,11 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 
 from .utils import (
     get_byte,
     get_flags,
 )
-from .world import World
 
 
 @dataclass

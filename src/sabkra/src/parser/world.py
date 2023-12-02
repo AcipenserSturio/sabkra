@@ -9,6 +9,7 @@ from .utils import (
 )
 
 from .scenario import Scenario
+from .tile import Tile
 
 
 @dataclass
@@ -30,8 +31,10 @@ class World:
     elevation: list
     continent: list
 
+    tile_class = Tile
+
     @classmethod
-    def from_file(cls, f, tile_class):
+    def from_file(cls, f):
 
         version = get_byte(f) - 128
         width = get_int(f)
@@ -86,7 +89,7 @@ class World:
 
         self.tilemap = [
             [
-                tile_class.from_file(self, row, col, f)
+                cls.tile_class.from_file(self, row, col, f)
                 for col in range(width)
             ]
             for row in range(height)
@@ -97,7 +100,7 @@ class World:
         return self
 
     @classmethod
-    def blank(cls, width, height, tile_class):
+    def blank(cls, width, height):
         self = cls(
             version=12,  # or 140? unclear
             width=width,
@@ -197,7 +200,7 @@ class World:
 
         self.tilemap = [
             [
-                tile_class.blank(self, row, col)
+                cls.tile_class.blank(self, row, col)
                 for col in range(width)
             ]
             for row in range(height)
