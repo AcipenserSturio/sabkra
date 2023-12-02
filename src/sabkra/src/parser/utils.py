@@ -7,6 +7,10 @@ def get_int(f):
     return int.from_bytes(f.read(4), "little")
 
 
+def get_short(f):
+    return int.from_bytes(f.read(2), "little")
+
+
 def get_flags(f):
     return list(map(lambda x: True if x == "1" else False,
                     "{0:b}".format(get_byte(f)).zfill(8)))

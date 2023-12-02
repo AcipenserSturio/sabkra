@@ -35,7 +35,7 @@ class Unit:
         if version == 12:
             get_byte(f)
         for _ in range(64 if version == 11 else 32):
-            get_byte(f)  # Promotion data
+            get_byte(f)  # TODO: Promotion data
         return cls(
             name_id,
             xp,

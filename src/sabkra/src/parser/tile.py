@@ -131,7 +131,6 @@ class Tile:
         if neighbour := self.get_neighbour("ne"):
             if neighbour.river_sw:
                 river.append("river_ne")
-        # TODO: ne, nw, wx
         return river
 
     def neighbours(self):

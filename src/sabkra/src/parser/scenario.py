@@ -8,6 +8,7 @@ from .utils import (
     get_string_array,
 )
 from .unit import Unit
+from .city import City
 
 
 @dataclass
@@ -24,6 +25,8 @@ class Scenario:
     policies: list
     buildings: list
     promotions: list
+    units: list
+    cities: list
 
     @classmethod
     def from_file(cls, version, f):
@@ -55,6 +58,8 @@ class Scenario:
         buildings = get_string_array(f, length_buildings)
         promotions = get_string_array(f, length_promotions)
         units = [Unit.from_file(version, f) for _ in range(length_units)]
+        cities = [City.from_file(version, f) for _ in range(length_cities)]
+
         return cls(
             max_turns,
             start_year,
@@ -67,4 +72,6 @@ class Scenario:
             policies,
             buildings,
             promotions,
+            units,
+            cities,
         )
