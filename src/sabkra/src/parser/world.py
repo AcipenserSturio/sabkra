@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from dataclasses import dataclass
 
 from .utils import (
@@ -10,7 +8,6 @@ from .utils import (
     get_string_array,
 )
 
-from .tile import Tile
 from .scenario import Scenario
 
 
@@ -34,7 +31,7 @@ class World:
     continent: list
 
     @classmethod
-    def from_file(cls, f):
+    def from_file(cls, f, tile_class):
 
         version = get_byte(f) - 128
         width = get_int(f)
@@ -89,7 +86,7 @@ class World:
 
         self.tilemap = [
             [
-                Tile.from_file(self, row, col, f)
+                tile_class.from_file(self, row, col, f)
                 for col in range(width)
             ]
             for row in range(height)
@@ -100,7 +97,7 @@ class World:
         return self
 
     @classmethod
-    def blank(cls, width, height):
+    def blank(cls, width, height, tile_class):
         self = cls(
             version=12,  # or 140? unclear
             width=width,
@@ -200,7 +197,7 @@ class World:
 
         self.tilemap = [
             [
-                Tile.blank(self, row, col)
+                tile_class.blank(self, row, col)
                 for col in range(width)
             ]
             for row in range(height)

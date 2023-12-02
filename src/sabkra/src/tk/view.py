@@ -3,8 +3,7 @@ import os
 import platform
 import pygame
 
-from ..parser.world import World
-from ..pygame.scene import Scene
+from ..pygame.scene import WorldPygame
 
 
 class View:
@@ -20,49 +19,46 @@ class View:
             "windows" if platform.system() == "Windows" else "x11"
         )
 
-    def open_scene(self, file_path, sidebar):
-        with open(file_path, "rb") as f:
-            world = World.from_file(f)
-        self.run(Scene(world, sidebar))
-
-    def new_scene(self, sidebar):
-        world = World.blank(32, 20)
-        self.run(Scene(world, sidebar))
-
-    def run(self, sc):
+    def run(self, sidebar, file_path=None):
         pygame.init()
 
+        if file_path:
+            with open(file_path, "rb") as f:
+                world = WorldPygame.from_file(f, sidebar)
+        else:
+            world = WorldPygame.blank(32, 20, sidebar)
+
         def on_click(event):
-            sc.set_current_sprite_to_mouse((event.x, event.y))
+            world.set_current_tile_to_mouse((event.x, event.y))
 
         def on_click_drag(event):
-            sc.mouse.update(event.x, event.y)
-            sc.set_current_sprite_to_mouse((event.x, event.y))
+            world.mouse.update(event.x, event.y)
+            world.set_current_tile_to_mouse((event.x, event.y))
 
         def on_motion(event):
-            sc.mouse.update(event.x, event.y)
+            world.mouse.update(event.x, event.y)
 
         def on_drag(event):
-            sc.mouse.update(event.x, event.y)
-            sc.camera.drag(sc.mouse.vector())
+            world.mouse.update(event.x, event.y)
+            world.camera.drag(world.mouse.vector())
 
         def on_zoom(event):
             # zoom out
             if event.num == 5 or event.delta < 0:
-                sc.camera.clean_rescale(-1)
+                world.camera.clean_rescale(-1)
             # zoom in
             if event.num == 4 or event.delta > 0:
-                sc.camera.clean_rescale(1)
-            sc.draw()
+                world.camera.clean_rescale(1)
+            world.draw()
 
         self.frame.bind("<Button-1>", on_click)
         self.frame.bind("<B1-Motion>", on_click_drag)
         self.frame.bind("<B3-Motion>", on_drag)
         self.frame.bind("<Motion>", on_motion)
-        # Windows scroll
+        # Windows worldroll
         self.frame.bind("<MouseWheel>", on_zoom)
-        # X11 scroll
+        # X11 worldroll
         self.frame.bind("<Button-4>", on_zoom)
         self.frame.bind("<Button-5>", on_zoom)
 
-        sc.draw()
+        world.draw()

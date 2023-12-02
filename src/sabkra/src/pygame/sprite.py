@@ -1,18 +1,24 @@
+from dataclasses import dataclass
 import pygame
+
+from ..parser.tile import Tile
+
 
 image_tiling_width = 76
 image_tiling_height = 65
 image_tiling_height_full = 86
 
 
-class Sprite:
-    def __init__(self, scene, tile):
-        self.scene = scene
-        self.tile = tile
-        self.highlight = None
+@dataclass
+class TilePygame(Tile):
+    def __post_init__(self):
+        self._highlight = None
+
+    def __hash__(self):
+        return (self.col, self.row).__hash__()
 
     def __repr__(self):
-        return f"Sprite({self.tile.col}, {self.tile.row})"
+        return f"Sprite({self.col}, {self.row})"
 
     @property
     def highlight(self):
@@ -23,101 +29,77 @@ class Sprite:
         self._highlight = value
         self.rerender()
 
-    @property
-    def terrain(self):
-        return self.tile.get_terrain()
-
-    @terrain.setter
+    @Tile.terrain.setter
     def terrain(self, value):
-        index = self.tile.world.terrain.index(value) if value else 255
+        index = self.world.terrain.index(value) if value else 255
         if self.terrain != value:
-            self.tile.terrain_id = index
+            self.terrain_id = index
             self.rerender()
 
-    @property
-    def elevation(self):
-        return self.tile.get_elevation()
-
-    @elevation.setter
+    @Tile.elevation.setter
     def elevation(self, value):
-        index = self.tile.world.elevation.index(value) if value else 255
+        index = self.world.elevation.index(value) if value else 255
         if self.elevation != value:
-            self.tile.elevation_id = index
+            self.elevation_id = index
             self.rerender()
 
-    @property
-    def feature(self):
-        return self.tile.get_feature()
-
-    @feature.setter
+    @Tile.feature.setter
     def feature(self, value):
-        index = self.tile.world.feature.index(value) if value else 255
+        index = self.world.feature.index(value) if value else 255
         if self.feature != value:
-            self.tile.feature_id = index
+            self.feature_id = index
             self.rerender()
 
-    @property
-    def resource(self):
-        return self.tile.get_resource()
-
-    @resource.setter
+    @Tile.resource.setter
     def resource(self, value):
-        index = self.tile.world.resource.index(value) if value else 255
+        index = self.world.resource.index(value) if value else 255
         if self.resource != value:
-            self.tile.resource_id = index
+            self.resource_id = index
             self.rerender()
 
-    @property
-    def continent(self):
-        return self.tile.get_continent()
-
-    @continent.setter
+    @Tile.continent.setter
     def continent(self, value):
-        index = self.tile.world.continent.index(value) if value else 255
+        index = self.world.continent.index(value) if value else 255
         if self.continent != value:
-            self.tile.continent_id = index
+            self.continent_id = index
             self.rerender()
 
-    @property
-    def wonder(self):
-        return self.tile.get_wonder()
-
-    @wonder.setter
+    @Tile.wonder.setter
     def wonder(self, value):
-        index = self.tile.world.wonder.index(value) if value else 255
+        index = self.world.wonder.index(value) if value else 255
         if self.wonder != value:
-            self.tile.wonder_id = index
+            self.wonder_id = index
             self.rerender()
 
     # Draw
     def render(self):
         # Draw terrain
-        if terrain := self.get_image(self.tile.get_terrain()):
-            self.scene.canvas.blit(terrain, self.pos)
+        if terrain := self.get_image(self.terrain):
+            self.world.canvas.blit(terrain, self.pos)
         # Draw elevation
-        if elevation := self.get_image(self.tile.get_elevation()):
-            self.scene.canvas.blit(elevation, self.pos)
+        if elevation := self.get_image(self.elevation):
+            self.world.canvas.blit(elevation, self.pos)
         # Draw feature
-        if feature := self.get_image(self.tile.get_feature()):
-            self.scene.canvas.blit(feature, self.pos)
+        if feature := self.get_image(self.feature):
+            self.world.canvas.blit(feature, self.pos)
         # Draw feature
-        if resource := self.get_image(self.tile.get_resource()):
-            self.scene.canvas.blit(resource, self.pos)
+        if resource := self.get_image(self.resource):
+            self.world.canvas.blit(resource, self.pos)
         # Draw grid
-        # self.scene.canvas.blit(self.get_image("grid"), self.pos)
+        # self.world.canvas.blit(self.get_image("grid"), self.pos)
         # Draw river
-        for river in self.tile.get_river_state():
-            self.scene.canvas.blit(self.get_image(river), self.pos)
+        for river in self.get_river_state():
+            self.world.canvas.blit(self.get_image(river), self.pos)
         # Draw current tile selector
         if self.highlight:
-            self.scene.canvas.blit(self.get_image("selected"), self.pos)
+            self.world.canvas.blit(self.get_image("selected"), self.pos)
 
     def rerender(self):
-        if not self.scene.canvas:
+        if not self.world.canvas:
             return
         self.render()
-        self.scene.texture.update(
-            self.scene.canvas.subsurface(
+        self.world.texture.update(
+            self.world.canvas.subsurface(
                 self.x,
                 self.y,
                 image_tiling_width,
@@ -132,17 +114,17 @@ class Sprite:
         )
 
     def get_image(self, name):
-        return self.scene.images.get(name)
+        return self.world.images.get(name)
 
     @property
     def x(self):
-        return int(self.tile.col * image_tiling_width
-                   + self.tile.row % 2 * image_tiling_width / 2)
+        return int(self.col * image_tiling_width
+                   + self.row % 2 * image_tiling_width / 2)
 
     @property
     def y(self):
         return int(
-            (self.tile.world.height - self.tile.row) * image_tiling_height
+            (self.world.height - self.row) * image_tiling_height
         )
 
     @property

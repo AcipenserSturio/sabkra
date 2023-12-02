@@ -17,6 +17,7 @@ class Gui:
         self.window.title("Sabkra - Civ 5 World previewer")
         self.window.bind("<Escape>", self.on_close)
         self.window.bind("<Control-w>", self.on_close)
+        self.window.bind("<Control-q>", self.on_close)
 
         screen_width = self.window.winfo_screenwidth()
         screen_height = self.window.winfo_screenheight()
@@ -39,11 +40,11 @@ class Gui:
             ),
         )
         self.window.title(f"Sabkra - {filename}")
-        self.view.open_scene(filename, self.sidebar)
+        self.view.run(self.sidebar, filename)
 
     def new_file(self):
         self.window.title("Sabkra - new file")
-        self.view.new_scene(self.sidebar)
+        self.view.run(self.sidebar)
 
     def run(self):
         self.view.frame.pack(side="left", fill="both")

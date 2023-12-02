@@ -18,12 +18,12 @@ class Camera:
 
     def drag_to_centre(self, window_width, window_height):
         # Position camera by default
-        middle_sprite = self.scene.get_sprite(self.scene.world.get_tile(
-            self.scene.world.height // 2,
-            self.scene.world.width // 2,
-        ))
-        centre_x = middle_sprite.x - window_width / 2
-        centre_y = middle_sprite.y - window_height / 2
+        middle_tile = self.scene.get_tile(
+            self.scene.height // 2,
+            self.scene.width // 2,
+        )
+        centre_x = middle_tile.x - window_width / 2
+        centre_y = middle_tile.y - window_height / 2
         self.drag((centre_x, centre_y))
 
     def clean_rescale(self, direction):

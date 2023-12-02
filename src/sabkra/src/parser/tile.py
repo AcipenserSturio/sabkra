@@ -1,11 +1,10 @@
-from __future__ import annotations
-
 from dataclasses import dataclass
 
 from .utils import (
     get_byte,
     get_flags,
 )
+from .world import World
 
 
 @dataclass
@@ -78,35 +77,40 @@ class Tile:
             resource_amount=255,
         )
 
-
-    def get_terrain(self):
+    @property
+    def terrain(self):
         if not self.terrain_id == 255:
             return self.world.terrain[self.terrain_id]
         return ""
 
-    def get_resource(self):
-        if not self.resource_id == 255:
-            return self.world.resource[self.resource_id]
-        return ""
-
-    def get_feature(self):
-        if not self.feature_id == 255:
-            return self.world.feature[self.feature_id]
-        return ""
-
-    def get_elevation(self):
+    @property
+    def elevation(self):
         if not self.elevation_id == 255:
             return self.world.elevation[self.elevation_id]
         return ""
 
-    def get_wonder(self):
-        if not self.wonder_id == 255:
-            return self.world.wonder[self.wonder_id]
+    @property
+    def feature(self):
+        if not self.feature_id == 255:
+            return self.world.feature[self.feature_id]
         return ""
 
-    def get_continent(self):
+    @property
+    def resource(self):
+        if not self.resource_id == 255:
+            return self.world.resource[self.resource_id]
+        return ""
+
+    @property
+    def continent(self):
         if not self.continent_id == 255:
             return self.world.continent[self.continent_id]
+        return ""
+
+    @property
+    def wonder(self):
+        if not self.wonder_id == 255:
+            return self.world.wonder[self.wonder_id]
         return ""
 
     def get_river_state(self):
