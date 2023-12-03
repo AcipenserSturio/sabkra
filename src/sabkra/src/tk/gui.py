@@ -8,7 +8,7 @@ sidebar_width = 300
 
 
 def default_directory():
-    return r"~/.local/share/Aspyr/Sid Meier's Civilization 5/MODS/earth 2014 (v 2)/"
+    return r"./tests"
 
 
 class Gui:

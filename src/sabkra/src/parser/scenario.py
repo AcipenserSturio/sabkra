@@ -38,6 +38,7 @@ class Scenario:
 
     @classmethod
     def from_file(cls, version, f):
+        print(f"version {version}")
         for _ in range(68):
             get_byte(f)
         max_turns = get_int(f)
@@ -67,10 +68,8 @@ class Scenario:
         policies = get_string_array(f, length_policies)
         buildings = get_string_array(f, length_buildings)
         promotions = get_string_array(f, length_promotions)
-        print(promotions)
         units = []
         if length_units != -1:
-            print(length_units)
             # ????
             get_int(f)
             units = [Unit.from_file(version, f) for _ in range(length_units)]
@@ -82,15 +81,17 @@ class Scenario:
             cities = [City.from_file(version, f) for _ in range(length_cities)]
 
         victories = get_string_array(f, length_victories)
-        print(victories)
         game_options = get_string_array(f, length_game_options)
 
+        print("teams:", team_count)
+        print("players:", player_count + city_state_count)
         # Unknown buffer:
-        # size  - map name            (size)     bits per tile  remainder -1)/8
-        # 86177 - earth2014_huge_2    (80, 128)  8.41572265625  4257      532
-        # 84857 - earth2014_huge_1    (80, 128)  8.28681640625  2937      367
-        # 34057 - earth2014_standard  (52, 80)   8.18677884615  777       97
-        # 34057 - earth2014_sta...eej (52, 80)   8.18677884615  777       97
+        # size  - map name            (size)     players x*y*pl remain
+        # 86177 - earth2014_huge_2    (80, 128)  62      79360  6817
+
+        # 84857 - earth2014_huge_1    (80, 128)  61      78080  6777
+        # 34057 - earth2014_standard  (52, 80)   46      23920  10137
+        # 34057 - earth2014_sta...eej (52, 80)   46      23920  10137
         # 0     - blank
 
         unk = get_buffer(f, 0)
