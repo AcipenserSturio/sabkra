@@ -44,6 +44,7 @@ class Scenario:
         get_int(f)
         start_year = get_int(f)
         player_count = get_byte(f)
+
         city_state_count = get_byte(f)
         team_count = get_byte(f)
         get_byte(f)
@@ -66,17 +67,22 @@ class Scenario:
         policies = get_string_array(f, length_policies)
         buildings = get_string_array(f, length_buildings)
         promotions = get_string_array(f, length_promotions)
-        # ????
-        get_int(f)
-        units = [Unit.from_file(version, f)
-                 for _ in range(length_units)]
+        print(promotions)
+        units = []
+        if length_units != -1:
+            print(length_units)
+            # ????
+            get_int(f)
+            units = [Unit.from_file(version, f) for _ in range(length_units)]
 
-        # ????
-        get_int(f)
-        cities = [City.from_file(version, f)
-                  for _ in range(length_cities)]
+        cities = []
+        if length_cities != -1:
+            # ????
+            get_int(f)
+            cities = [City.from_file(version, f) for _ in range(length_cities)]
 
         victories = get_string_array(f, length_victories)
+        print(victories)
         game_options = get_string_array(f, length_game_options)
 
         # Unknown buffer:
@@ -85,8 +91,9 @@ class Scenario:
         # 84857 - earth2014_huge_1    (80, 128)  8.28681640625  2937      367
         # 34057 - earth2014_standard  (52, 80)   8.18677884615  777       97
         # 34057 - earth2014_sta...eej (52, 80)   8.18677884615  777       97
+        # 0     - blank
 
-        unk = get_buffer(f, 34057)
+        unk = get_buffer(f, 0)
 
         teams = [get_buffered_string(f, 64) for _ in range(team_count)]
         players = [Player.from_file(f)
