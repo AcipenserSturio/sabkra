@@ -17,7 +17,11 @@ def get_flags(f):
 
 
 def get_buffer(f, length):
-    return str(f.read(length)).split("\x00")[0]
+    return f.read(length)
+
+
+def get_buffered_string(f, length):
+    return get_buffer(f, length).split(b"\0")[0].decode()
 
 
 def get_string(f, length):

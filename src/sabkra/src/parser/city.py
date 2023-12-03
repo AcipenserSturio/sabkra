@@ -7,6 +7,7 @@ from .utils import (
     get_short,
     get_string,
     get_string_array,
+    get_buffer,
 )
 
 
@@ -24,14 +25,14 @@ class City:
     @classmethod
     def from_file(cls, version, f):
         # struct = "".join(map(chr, [get_byte(f) for _ in range(84)]))
-        name = "".join(map(chr, [get_byte(f) for _ in range(64)]))
+        name = get_buffer(f, 64)
         owner_id = get_byte(f)
         settings = get_byte(f)
         population = get_short(f)
         health = get_int(f)
         # # for _ in range(64 if version == 12 else 32):
         # #     get_byte(f)  # TODO: Building data
-        building_data = "".join(map(chr, [get_byte(f) for _ in range(64 if version == 12 else 32)]))
+        building_data = get_buffer(f, 64 if version == 12 else 32)
         # unk = "".join(map(chr, [get_byte(f) for _ in range(64)]))
         return cls(
             # struct,

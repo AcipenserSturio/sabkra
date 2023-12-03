@@ -6,6 +6,8 @@ from .utils import (
     get_int,
     get_string,
     get_string_array,
+    get_buffer,
+    get_buffered_string,
 )
 from .unit import Unit
 from .city import City
@@ -30,7 +32,8 @@ class Scenario:
     cities: list
     victories: list
     game_options: list
-    teams: str
+    unk: str
+    teams: list
     players: list
 
     @classmethod
@@ -65,17 +68,29 @@ class Scenario:
         promotions = get_string_array(f, length_promotions)
         # ????
         get_int(f)
-        units = [Unit.from_file(version, f) for _ in range(length_units)]
+        units = [Unit.from_file(version, f)
+                 for _ in range(length_units)]
 
         # ????
         get_int(f)
-        cities = [City.from_file(version, f) for _ in range(length_cities)]
+        cities = [City.from_file(version, f)
+                  for _ in range(length_cities)]
 
         victories = get_string_array(f, length_victories)
         game_options = get_string_array(f, length_game_options)
 
-        teams = "".join(map(chr, [get_byte(f) for _ in range(64)]))
-        players = [Player.from_file(f) for _ in range(player_count + city_state_count)]
+        # Unknown buffer:
+        # size  - map name            (size)     bits per tile  remainder -1)/8
+        # 86177 - earth2014_huge_2    (80, 128)  8.41572265625  4257      532
+        # 84857 - earth2014_huge_1    (80, 128)  8.28681640625  2937      367
+        # 34057 - earth2014_standard  (52, 80)   8.18677884615  777       97
+        # 34057 - earth2014_sta...eej (52, 80)   8.18677884615  777       97
+
+        unk = get_buffer(f, 34057)
+
+        teams = [get_buffered_string(f, 64) for _ in range(team_count)]
+        players = [Player.from_file(f)
+                   for _ in range(player_count + city_state_count)]
 
         self = cls(
             max_turns,
@@ -93,6 +108,7 @@ class Scenario:
             cities,
             victories,
             game_options,
+            unk,
             teams,
             players,
         )
