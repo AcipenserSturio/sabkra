@@ -45,9 +45,10 @@ class Scenario:
         length_policies = get_int(f)
         length_buildings = get_int(f)
         length_promotions = get_int(f)
-        length_units = get_int(f)
+
+        length_units = (get_int(f) - 4) // (84 if version == 12 else 48)
         length_unit_names = get_int(f)
-        length_cities = get_int(f)
+        length_cities = (get_int(f) - 4) // (136 if version == 12 else 104)
         length_victories = get_int(f)
         length_game_options = get_int(f)
 
@@ -57,7 +58,12 @@ class Scenario:
         policies = get_string_array(f, length_policies)
         buildings = get_string_array(f, length_buildings)
         promotions = get_string_array(f, length_promotions)
+        # ????
+        get_int(f)
         units = [Unit.from_file(version, f) for _ in range(length_units)]
+
+        # ????
+        get_int(f)
         cities = [City.from_file(version, f) for _ in range(length_cities)]
 
         return cls(
