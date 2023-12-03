@@ -9,6 +9,7 @@ from .utils import (
 )
 from .unit import Unit
 from .city import City
+from .player import Player
 
 
 @dataclass
@@ -27,6 +28,10 @@ class Scenario:
     promotions: list
     units: list
     cities: list
+    victories: list
+    game_options: list
+    teams: str
+    players: list
 
     @classmethod
     def from_file(cls, version, f):
@@ -66,7 +71,13 @@ class Scenario:
         get_int(f)
         cities = [City.from_file(version, f) for _ in range(length_cities)]
 
-        return cls(
+        victories = get_string_array(f, length_victories)
+        game_options = get_string_array(f, length_game_options)
+
+        teams = "".join(map(chr, [get_byte(f) for _ in range(64)]))
+        players = [Player.from_file(f) for _ in range(player_count + city_state_count)]
+
+        self = cls(
             max_turns,
             start_year,
             player_count,
@@ -80,4 +91,16 @@ class Scenario:
             promotions,
             units,
             cities,
+            victories,
+            game_options,
+            teams,
+            players,
         )
+
+        with open("log.txt", "w") as f:
+            print(self, file=f)
+        with open("log.txt", "r") as f:
+            text = f.read()
+        with open("log.txt", "w") as f:
+            print(text.replace(", ", ",\n"), file=f)
+        return self

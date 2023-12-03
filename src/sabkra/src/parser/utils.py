@@ -16,6 +16,10 @@ def get_flags(f):
                     "{0:b}".format(get_byte(f)).zfill(8)))
 
 
+def get_buffer(f, length):
+    return str(f.read(length)).split("\x00")[0]
+
+
 def get_string(f, length):
     string = ""
     for i in range(length):
