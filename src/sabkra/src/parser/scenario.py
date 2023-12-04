@@ -46,6 +46,8 @@ class Scenario:
 
     @classmethod
     def from_file(cls, world, version, width, height, f):
+        print("version", version)
+
         for _ in range(68):
             get_byte(f)
         max_turns = get_int(f)
@@ -182,7 +184,7 @@ class Scenario:
     def civs(self):
         return (
             [player.civ_type for player in self.major_civs]
-            + [""] * 10
+            + [""] * 10  # Works in Earth 2014. Doesn't work in Mongol Scenario
             + [player.civ_type for player in self.minor_civs]
         )
 
