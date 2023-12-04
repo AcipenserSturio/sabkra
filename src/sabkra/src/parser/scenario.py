@@ -42,6 +42,7 @@ class Scenario:
     major_civs: list
     minor_civs: list
     improvements: list
+    route_types: list
 
     @classmethod
     def from_file(cls, world, version, width, height, f):
@@ -129,6 +130,8 @@ class Scenario:
             for row in range(height)
         ]
 
+        route_types = ["Road", "Railroad"]
+
         self = cls(
             world,
             max_turns,
@@ -154,6 +157,7 @@ class Scenario:
             major_civs,
             minor_civs,
             improvements,
+            route_types,
         )
 
         # with open("log.txt", "w") as f:

@@ -29,6 +29,7 @@ class Sidebar:
         self.wond = Dropdown(self.edit_tab, self.set_wond, "Wonder")
         self.impr = Dropdown(self.edit_tab, self.set_impr, "Improvement")
         self.ownr = Dropdown(self.edit_tab, self.set_ownr, "Owner")
+        self.road = Dropdown(self.edit_tab, self.set_road, "Road")
 
         self.frame.add(
             self.edit_tab,
@@ -92,6 +93,10 @@ class Sidebar:
         self.tile.improvement.civ = value
         # self.world.draw()
 
+    def set_road(self, value):
+        self.tile.improvement.road = value
+        # self.world.draw()
+
     def update(self):
         self.plot["text"] = f"""Plot: {
             self.tile.row, self.tile.col
@@ -128,4 +133,8 @@ class Sidebar:
         self.ownr.update(
             self.tile.improvement.civ,
             ["", *self.world.scenario.civs]
+        )
+        self.road.update(
+            self.tile.improvement.road,
+            ["", *self.world.scenario.route_types]
         )
