@@ -95,7 +95,7 @@ class World:
             for row in range(height)
         ]
 
-        self.scenario = Scenario.from_file(version, f)
+        self.scenario = Scenario.from_file(version, width, height, f)
 
         return self
 

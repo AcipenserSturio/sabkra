@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from math import ceil
 
 from .utils import (
     get_byte,
@@ -35,11 +36,12 @@ class Scenario:
     game_options: list
     diplomacy: list
     unk: bytes
+    revealed: list
     teams: list
     players: list
 
     @classmethod
-    def from_file(cls, version, f):
+    def from_file(cls, version, width, height, f):
         print(f"version {version}")
         for _ in range(68):
             get_byte(f)
@@ -98,17 +100,27 @@ class Scenario:
         # print("players:", player_count + city_state_count)
         # Unknown buffer:
         # size  - map name            (size)     players teams diplo -diplo  -revl
-        # 86177 - earth2014_huge_2    (80, 128)  62      62    237   85940   6580
-        # 84857 - earth2014_huge_1    (80, 128)  61      61    229   84628   6548
-        # 34057 - earth2014_standard  (52, 80)   46      53    173   33884   6324
-        # 34057 - earth2014_sta...eej (52, 80)   46      53    173   33884   6324
+        # 86177 - earth2014_huge_2    (80, 128)  62      62    237   85940   5632
+        # 84857 - earth2014_huge_1    (80, 128)  61      61    229   84628   5632
+        # 34057 - earth2014_standard  (52, 80)   46      53    173   33884   5632
+        # 34057 - earth2014_sta...eej (52, 80)   46      53    173   33884   5632
         # 0     - blank
 
-        from math import ceil
+
         length_diplo = ceil((team_count * (team_count - 1) // 2) / 8)
+        print("diplomacy", length_diplo)
         diplomacy = [get_buffer(f, length_diplo) for _ in range(5)]
 
-        unk = get_buffer(f, 84628)
+        length_unk = 5632
+        print("unk", length_unk)
+        unk = get_buffer(f, length_unk)
+
+        length_revealed = ceil(width * height / 8)
+        print("revealed", length_revealed)
+        revealed = [get_buffer(f, length_revealed) for _ in range(team_count)]
+
+        print("sum unk",
+              length_diplo*5 + length_unk + length_revealed*team_count)
 
         teams = [get_buffered_string(f, 64) for _ in range(team_count)]
         players = [Player.from_file(f)
@@ -133,6 +145,7 @@ class Scenario:
             game_options,
             diplomacy,
             unk,
+            revealed,
             teams,
             players,
         )
