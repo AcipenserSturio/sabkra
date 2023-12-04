@@ -3,9 +3,7 @@ from math import ceil
 
 from .utils import (
     get_byte,
-    get_flags,
     get_int,
-    get_string,
     get_string_array,
     get_buffer,
     get_buffered_string,

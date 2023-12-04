@@ -5,8 +5,6 @@ from .utils import (
     get_flags,
     get_int,
     get_short,
-    get_string,
-    get_string_array,
 )
 
 
