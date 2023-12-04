@@ -78,6 +78,8 @@ class WorldPygame(World):
         self.add_image("MOUNTAIN", "./src/sabkra/assets/mountain.png")
         self.add_image("HILL", "./src/sabkra/assets/hill.png")
 
+        self.add_image("city", "./src/sabkra/assets/city.png")
+
         self.add_image("river_nw", "./src/sabkra/assets/rivers/nw.png")
         self.add_image("river_w", "./src/sabkra/assets/rivers/w.png")
         self.add_image("river_sw", "./src/sabkra/assets/rivers/sw.png")

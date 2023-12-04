@@ -143,22 +143,28 @@ class Tile:
         road = []
         road_type = "road" if self.improvement.route_type == 0 else "railroad"
         if neighbour := self.get_neighbour("w"):
-            if neighbour.improvement.route_type != -1:
+            if (neighbour.improvement.route_type != -1
+                    or neighbour.improvement.city_id != -1):
                 road.append(f"{road_type}_w")
         if neighbour := self.get_neighbour("nw"):
-            if neighbour.improvement.route_type != -1:
+            if (neighbour.improvement.route_type != -1
+                    or neighbour.improvement.city_id != -1):
                 road.append(f"{road_type}_nw")
         if neighbour := self.get_neighbour("ne"):
-            if neighbour.improvement.route_type != -1:
+            if (neighbour.improvement.route_type != -1
+                    or neighbour.improvement.city_id != -1):
                 road.append(f"{road_type}_ne")
         if neighbour := self.get_neighbour("e"):
-            if neighbour.improvement.route_type != -1:
+            if (neighbour.improvement.route_type != -1
+                    or neighbour.improvement.city_id != -1):
                 road.append(f"{road_type}_e")
         if neighbour := self.get_neighbour("se"):
-            if neighbour.improvement.route_type != -1:
+            if (neighbour.improvement.route_type != -1
+                    or neighbour.improvement.city_id != -1):
                 road.append(f"{road_type}_se")
         if neighbour := self.get_neighbour("sw"):
-            if neighbour.improvement.route_type != -1:
+            if (neighbour.improvement.route_type != -1
+                    or neighbour.improvement.city_id != -1):
                 road.append(f"{road_type}_sw")
         if not road:
             road.append(f"{road_type}_point")

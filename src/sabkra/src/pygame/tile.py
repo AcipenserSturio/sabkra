@@ -90,6 +90,9 @@ class TilePygame(Tile):
         # Draw road
         for road in self.get_road_state():
             self.world.canvas.blit(self.get_image(road), self.pos)
+        # Draw city
+        if self.improvement.city_id != -1:
+            self.world.canvas.blit(self.get_image("city"), self.pos)
         # Draw current tile selector
         if self.highlight:
             self.world.canvas.blit(self.get_image("selected"), self.pos)
