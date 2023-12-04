@@ -74,14 +74,32 @@ class WorldPygame(World):
         self.add_image("selected", "./src/sabkra/assets/selected.png")
         self.add_image("neighbour", "./src/sabkra/assets/neighbour.png")
         self.add_image("grid", "./src/sabkra/assets/grid.png")
+
         self.add_image("MOUNTAIN", "./src/sabkra/assets/mountain.png")
         self.add_image("HILL", "./src/sabkra/assets/hill.png")
+
         self.add_image("river_nw", "./src/sabkra/assets/rivers/nw.png")
         self.add_image("river_w", "./src/sabkra/assets/rivers/w.png")
         self.add_image("river_sw", "./src/sabkra/assets/rivers/sw.png")
         self.add_image("river_ne", "./src/sabkra/assets/rivers/ne.png")
         self.add_image("river_e", "./src/sabkra/assets/rivers/e.png")
         self.add_image("river_se", "./src/sabkra/assets/rivers/se.png")
+
+        self.add_image("road_nw", "./src/sabkra/assets/roads/nw.png")
+        self.add_image("road_w", "./src/sabkra/assets/roads/w.png")
+        self.add_image("road_sw", "./src/sabkra/assets/roads/sw.png")
+        self.add_image("road_ne", "./src/sabkra/assets/roads/ne.png")
+        self.add_image("road_e", "./src/sabkra/assets/roads/e.png")
+        self.add_image("road_se", "./src/sabkra/assets/roads/se.png")
+        self.add_image("road_point", "./src/sabkra/assets/roads/point.png")
+
+        self.add_image("railroad_nw", "./src/sabkra/assets/railroads/nw.png")
+        self.add_image("railroad_w", "./src/sabkra/assets/railroads/w.png")
+        self.add_image("railroad_sw", "./src/sabkra/assets/railroads/sw.png")
+        self.add_image("railroad_ne", "./src/sabkra/assets/railroads/ne.png")
+        self.add_image("railroad_e", "./src/sabkra/assets/railroads/e.png")
+        self.add_image("railroad_se", "./src/sabkra/assets/railroads/se.png")
+        self.add_image("railroad_point", "./src/sabkra/assets/railroads/point.png")
 
     # Current tile
     @property

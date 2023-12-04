@@ -87,6 +87,9 @@ class TilePygame(Tile):
         # Draw river
         for river in self.get_river_state():
             self.world.canvas.blit(self.get_image(river), self.pos)
+        # Draw road
+        for road in self.get_road_state():
+            self.world.canvas.blit(self.get_image(road), self.pos)
         # Draw current tile selector
         if self.highlight:
             self.world.canvas.blit(self.get_image("selected"), self.pos)

@@ -96,7 +96,10 @@ class Sidebar:
 
     def set_road(self, value):
         self.tile.improvement.road = value
-        # self.world.draw()
+        self.tile.rerender()
+        for neighbour in self.tile.neighbours():
+            neighbour.rerender()
+        self.world.draw()
 
     def set_rown(self, value):
         self.tile.improvement.route_owner = value

@@ -137,6 +137,33 @@ class Tile:
                 river.append("river_ne")
         return river
 
+    def get_road_state(self):
+        if self.improvement.route_type == -1:
+            return []
+        road = []
+        road_type = "road" if self.improvement.route_type == 0 else "railroad"
+        if neighbour := self.get_neighbour("w"):
+            if neighbour.improvement.route_type != -1:
+                road.append(f"{road_type}_w")
+        if neighbour := self.get_neighbour("nw"):
+            if neighbour.improvement.route_type != -1:
+                road.append(f"{road_type}_nw")
+        if neighbour := self.get_neighbour("ne"):
+            if neighbour.improvement.route_type != -1:
+                road.append(f"{road_type}_ne")
+        if neighbour := self.get_neighbour("e"):
+            if neighbour.improvement.route_type != -1:
+                road.append(f"{road_type}_e")
+        if neighbour := self.get_neighbour("se"):
+            if neighbour.improvement.route_type != -1:
+                road.append(f"{road_type}_se")
+        if neighbour := self.get_neighbour("sw"):
+            if neighbour.improvement.route_type != -1:
+                road.append(f"{road_type}_sw")
+        if not road:
+            road.append(f"{road_type}_point")
+        return road
+
     def neighbours(self):
         return [tile for tile in [
             self.get_neighbour("w"),
