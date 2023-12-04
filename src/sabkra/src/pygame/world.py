@@ -99,7 +99,7 @@ class WorldPygame(World):
         if self.sidebar:
             self.sidebar.tile = tile
 
-        self.brush = self.get_tiles_in_radius(self.current_tile, 11)
+        self.brush = self.get_tiles_in_radius(self.current_tile, 0)
         self.draw()
 
     @property
@@ -116,8 +116,8 @@ class WorldPygame(World):
             tile.highlight = True
         self._brush = value
 
-        for tile in value:
-            tile.terrain = "TERRAIN_SNOW"
+        # for tile in value:
+        #     tile.terrain = "TERRAIN_SNOW"
 
         self.draw()
 
