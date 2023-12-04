@@ -8,6 +8,7 @@ from .utils import (
     get_string,
     get_string_array,
     get_buffer,
+    get_buffered_string,
 )
 
 
@@ -25,7 +26,7 @@ class City:
     @classmethod
     def from_file(cls, version, f):
         # struct = "".join(map(chr, [get_byte(f) for _ in range(84)]))
-        name = get_buffer(f, 64)
+        name = get_buffered_string(f, 64)
         owner_id = get_byte(f)
         settings = get_byte(f)
         population = get_short(f)

@@ -33,7 +33,8 @@ class Scenario:
     cities: list
     victories: list
     game_options: list
-    unk: str
+    diplomacy: list
+    unk: bytes
     teams: list
     players: list
 
@@ -49,6 +50,8 @@ class Scenario:
 
         city_state_count = get_byte(f)
         team_count = get_byte(f)
+
+        print(f"teams {team_count}")
         get_byte(f)
         length_improvs = get_int(f)
         length_unit_types = get_int(f)
@@ -94,15 +97,18 @@ class Scenario:
         # print("teams:", team_count)
         # print("players:", player_count + city_state_count)
         # Unknown buffer:
-        # size  - map name            (size)     players x*y*pl remain
-        # 86177 - earth2014_huge_2    (80, 128)  62      79360  6817
-
-        # 84857 - earth2014_huge_1    (80, 128)  61      78080  6777
-        # 34057 - earth2014_standard  (52, 80)   46      23920  10137
-        # 34057 - earth2014_sta...eej (52, 80)   46      23920  10137
+        # size  - map name            (size)     players teams diplo -diplo  -revl
+        # 86177 - earth2014_huge_2    (80, 128)  62      62    237   85940   6580
+        # 84857 - earth2014_huge_1    (80, 128)  61      61    229   84628   6548
+        # 34057 - earth2014_standard  (52, 80)   46      53    173   33884   6324
+        # 34057 - earth2014_sta...eej (52, 80)   46      53    173   33884   6324
         # 0     - blank
 
-        unk = get_buffer(f, 86177)
+        from math import ceil
+        length_diplo = ceil((team_count * (team_count - 1) // 2) / 8)
+        diplomacy = [get_buffer(f, length_diplo) for _ in range(5)]
+
+        unk = get_buffer(f, 84628)
 
         teams = [get_buffered_string(f, 64) for _ in range(team_count)]
         players = [Player.from_file(f)
@@ -125,6 +131,7 @@ class Scenario:
             cities,
             victories,
             game_options,
+            diplomacy,
             unk,
             teams,
             players,
