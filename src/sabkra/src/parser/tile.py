@@ -67,50 +67,50 @@ class Tile:
             row=row,
             col=col,
             terrain_id=6,  # TERRAIN_OCEAN
-            resource_id=255,
-            feature_id=255,
+            resource_id=-1,
+            feature_id=-1,
             river_sw=False,
             river_se=False,
             river_e=False,
             elevation_id=0,  # FLAT
             continent_id=0,  # None
-            wonder_id=255,
-            resource_amount=255,
+            wonder_id=-1,
+            resource_amount=-1,
         )
 
     @property
     def terrain(self):
-        if not self.terrain_id == 255:
+        if not self.terrain_id == -1:
             return self.world.terrain[self.terrain_id]
         return ""
 
     @property
     def elevation(self):
-        if not self.elevation_id == 255:
+        if not self.elevation_id == -1:
             return self.world.elevation[self.elevation_id]
         return ""
 
     @property
     def feature(self):
-        if not self.feature_id == 255:
+        if not self.feature_id == -1:
             return self.world.feature[self.feature_id]
         return ""
 
     @property
     def resource(self):
-        if not self.resource_id == 255:
+        if not self.resource_id == -1:
             return self.world.resource[self.resource_id]
         return ""
 
     @property
     def continent(self):
-        if not self.continent_id == 255:
+        if not self.continent_id == -1:
             return self.world.continent[self.continent_id]
         return ""
 
     @property
     def wonder(self):
-        if not self.wonder_id == 255:
+        if not self.wonder_id == -1:
             return self.world.wonder[self.wonder_id]
         return ""
 

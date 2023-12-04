@@ -1,14 +1,17 @@
 # Reading bytes as variables from file
 def get_byte(f):
-    return int.from_bytes(f.read(1), "little")
-
-
-def get_int(f):
-    return int.from_bytes(f.read(4), "little")
+    value = int.from_bytes(f.read(1), "little")
+    return -1 if value == 255 else value
 
 
 def get_short(f):
-    return int.from_bytes(f.read(2), "little")
+    value = int.from_bytes(f.read(2), "little")
+    return -1 if value == 65535 else value
+
+
+def get_int(f):
+    value = int.from_bytes(f.read(4), "little")
+    return -1 if value == 4294967295 else value
 
 
 def get_flags(f):

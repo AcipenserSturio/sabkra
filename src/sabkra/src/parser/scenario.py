@@ -44,8 +44,6 @@ class Scenario:
 
     @classmethod
     def from_file(cls, version, width, height, f):
-        print(f"version {version}")
-        print(f"max size {width}x{height}")
         for _ in range(68):
             get_byte(f)
         max_turns = get_int(f)
@@ -56,7 +54,6 @@ class Scenario:
         city_state_count = get_byte(f)
         team_count = get_byte(f)
 
-        print(f"teams {team_count}")
         get_byte(f)
         length_improvs = get_int(f)
         length_unit_types = get_int(f)
@@ -110,18 +107,12 @@ class Scenario:
         # 0     - blank
 
         length_diplo = ceil((team_count * (team_count - 1) // 2) / 8)
-        print("diplomacy", length_diplo*5)
         diplomacy = [get_buffer(f, length_diplo) for _ in range(5)]
 
-        print("unk", 256 * player_count)
         unk = [get_buffer(f, 256) for _ in range(player_count)]
 
         length_revealed = ceil(width * height * team_count / 8)
-        print("revealed", length_revealed)
         revealed = get_buffer(f, length_revealed)
-
-        print("sum unk",
-              length_diplo*5 + 256*player_count + length_revealed)
 
         teams = [get_buffered_string(f, 64) for _ in range(team_count)]
         players = [Player.from_file(f)
@@ -160,10 +151,11 @@ class Scenario:
             improvements,
         )
 
-        with open("log.txt", "w") as f:
-            print(self, file=f)
-        with open("log.txt", "r") as f:
-            text = f.read()
-        with open("log.txt", "w") as f:
-            print(text.replace(", ", ",\n"), file=f)
+        # with open("log.txt", "w") as f:
+        #     print(self, file=f)
+        # with open("log.txt", "r") as f:
+        #     text = f.read()
+        # with open("log.txt", "w") as f:
+        #     print(text.replace(", ", ",\n"), file=f)
+
         return self
