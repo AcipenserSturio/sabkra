@@ -29,6 +29,7 @@ class Scenario:
     buildings: list
     promotions: list
     units: list
+    unit_names: list
     cities: list
     victories: list
     game_options: list
@@ -57,7 +58,7 @@ class Scenario:
         length_promotions = get_int(f)
 
         length_units = (get_int(f) - 4) // (84 if version == 12 else 48)
-        length_unit_names = get_int(f)
+        length_unit_names = (get_int(f) - 4) // 64
         length_cities = (get_int(f) - 4) // (136 if version == 12 else 104)
         length_victories = get_int(f)
         length_game_options = get_int(f)
@@ -68,11 +69,18 @@ class Scenario:
         policies = get_string_array(f, length_policies)
         buildings = get_string_array(f, length_buildings)
         promotions = get_string_array(f, length_promotions)
+
         units = []
         if length_units != -1:
             # ????
             get_int(f)
             units = [Unit.from_file(version, f) for _ in range(length_units)]
+
+        unit_names = []
+        if length_unit_names != -1:
+            get_int(f)
+            unit_names = [get_buffered_string(f, 64)
+                          for _ in range(length_unit_names)]
 
         cities = []
         if length_cities != -1:
@@ -83,8 +91,8 @@ class Scenario:
         victories = get_string_array(f, length_victories)
         game_options = get_string_array(f, length_game_options)
 
-        print("teams:", team_count)
-        print("players:", player_count + city_state_count)
+        # print("teams:", team_count)
+        # print("players:", player_count + city_state_count)
         # Unknown buffer:
         # size  - map name            (size)     players x*y*pl remain
         # 86177 - earth2014_huge_2    (80, 128)  62      79360  6817
@@ -94,7 +102,7 @@ class Scenario:
         # 34057 - earth2014_sta...eej (52, 80)   46      23920  10137
         # 0     - blank
 
-        unk = get_buffer(f, 0)
+        unk = get_buffer(f, 86177)
 
         teams = [get_buffered_string(f, 64) for _ in range(team_count)]
         players = [Player.from_file(f)
@@ -113,6 +121,7 @@ class Scenario:
             buildings,
             promotions,
             units,
+            unit_names,
             cities,
             victories,
             game_options,

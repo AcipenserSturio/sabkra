@@ -21,7 +21,7 @@ def get_buffer(f, length):
 
 
 def get_buffered_string(f, length):
-    return get_buffer(f, length).split(b"\0")[0].decode()
+    return get_buffer(f, length).split(b"\0")[0]
 
 
 def get_string(f, length):

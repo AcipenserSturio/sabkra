@@ -13,6 +13,7 @@ from .utils import (
 @dataclass
 class Player:
     struct: str
+
     @classmethod
     def from_file(cls, f):
         struct = "".join(map(chr, [get_byte(f) for _ in range(436)]))
