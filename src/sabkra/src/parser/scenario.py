@@ -108,19 +108,18 @@ class Scenario:
 
 
         length_diplo = ceil((team_count * (team_count - 1) // 2) / 8)
-        print("diplomacy", length_diplo)
+        print("diplomacy", length_diplo*5)
         diplomacy = [get_buffer(f, length_diplo) for _ in range(5)]
 
-        length_unk = 5632
-        print("unk", length_unk)
-        unk = get_buffer(f, length_unk)
+        print("unk", 256 * player_count)
+        unk = [get_buffer(f, 256) for _ in range(player_count)]
 
         length_revealed = ceil(width * height / 8)
-        print("revealed", length_revealed)
+        print("revealed", length_revealed*team_count)
         revealed = [get_buffer(f, length_revealed) for _ in range(team_count)]
 
         print("sum unk",
-              length_diplo*5 + length_unk + length_revealed*team_count)
+              length_diplo*5 + 256*player_count + length_revealed*team_count)
 
         teams = [get_buffered_string(f, 64) for _ in range(team_count)]
         players = [Player.from_file(f)
