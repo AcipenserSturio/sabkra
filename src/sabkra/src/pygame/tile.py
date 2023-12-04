@@ -90,6 +90,11 @@ class TilePygame(Tile):
         # Draw road
         for road in self.get_road_state():
             self.world.canvas.blit(self.get_image(road), self.pos)
+        # Draw starting tiles
+        for player in [*self.world.scenario.major_civs,
+                       *self.world.scenario.minor_civs]:
+            if player.start_x == self.col and player.start_y == self.row:
+                self.world.canvas.blit(self.get_image("starting"), self.pos)
         # Draw city
         if self.improvement.city_id != -1:
             self.world.canvas.blit(self.get_image("city"), self.pos)

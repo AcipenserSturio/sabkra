@@ -72,7 +72,7 @@ class WorldPygame(World):
             self.add_image(resource, "./src/sabkra/assets/resource/{}.png"
                            .format(resource.replace("RESOURCE_", "").lower()))
         self.add_image("selected", "./src/sabkra/assets/selected.png")
-        self.add_image("neighbour", "./src/sabkra/assets/neighbour.png")
+        self.add_image("starting", "./src/sabkra/assets/starting.png")
         self.add_image("grid", "./src/sabkra/assets/grid.png")
 
         self.add_image("MOUNTAIN", "./src/sabkra/assets/mountain.png")
