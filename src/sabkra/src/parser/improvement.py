@@ -83,3 +83,16 @@ class Improvement:
         if self.road != value:
             self.route_type = index
             # self.rerender()
+
+    @property
+    def route_owner(self):
+        if not self.route_owner_id == -1:
+            return self.world.scenario.civs[self.route_owner_id]
+        return ""
+
+    @route_owner.setter
+    def route_owner(self, value):
+        index = self.world.scenario.civs.index(value) if value else -1
+        if self.civ != value:
+            self.route_owner_id = index
+            # self.rerender()
