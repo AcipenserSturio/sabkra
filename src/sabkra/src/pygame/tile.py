@@ -28,42 +28,42 @@ class TilePygame(Tile):
 
     @Tile.terrain.setter
     def terrain(self, value):
-        index = self.world.terrain.index(value) if value else 255
+        index = self.world.terrain.index(value) if value else -1
         if self.terrain != value:
             self.terrain_id = index
             self.rerender()
 
     @Tile.elevation.setter
     def elevation(self, value):
-        index = self.world.elevation.index(value) if value else 255
+        index = self.world.elevation.index(value) if value else -1
         if self.elevation != value:
             self.elevation_id = index
             self.rerender()
 
     @Tile.feature.setter
     def feature(self, value):
-        index = self.world.feature.index(value) if value else 255
+        index = self.world.feature.index(value) if value else -1
         if self.feature != value:
             self.feature_id = index
             self.rerender()
 
     @Tile.resource.setter
     def resource(self, value):
-        index = self.world.resource.index(value) if value else 255
+        index = self.world.resource.index(value) if value else -1
         if self.resource != value:
             self.resource_id = index
             self.rerender()
 
     @Tile.continent.setter
     def continent(self, value):
-        index = self.world.continent.index(value) if value else 255
+        index = self.world.continent.index(value) if value else -1
         if self.continent != value:
             self.continent_id = index
             self.rerender()
 
     @Tile.wonder.setter
     def wonder(self, value):
-        index = self.world.wonder.index(value) if value else 255
+        index = self.world.wonder.index(value) if value else -1
         if self.wonder != value:
             self.wonder_id = index
             self.rerender()

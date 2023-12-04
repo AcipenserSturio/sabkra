@@ -27,6 +27,7 @@ class Sidebar:
         self.reso = Dropdown(self.edit_tab, self.set_reso, "Resource")
         self.cont = Dropdown(self.edit_tab, self.set_cont, "Continent")
         self.wond = Dropdown(self.edit_tab, self.set_wond, "Wonder")
+        self.impr = Dropdown(self.edit_tab, self.set_impr, "Improvement")
 
         self.frame.add(
             self.edit_tab,
@@ -82,6 +83,10 @@ class Sidebar:
         self.tile.wonder = value
         self.world.draw()
 
+    def set_impr(self, value):
+        self.tile.improvement.improvement = value
+        # self.world.draw()
+
     def update(self):
         self.plot["text"] = f"""Plot: {
             self.tile.row, self.tile.col
@@ -110,4 +115,8 @@ class Sidebar:
         self.wond.update(
             self.tile.wonder,
             ["", *self.world.wonder]
+        )
+        self.impr.update(
+            self.tile.improvement.improvement,
+            ["", *self.world.scenario.improvs]
         )

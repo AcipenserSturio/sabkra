@@ -160,3 +160,12 @@ class Scenario:
         #     print(text.replace(", ", ",\n"), file=f)
 
         return self
+
+    def get_improvement(self, row, col):
+        if self.world.wrap:
+            col = col % self.world.width
+        if col >= self.world.width or col < 0:
+            return
+        if row >= self.world.height or row < 0:
+            return
+        return self.improvements[row][col]

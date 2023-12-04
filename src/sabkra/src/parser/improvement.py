@@ -40,3 +40,20 @@ class Improvement:
             route_type,
             route_owner_id,
         )
+
+    @property
+    def tile(self):
+        return self.world.get_tile(self.row, self.col)
+
+    @property
+    def improvement(self):
+        if not self.improvement_id == -1:
+            return self.world.scenario.improvs[self.improvement_id]
+        return ""
+
+    @improvement.setter
+    def improvement(self, value):
+        index = self.world.scenario.improvs.index(value) if value else -1
+        if self.improvement != value:
+            self.improvement_id = index
+            # self.rerender()

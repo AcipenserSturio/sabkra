@@ -79,6 +79,10 @@ class Tile:
         )
 
     @property
+    def improvement(self):
+        return self.world.scenario.get_improvement(self.row, self.col)
+
+    @property
     def terrain(self):
         if not self.terrain_id == -1:
             return self.world.terrain[self.terrain_id]
