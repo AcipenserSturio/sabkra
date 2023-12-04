@@ -36,13 +36,14 @@ class Scenario:
     game_options: list
     diplomacy: list
     unk: bytes
-    revealed: list
+    revealed: bytes
     teams: list
     players: list
 
     @classmethod
     def from_file(cls, version, width, height, f):
         print(f"version {version}")
+        print(f"max size {width}x{height}")
         for _ in range(68):
             get_byte(f)
         max_turns = get_int(f)
@@ -106,7 +107,6 @@ class Scenario:
         # 34057 - earth2014_sta...eej (52, 80)   46      53    173   33884   5632
         # 0     - blank
 
-
         length_diplo = ceil((team_count * (team_count - 1) // 2) / 8)
         print("diplomacy", length_diplo*5)
         diplomacy = [get_buffer(f, length_diplo) for _ in range(5)]
@@ -114,12 +114,12 @@ class Scenario:
         print("unk", 256 * player_count)
         unk = [get_buffer(f, 256) for _ in range(player_count)]
 
-        length_revealed = ceil(width * height / 8)
-        print("revealed", length_revealed*team_count)
-        revealed = [get_buffer(f, length_revealed) for _ in range(team_count)]
+        length_revealed = ceil(width * height * team_count / 8)
+        print("revealed", length_revealed)
+        revealed = get_buffer(f, length_revealed)
 
         print("sum unk",
-              length_diplo*5 + 256*player_count + length_revealed*team_count)
+              length_diplo*5 + 256*player_count + length_revealed)
 
         teams = [get_buffered_string(f, 64) for _ in range(team_count)]
         players = [Player.from_file(f)
