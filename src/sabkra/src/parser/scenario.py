@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from math import ceil
 
@@ -16,7 +18,7 @@ from .improvement import Improvement
 
 @dataclass
 class Scenario:
-
+    world: World
     max_turns: int
     start_year: int
     player_count: int
@@ -41,7 +43,7 @@ class Scenario:
     improvements: list
 
     @classmethod
-    def from_file(cls, version, width, height, f):
+    def from_file(cls, world, version, width, height, f):
         for _ in range(68):
             get_byte(f)
         max_turns = get_int(f)
@@ -118,13 +120,14 @@ class Scenario:
 
         improvements = [
             [
-                Improvement.from_file(row, col, f)
+                Improvement.from_file(world, row, col, f)
                 for col in range(width)
             ]
             for row in range(height)
         ]
 
         self = cls(
+            world,
             max_turns,
             start_year,
             player_count,

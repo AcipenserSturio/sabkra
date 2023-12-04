@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 
 from .utils import (
@@ -8,6 +10,7 @@ from .utils import (
 
 @dataclass
 class Improvement:
+    world: World
     row: int
     col: int
     city_id: int
@@ -18,7 +21,7 @@ class Improvement:
     route_owner_id: int
 
     @classmethod
-    def from_file(cls, row, col, f):
+    def from_file(cls, world, row, col, f):
         city_id = get_short(f)
         unit_id = get_short(f)  # why is there 1 unit per tile?
         owner_id = get_byte(f)
@@ -27,6 +30,7 @@ class Improvement:
         route_owner_id = get_byte(f)
 
         return cls(
+            world,
             row,
             col,
             city_id,
