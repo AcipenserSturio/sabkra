@@ -39,7 +39,8 @@ class Scenario:
     unk: bytes
     revealed: bytes
     teams: list
-    players: list
+    major_civs: list
+    minor_civs: list
     improvements: list
 
     @classmethod
@@ -115,8 +116,10 @@ class Scenario:
         revealed = get_buffer(f, length_revealed)
 
         teams = [get_buffered_string(f, 64) for _ in range(team_count)]
-        players = [Player.from_file(f)
-                   for _ in range(player_count + city_state_count)]
+        major_civs = [Player.from_file(f)
+                      for _ in range(player_count)]
+        minor_civs = [Player.from_file(f)
+                      for _ in range(city_state_count)]
 
         improvements = [
             [
@@ -148,7 +151,8 @@ class Scenario:
             unk,
             revealed,
             teams,
-            players,
+            major_civs,
+            minor_civs,
             improvements,
         )
 
@@ -172,7 +176,11 @@ class Scenario:
 
     @property
     def civs(self):
-        return [player.civ_type for player in self.players]
+        return (
+            [player.civ_type for player in self.major_civs]
+            + [""] * 10
+            + [player.civ_type for player in self.minor_civs]
+        )
 
     def get_civ(self, value):
         for player in self.players:
