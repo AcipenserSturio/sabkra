@@ -13,6 +13,7 @@ from .utils import (
 from .unit import Unit
 from .city import City
 from .player import Player
+from .improvement import Improvement
 
 
 @dataclass
@@ -39,6 +40,7 @@ class Scenario:
     revealed: bytes
     teams: list
     players: list
+    improvements: list
 
     @classmethod
     def from_file(cls, version, width, height, f):
@@ -125,6 +127,14 @@ class Scenario:
         players = [Player.from_file(f)
                    for _ in range(player_count + city_state_count)]
 
+        improvements = [
+            [
+                Improvement.from_file(row, col, f)
+                for col in range(width)
+            ]
+            for row in range(height)
+        ]
+
         self = cls(
             max_turns,
             start_year,
@@ -147,6 +157,7 @@ class Scenario:
             revealed,
             teams,
             players,
+            improvements,
         )
 
         with open("log.txt", "w") as f:
