@@ -57,3 +57,16 @@ class Improvement:
         if self.improvement != value:
             self.improvement_id = index
             # self.rerender()
+
+    @property
+    def civ(self):
+        if not self.owner_id == -1:
+            return self.world.scenario.civs[self.owner_id]
+        return ""
+
+    @civ.setter
+    def civ(self, value):
+        index = self.world.scenario.civs.index(value) if value else -1
+        if self.civ != value:
+            self.owner_id = index
+            # self.rerender()

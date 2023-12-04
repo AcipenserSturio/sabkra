@@ -28,6 +28,7 @@ class Sidebar:
         self.cont = Dropdown(self.edit_tab, self.set_cont, "Continent")
         self.wond = Dropdown(self.edit_tab, self.set_wond, "Wonder")
         self.impr = Dropdown(self.edit_tab, self.set_impr, "Improvement")
+        self.ownr = Dropdown(self.edit_tab, self.set_ownr, "Owner")
 
         self.frame.add(
             self.edit_tab,
@@ -87,6 +88,10 @@ class Sidebar:
         self.tile.improvement.improvement = value
         # self.world.draw()
 
+    def set_ownr(self, value):
+        self.tile.improvement.civ = value
+        # self.world.draw()
+
     def update(self):
         self.plot["text"] = f"""Plot: {
             self.tile.row, self.tile.col
@@ -119,4 +124,8 @@ class Sidebar:
         self.impr.update(
             self.tile.improvement.improvement,
             ["", *self.world.scenario.improvs]
+        )
+        self.ownr.update(
+            self.tile.improvement.civ,
+            ["", *self.world.scenario.civs]
         )

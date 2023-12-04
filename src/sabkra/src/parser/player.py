@@ -27,12 +27,12 @@ class Player:
     @classmethod
     def from_file(cls, f):
         policies = get_buffer(f, 32)
-        leader_name = get_buffered_string(f, 64)
-        civ_name = get_buffered_string(f, 64)
-        civ_type = get_buffered_string(f, 64)
-        team_color = get_buffered_string(f, 64)
-        era = get_buffered_string(f, 64)
-        handicap = get_buffered_string(f, 64)
+        leader_name = get_buffered_string(f, 64).decode()
+        civ_name = get_buffered_string(f, 64).decode()
+        civ_type = get_buffered_string(f, 64).decode()
+        team_color = get_buffered_string(f, 64).decode()
+        era = get_buffered_string(f, 64).decode()
+        handicap = get_buffered_string(f, 64).decode()
         culture = get_int(f)
         gold = get_int(f)
         start_x = get_int(f)

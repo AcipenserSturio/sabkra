@@ -169,3 +169,12 @@ class Scenario:
         if row >= self.world.height or row < 0:
             return
         return self.improvements[row][col]
+
+    @property
+    def civs(self):
+        return [player.civ_type for player in self.players]
+
+    def get_civ(self, value):
+        for player in self.players:
+            if player.civ_type == value:
+                return player
