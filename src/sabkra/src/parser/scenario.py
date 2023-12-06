@@ -16,6 +16,15 @@ from .player import Player
 from .improvement import Improvement
 
 
+from typing import (
+    TYPE_CHECKING,
+    BinaryIO,
+    List,
+)
+if TYPE_CHECKING:
+    from .world import World
+
+
 @dataclass
 class Scenario:
     world: World
@@ -45,7 +54,13 @@ class Scenario:
     route_types: list
 
     @classmethod
-    def from_file(cls, world, version, width, height, f):
+    def from_file(cls,
+                  world: World,
+                  version: int,
+                  width: int,
+                  height: int,
+                  f: BinaryIO,
+                  ):
         print("version", version)
 
         for _ in range(68):
@@ -171,7 +186,7 @@ class Scenario:
 
         return self
 
-    def get_improvement(self, row, col):
+    def get_improvement(self, row: int, col: int) -> Improvement:
         if self.world.wrap:
             col = col % self.world.width
         if col >= self.world.width or col < 0:
@@ -181,14 +196,14 @@ class Scenario:
         return self.improvements[row][col]
 
     @property
-    def civs(self):
+    def civs(self) -> List[str]:
         return (
             [player.civ_type for player in self.major_civs]
             + [""] * 10  # Works in Earth 2014. Doesn't work in Mongol Scenario
             + [player.civ_type for player in self.minor_civs]
         )
 
-    def get_civ(self, value):
+    def get_civ(self, value: str) -> Player:
         for player in self.players:
             if player.civ_type == value:
                 return player

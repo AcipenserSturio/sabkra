@@ -1,13 +1,26 @@
+from __future__ import annotations
+
 import tkinter as tk
 import os
 import platform
 import pygame
 
-from ..pygame.world import WorldPygame as World
+from ..pygame.world import WorldPygame
+
+from typing import (
+    TYPE_CHECKING,
+    Optional,
+)
+if TYPE_CHECKING:
+    from .sidebar import Sidebar
 
 
 class View:
-    def __init__(self, parent, width, height):
+    def __init__(self,
+                 parent: tk.Tk,
+                 width: int,
+                 height: int,
+                 ):
         self.frame = tk.Frame(
             parent,
             width=width,
@@ -19,14 +32,14 @@ class View:
             "windows" if platform.system() == "Windows" else "x11"
         )
 
-    def run(self, sidebar, file_path=None):
+    def run(self, sidebar: Sidebar, file_path: Optional[str] = None):
         pygame.init()
 
         if file_path:
             with open(file_path, "rb") as f:
-                world = World.from_file(f, sidebar)
+                world = WorldPygame.from_file(f, sidebar)
         else:
-            world = World.blank(32, 20, sidebar)
+            world = WorldPygame.blank(32, 20, sidebar)
 
         def on_click(event):
             world.set_current_tile_to_mouse((event.x, event.y))

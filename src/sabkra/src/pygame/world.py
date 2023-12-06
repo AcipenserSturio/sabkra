@@ -7,7 +7,12 @@ from ..parser.world import World
 
 from .camera import Camera
 from .mouse import Mouse
-from .tile import TilePygame as Tile
+from .tile import TilePygame
+
+from typing import (
+    BinaryIO,
+    List,
+)
 
 
 background_colour = (0, 0, 0)
@@ -17,21 +22,30 @@ default_window_height = 1080
 
 
 class WorldPygame(World):
-    tile_class = Tile
+    tile_class = TilePygame
 
     @classmethod
-    def from_file(cls, f, sidebar):
+    def from_file(cls,
+                  f: BinaryIO,
+                  sidebar,  # TODO: hinting?
+                  ):
         self = super().from_file(f)
         self.init_scene(sidebar)
         return self
 
     @classmethod
-    def blank(cls, width, height, sidebar):
+    def blank(cls,
+              width: int,
+              height: int,
+              sidebar,  # TODO: hinting?
+              ):
         self = super().blank(width, height)
         self.init_scene(sidebar)
         return self
 
-    def init_scene(self, sidebar):
+    def init_scene(self,
+                   sidebar,  # TODO: hinting?
+                   ):
         self.sidebar = sidebar
         self.camera = Camera(self)
         self.mouse = Mouse()
@@ -63,7 +77,7 @@ class WorldPygame(World):
 
     def load_images(self):
         for terrain in self.terrain:
-            self.add_image(terrain, "./src/sabkra/assets/terrain/{}.png"
+            self.add_image(terrain, """./src/sabkra/assets/terrain/{}.png"""
                            .format(terrain.replace("TERRAIN_", "").lower()))
         for feature in self.feature:
             self.add_image(feature, "./src/sabkra/assets/feature/{}.png"
@@ -101,7 +115,8 @@ class WorldPygame(World):
         self.add_image("railroad_ne", "./src/sabkra/assets/railroads/ne.png")
         self.add_image("railroad_e", "./src/sabkra/assets/railroads/e.png")
         self.add_image("railroad_se", "./src/sabkra/assets/railroads/se.png")
-        self.add_image("railroad_point", "./src/sabkra/assets/railroads/point.png")
+        self.add_image("railroad_point",
+                       "./src/sabkra/assets/railroads/point.png")
 
     # Current tile
     @property
@@ -123,7 +138,7 @@ class WorldPygame(World):
         self.draw()
 
     @property
-    def brush(self):
+    def brush(self) -> List[TilePygame]:
         return self._brush
 
     @brush.setter
@@ -141,10 +156,10 @@ class WorldPygame(World):
 
         self.draw()
 
-    def set_current_tile_to_mouse(self, mousepos):
+    def set_current_tile_to_mouse(self, mousepos: (int, int)):
         self.current_tile = self.nearest_tile(mousepos)
 
-    def nearest_tile(self, canvaspos):
+    def nearest_tile(self, canvaspos: [int, int]) -> TilePygame:
         # Bad code. Rewrite when you can think of a better structure
         world_x, world_y = self.camera.get_world_pos_from_canvas_pos(canvaspos)
         min_distance = float("inf")
@@ -158,7 +173,7 @@ class WorldPygame(World):
         return nearest_tile
 
     # Image manipulation
-    def add_image(self, name, path):
+    def add_image(self, name: str, path: str):
         # print(name, path)
         # Skip missing images and hope they aren't used in the map!
         if not os.path.isfile(path):

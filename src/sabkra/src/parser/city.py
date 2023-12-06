@@ -13,10 +13,10 @@ from .utils import (
 class City:
     name: str
     owner_id: int
-    settings: int
+    settings: int  # TODO: split up
     population: int
     health: int
-    building_data: str
+    building_data: bytes  # TODO: parse
 
     @classmethod
     def from_file(cls, version, f):

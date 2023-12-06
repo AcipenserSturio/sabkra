@@ -7,6 +7,14 @@ from .utils import (
     get_short,
 )
 
+from typing import (
+    TYPE_CHECKING,
+    BinaryIO,
+    )
+if TYPE_CHECKING:
+    from .world import World
+    from .tile import Tile
+
 
 @dataclass
 class Improvement:
@@ -21,7 +29,12 @@ class Improvement:
     route_owner_id: int
 
     @classmethod
-    def from_file(cls, world, row, col, f):
+    def from_file(cls,
+                  world: World,
+                  row: int,
+                  col: int,
+                  f: BinaryIO,
+                  ):
         city_id = get_short(f)
         unit_id = get_short(f)  # why is there 1 unit per tile?
         owner_id = get_byte(f)
@@ -42,11 +55,11 @@ class Improvement:
         )
 
     @property
-    def tile(self):
+    def tile(self) -> Tile:
         return self.world.get_tile(self.row, self.col)
 
     @property
-    def improvement(self):
+    def improvement(self) -> str:
         if not self.improvement_id == -1:
             return self.world.scenario.improvs[self.improvement_id]
         return ""
@@ -59,7 +72,7 @@ class Improvement:
             # self.rerender()
 
     @property
-    def civ(self):
+    def civ(self) -> str:
         if not self.owner_id == -1:
             return self.world.scenario.civs[self.owner_id]
         return ""
@@ -72,7 +85,7 @@ class Improvement:
             # self.rerender()
 
     @property
-    def road(self):
+    def road(self) -> str:
         if not self.route_type == -1:
             return self.world.scenario.route_types[self.route_type]
         return ""
@@ -85,7 +98,7 @@ class Improvement:
             # self.rerender()
 
     @property
-    def route_owner(self):
+    def route_owner(self) -> str:
         if not self.route_owner_id == -1:
             return self.world.scenario.civs[self.route_owner_id]
         return ""

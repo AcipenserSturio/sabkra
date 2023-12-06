@@ -1,11 +1,22 @@
+from __future__ import annotations
+
 import tkinter as tk
 from tkinter import ttk
 
 from .dropdown import Dropdown
 
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from ..pygame.tile import TilePygame
+    from ..pygame.world import WorldPygame
+
 
 class Sidebar:
-    def __init__(self, parent, width, height):
+    def __init__(self,
+                 parent: tk.Tk,
+                 width: int,
+                 height: int,
+                 ):
         self.frame = ttk.Notebook(
             parent,
             padding=5,
@@ -50,7 +61,7 @@ class Sidebar:
         )
 
     @property
-    def tile(self):
+    def tile(self) -> TilePygame:
         return self._tile
 
     @tile.setter
@@ -59,7 +70,7 @@ class Sidebar:
         self.update()
 
     @property
-    def world(self):
+    def world(self) -> WorldPygame:
         return self.tile.world
 
     def set_terr(self, value):

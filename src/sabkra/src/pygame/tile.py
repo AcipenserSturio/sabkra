@@ -18,7 +18,7 @@ class TilePygame(Tile):
         return (self.col, self.row).__hash__()
 
     @property
-    def highlight(self):
+    def highlight(self) -> Tile:
         return self._highlight
 
     @highlight.setter

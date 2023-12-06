@@ -7,6 +7,10 @@ from .utils import (
     get_short,
 )
 
+from typing import (
+    BinaryIO,
+)
+
 
 @dataclass
 class Unit:
@@ -23,7 +27,10 @@ class Unit:
     fortified: bool
 
     @classmethod
-    def from_file(cls, version, f):
+    def from_file(cls,
+                  version: int,
+                  f: BinaryIO,
+                  ):
         unk_1 = get_byte(f)
         unk_2 = get_byte(f)
         name_id = get_short(f)

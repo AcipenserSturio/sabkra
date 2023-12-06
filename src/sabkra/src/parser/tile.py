@@ -7,6 +7,17 @@ from .utils import (
     get_flags,
 )
 
+from typing import (
+    TYPE_CHECKING,
+    BinaryIO,
+    List,
+    Optional,
+    Literal,
+)
+if TYPE_CHECKING:
+    from .world import World
+    from .improvement import Improvement
+
 
 @dataclass
 class Tile:
@@ -34,7 +45,13 @@ class Tile:
         return f"Tile({self.col}, {self.row})"
 
     @classmethod
-    def from_file(cls, world, row, col, f):
+    def from_file(
+                cls,
+                world: World,
+                row: int,
+                col: int,
+                f: BinaryIO,
+            ):
         terrain = get_byte(f)
         resource = get_byte(f)
         feature = get_byte(f)
@@ -61,7 +78,12 @@ class Tile:
         )
 
     @classmethod
-    def blank(cls, world, row, col):
+    def blank(
+                cls,
+                world: World,
+                row: int,
+                col: int,
+            ):
         return cls(
             world=world,
             row=row,
@@ -79,46 +101,46 @@ class Tile:
         )
 
     @property
-    def improvement(self):
+    def improvement(self) -> Improvement:
         return self.world.scenario.get_improvement(self.row, self.col)
 
     @property
-    def terrain(self):
+    def terrain(self) -> str:
         if not self.terrain_id == -1:
             return self.world.terrain[self.terrain_id]
         return ""
 
     @property
-    def elevation(self):
+    def elevation(self) -> str:
         if not self.elevation_id == -1:
             return self.world.elevation[self.elevation_id]
         return ""
 
     @property
-    def feature(self):
+    def feature(self) -> str:
         if not self.feature_id == -1:
             return self.world.feature[self.feature_id]
         return ""
 
     @property
-    def resource(self):
+    def resource(self) -> str:
         if not self.resource_id == -1:
             return self.world.resource[self.resource_id]
         return ""
 
     @property
-    def continent(self):
+    def continent(self) -> str:
         if not self.continent_id == -1:
             return self.world.continent[self.continent_id]
         return ""
 
     @property
-    def wonder(self):
+    def wonder(self) -> str:
         if not self.wonder_id == -1:
             return self.world.wonder[self.wonder_id]
         return ""
 
-    def get_river_state(self):
+    def get_river_state(self) -> List[str]:
         river = []
         if self.river_e:
             river.append("river_e")
@@ -137,7 +159,7 @@ class Tile:
                 river.append("river_ne")
         return river
 
-    def get_road_state(self):
+    def get_road_state(self) -> List[Optional[str]]:
         if self.improvement.route_type == -1:
             return []
         road = []
@@ -170,7 +192,7 @@ class Tile:
             road.append(f"{road_type}_point")
         return road
 
-    def neighbours(self):
+    def neighbours(self) -> List[Optional[Tile]]:
         return [tile for tile in [
             self.get_neighbour("w"),
             self.get_neighbour("nw"),
@@ -180,17 +202,19 @@ class Tile:
             self.get_neighbour("sw"),
         ] if tile]
 
-    def get_neighbour(self, direction):
+    def get_neighbour(self,
+                      direction: Literal["w", "e", "ne", "nw", "se", "sw"],
+                      ) -> Optional[Tile]:
         if direction == "w":
             return self.world.get_tile(self.row, self.col-1)
         if direction == "e":
             return self.world.get_tile(self.row, self.col+1)
         if direction == "ne":
-            return self.world.get_tile(self.row + 1, self.col + (self.row % 2))
+            return self.world.get_tile(self.row+1, self.col + (self.row % 2))
         if direction == "nw":
-            return self.world.get_tile(self.row + 1, self.col + (self.row % 2) - 1)
+            return self.world.get_tile(self.row+1, self.col + (self.row % 2)-1)
         if direction == "se":
-            return self.world.get_tile(self.row - 1, self.col + (self.row % 2))
+            return self.world.get_tile(self.row-1, self.col + (self.row % 2))
         if direction == "sw":
-            return self.world.get_tile(self.row - 1, self.col + (self.row % 2) - 1)
+            return self.world.get_tile(self.row-1, self.col + (self.row % 2)-1)
         return

@@ -11,6 +11,11 @@ from .utils import (
 from .scenario import Scenario
 from .tile import Tile
 
+from typing import (
+    BinaryIO,
+    List,
+)
+
 
 @dataclass
 class World:
@@ -34,7 +39,7 @@ class World:
     tile_class = Tile
 
     @classmethod
-    def from_file(cls, f):
+    def from_file(cls, f: BinaryIO):
 
         version = get_byte(f) - 128
         width = get_int(f)
@@ -100,7 +105,7 @@ class World:
         return self
 
     @classmethod
-    def blank(cls, width, height):
+    def blank(cls, width: int, height: int):
         self = cls(
             version=12,  # or 140? unclear
             width=width,
@@ -210,12 +215,12 @@ class World:
 
         return self
 
-    def tiles(self):
+    def tiles(self) -> Tile:
         for row in self.tilemap:
             for tile in row:
                 yield tile
 
-    def get_tile(self, row, col):
+    def get_tile(self, row: int, col: int) -> Tile:
         if self.wrap:
             col = col % self.width
         if col >= self.width or col < 0:
@@ -224,7 +229,7 @@ class World:
             return
         return self.tilemap[row][col]
 
-    def get_tiles_in_radius(self, tile, radius):
+    def get_tiles_in_radius(self, tile: Tile, radius: int) -> List[Tile]:
         tiles = set([tile])
         queue = [(0, tile)]
         for priority, tile in iter(queue):

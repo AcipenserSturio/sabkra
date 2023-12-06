@@ -52,7 +52,7 @@ class Gui:
         self.sidebar.frame.pack(side="right", fill="both")
         self.window.mainloop()
 
-    def make_menu(self):
+    def make_menu(self) -> tk.Menu:
         menu = tk.Menu(self.window)
         self.window.config(menu=menu)
         menu.add_command(
